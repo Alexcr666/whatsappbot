@@ -25,7 +25,7 @@ function json2array(json) {
 const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
 function sendMsj() {
-    console.log("sendmsj");
+  console.log("sendmsj");
 }
 
 app.post("/webhook", async (req, res) => {
@@ -43,82 +43,14 @@ app.post("/webhook", async (req, res) => {
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
 
     var recipientData = business_phone_number_id;
-    axios(
-      {
-        uri:
-          "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-          "recipientData" +
-          "/.json",
-
-        method: "GET",
-      },
-      function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-          //  var recipientId = body.recipient_id;
-          // var messageId = body.message_id;
-          console.log("Successfully firebase4" + body);
-          if (body == "null") {
-            console.log("Successfully firebase5" + body);
-
-            axios(
-              {
-                uri:
-                  "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
-                  idChat +
-                  "/options/.json",
-
-                method: "GET",
-              },
-              function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                  //  var recipientId = body.recipient_id;
-                  // var messageId = body.message_id;
-
-                  var obj = JSON.parse(body);
-
-                  var listJson = json2array(obj);
-                  console.error(
-                    "lenghtoptions: " +
-                      json2array(obj).length +
-                      " : " +
-                      json2array(obj)[0]
-                  );
-
-                  var dataItemSelected;
-                  for (var i = 0; i < json2array(obj).length; i++) {
-                    var dataItem = json2array(obj)[i];
-
-                    console.log("welcome: " + dataItem["welcome"]);
-
-                    if (dataItem["welcome"] == true) {
-                      dataItemSelected = dataItem;
-                    }
-                  }
-
-                  console.log("Successfully firebase2: " + body + "  :  ");
-
-                  var title = dataItemSelected["title"];
-                  var route = dataItemSelected["routeStep"];
-                  var type = dataItemSelected["type"];
-
-                  console.error("body: " + title);
-
-                  console.log("Successfully firebase" + body);
-                 
-                      sendMsj(/*recipientData,recipientData, title, route*/);
-                  
-                } else {
-                  console.error("Unable to send message.");
-                  console.error(response);
-                  console.error(error);
-                }
-              }
-            );
-          } else {
-          }
-        }
-      }
-    );
+      axios.get('https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/"+recipientData+"/.json')
+  .then(response => {
+    console.log("verificacion: "+response.data); // Datos devueltos por la API
+  })
+  .catch(error => {
+    console.error(error); // Manejo de errores
+  });
+     
 
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
     await axios({
