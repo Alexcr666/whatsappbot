@@ -6,12 +6,89 @@
  */
 
 import express from "express";
+
 import axios from "axios";
 
-const app = express();
+
+
+
+
+// The rest of the code implements the routes for our Express server.
+let app = express();
+
+
+
+
 app.use(express.json());
 
+const idChat = "-ODvWrCbH47cu21VClQr";
+
+ function json2array(json){
+    var result = [];
+    var keys = Object.keys(json);
+    keys.forEach(function(key){
+        result.push(json[key]);
+    });
+    return result;
+}
+
+
+
+
 const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
+
+
+
+
+function sendMsj(recipientData,recipientId, messageText, route) {
+
+  //if(route != null){
+
+  console.log("routeSend: "+route);
+  //if(route != null){
+    
+      console.log("routestep: "+route);
+  var messageData2 = {
+    userId: recipientData,
+    routeStep: route,
+    text: messageText,
+    receipt: recipientData,
+  };
+
+axios(
+    {
+      uri:
+        "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
+        recipientData +
+        ".json",
+      // qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+      method: "POST",
+      json: messageData2,
+    },
+    function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+      /* setTimeout(function () {
+                 validationMsjRepeat(route);
+                }, 700);*/
+      
+        
+        //  var recipientId = body.recipient_id;
+        // var messageId = body.message_id;
+           //  var obj = JSON.parse(body);
+
+        console.log("Successfully firebase id ");
+        
+      
+      } else {
+        console.error("Unable to send message.");
+        console.error(response);
+        console.error(error);
+      }
+    }
+  );
+ // }
+  }
+
 
 app.post("/webhook", async (req, res) => {
   // log incoming messages
@@ -20,17 +97,129 @@ app.post("/webhook", async (req, res) => {
   // check if the webhook request contains a message
   // details on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
   const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
+  
+   const messageText = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0].text;
+  const business_phone_number_id =
+      req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
 
+  
+  //VALIDACION DE MENSAJES
+  
+  
+  
+    console.log("message: " + messageText);
+  
+var recipientData = business_phone_number_id;
+axios(
+    {
+      uri: "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/"+recipientData+"/.json",
+
+      method: "GET",
+    },
+    function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        //  var recipientId = body.recipient_id;
+        // var messageId = body.message_id;
+           console.log("Successfully firebase4" + body);
+        if(body == "null"){
+            console.log("Successfully firebase5" + body);
+          
+    axios(
+          {
+            uri: "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/"+idChat+"/options/.json",
+
+            method: "GET",
+          },
+          function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+              //  var recipientId = body.recipient_id;
+              // var messageId = body.message_id;
+              
+                        
+                var obj = JSON.parse(body);
+          
+      var listJson =     json2array(obj);
+          console.error("lenghtoptions: "+json2array(obj).length+" : "+json2array(obj)[0]);
+          
+       var dataItemSelected ;  
+for(var i = 0; i < json2array(obj).length;i++){
+ var dataItem =  json2array(obj)[i];
+  
+  console.log("welcome: "+ dataItem["welcome"] );
+  
+  if(dataItem["welcome"] == true){
+     dataItemSelected = dataItem;
+  }
+
+}
+            
+              console.log("Successfully firebase2: " + body + "  :  ");
+
+   
+              
+              
+              var title = dataItemSelected["title"];
+              var route = dataItemSelected["routeStep"];
+              var type = dataItemSelected["type"];
+
+              console.error("body: " + title);
+
+              console.log("Successfully firebase" + body);
+              if (type == "chat") {
+                sendMsj(recipientData,recipientData, title, route);
+
+               /* setTimeout(function () {
+                  validateFlow(body, route);
+                }, 1000);*/
+              }else{
+                  sendMsj(recipientData,recipientData, title, route);
+                
+              }
+            } else {
+              console.error("Unable to send message.");
+              console.error(response);
+              console.error(error);
+            }
+          }
+        );
+          
+        }else{
+        }
+      }
+    });
+  
+  
+  
+  
+  
+  ///
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   // check if the incoming message contains text
   if (message?.type === "text") {
     // extract the business number to send the reply from it
     const business_phone_number_id =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
 
+    
+    
+    
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
     await axios({
       method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      url: `https://graph.facebook.com/v21.0/${business_phone_number_id}/messages`,
       headers: {
         Authorization: `Bearer ${GRAPH_API_TOKEN}`,
       },
@@ -47,7 +236,7 @@ app.post("/webhook", async (req, res) => {
     // mark incoming message as read
     await axios({
       method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      url: `https://graph.facebook.com/v21.0/${business_phone_number_id}/messages`,
       headers: {
         Authorization: `Bearer ${GRAPH_API_TOKEN}`,
       },
