@@ -50,23 +50,24 @@ app.post("/webhook", async (req, res) => {
       .then((response) => {
       
       
-         console.log("Successfully firebase4" + response);
-        if(response == "null"){
-            console.log("Successfully firebase5" + response);
+         console.log("Successfully firebase4" + response.data);
+        if(response.data == null){
+            console.log("Successfully firebase5" + response.data);
           
-    axios(
-          {
-            uri: "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/"+idChat+"/options/.json",
-
-            method: "GET",
-          },
-          function (error, response, body) {
-            if (!error && response.statusCode == 200) {
+          
+            axios
+      .get(
+      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/"+idChat+"/options/.json"
+      )
+      .then((response) => {
+              
+              
+         if (    response.statusCode == 200) {
               //  var recipientId = body.recipient_id;
               // var messageId = body.message_id;
               
                         
-                var obj = JSON.parse(body);
+                var obj = JSON.parse(response.data);
           
       var listJson =     json2array(obj);
           console.error("lenghtoptions: "+json2array(obj).length+" : "+json2array(obj)[0]);
@@ -83,7 +84,7 @@ for(var i = 0; i < json2array(obj).length;i++){
 
 }
             
-              console.log("Successfully firebase2: " + body + "  :  ");
+              console.log("Successfully firebase2: " + response.data + "  :  ");
 
    
               
@@ -94,32 +95,34 @@ for(var i = 0; i < json2array(obj).length;i++){
 
               console.error("body: " + title);
 
-              console.log("Successfully firebase" + body);
+              console.log("Successfully firebase" + response.data);
               if (type == "chat") {
-                sendMsj(recipientData,recipientData, title, route);
+                sendMsj();
 
                /* setTimeout(function () {
                   validateFlow(body, route);
                 }, 1000);*/
               }else{
-                  sendMsj(recipientData,recipientData, title, route);
+                  sendMsj();
                 
               }
             } else {
               console.error("Unable to send message.");
               console.error(response);
-              console.error(error);
+           
             }
           }
         );
           
         }else{
         }
-       // console.log("verificacion: " + response.data); // Datos devueltos por la API
-      })
-      .catch((error) => {
+    
+              
+            })  .catch((error) => {
         console.log(error); // Manejo de errores
       });
+          
+    
 
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
    /* await axios({
