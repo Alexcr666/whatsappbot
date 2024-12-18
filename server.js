@@ -69,6 +69,8 @@ function validationMsj(receiver, value) {
         
                   if (type == "terms") {
                     
+                    
+                    
                      sendMsj(receiver, title, route);
                     
                   }
@@ -92,6 +94,14 @@ function validationMsj(receiver, value) {
     
     }
     if (type == "pause") {
+      
+         // var valuePause = dataItemSelected["value"];
+      
+      setTimeout(function () {
+                sendMsj(receiver, message, route);
+                }, 1000);
+      
+         
      
     }
 
@@ -154,6 +164,8 @@ function sendMsj(recipientData, recipientId, messageText, route)  {
     .then((response) => {
       if (response.status == 200) {
         
+         console.log("sendmsj---1: " + route);
+        
           const jsonData = JSON.stringify(response.data, null, 2);
         
         
@@ -165,11 +177,11 @@ function sendMsj(recipientData, recipientId, messageText, route)  {
         
         axios
     .post(
-     `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+     `https://graph.facebook.com/v18.0/545034448685967/messages`,
     {
         messaging_product: "whatsapp",
         to: to,
-        text: { body: title },
+        text: { body: "title" },
        
       },
     )
@@ -257,6 +269,22 @@ app.post("/webhook", async (req, res) => {
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
 
     var recipientData = business_phone_number_id;
+    
+     await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      headers: {
+        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+      },
+      data: {
+        messaging_product: "whatsapp",
+        to: message.from,
+        text: { body: "Echo: " + message.text.body },
+        context: {
+          message_id: message.id, // shows the message as a reply to the original user message
+        },
+      },
+    });
     axios
       .get(
         "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
@@ -278,6 +306,8 @@ app.post("/webhook", async (req, res) => {
 
               //  var recipientId = body.recipient_id;
               // var messageId = body.message_id;
+            
+            
 
               var obj = JSON.parse(jsonData);
 
@@ -343,21 +373,7 @@ app.post("/webhook", async (req, res) => {
       });
 
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
-    /* await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-      headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        to: message.from,
-        text: { body: "Echo: " + message.text.body },
-        context: {
-          message_id: message.id, // shows the message as a reply to the original user message
-        },
-      },
-    });*/
+    
 
     // mark incoming message as read
     /* await axios({
