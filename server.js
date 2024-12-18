@@ -229,7 +229,9 @@ app.post("/webhook", async (req, res) => {
                   json2array(obj)[0]
               );
           
-             var route = jsonData[1]["routeStep"];
+            const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
+          
+             var route =   jsonData2["routeStep"];
           
            console.log("route", route);
           
