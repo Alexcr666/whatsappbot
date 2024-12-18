@@ -41,7 +41,9 @@ function validationMsj(receiver, value) {
           const jsonData = JSON.stringify(response.data, null, 2);
         
         
-          var dataItemSelected = jsonData;
+          var dataItemSelected =  JSON.parse(jsonData);
+        
+       //    var obj = JSON.parse(jsonData);
         
           console.log("datosnuevo: "+jsonData);
         
@@ -66,13 +68,17 @@ function validationMsj(receiver, value) {
 
           var title = dataItemSelected["title"];
         
+         console.log("datosnuevo1: "+ route);
+        
         
         
         
           var business_phone_number_id = "545034448685967"; 
         var to = "573013928129";
           if (type == "chat" || type == "text") {
-            sendMsj(receiver, title, route);
+        //    sendMsj(receiver, title, route);
+            
+               validationMsj(receiver,route);
           }
         
         
@@ -462,9 +468,9 @@ app.post("/webhook", async (req, res) => {
     
     messageGlobal = message.text.body;
     
-     await axios({
+   /*  await axios({
       method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      url: `https://graph.facebook.com/v18.0/545034448685967/messages`,
       headers: {
         Authorization: `Bearer ${GRAPH_API_TOKEN}`,
       },
@@ -476,7 +482,7 @@ app.post("/webhook", async (req, res) => {
           message_id: message.id, // shows the message as a reply to the original user message
         },
       },
-    });
+    });*/
     axios
       .get(
         "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
