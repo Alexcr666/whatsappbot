@@ -259,7 +259,7 @@ function validationMsj(receiver, value) {
 
       }});*/
           }
-        -valida
+        
 
           if (type == "link") {
             
