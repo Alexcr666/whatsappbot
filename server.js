@@ -24,9 +24,51 @@ function json2array(json) {
 
 const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
-function sendMsj() {
-  console.log("sendmsj");
-}
+
+
+function sendMsj(recipientData,recipientId, messageText, route) {
+
+  //if(route != null){
+
+  console.log("routeSend: "+route);
+  //if(route != null){
+    
+      console.log("routestep: "+route);
+  var messageData2 = {
+    userId: recipientData,
+    routeStep: route,
+    text: messageText,
+    receipt: recipientData,
+  };
+  
+    axios
+      .post(
+      "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
+        recipientData +
+        ".json",messageData2
+      )
+      .then((response) => {
+      
+      
+    });
+
+axios(
+    {
+      uri:
+        "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
+        recipientData +
+        ".json",
+      // qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+      method: "POST",
+      json: messageData2,
+    },
+    function (error, response, body) {
+      if (!error && 
+    }
+  );
+ // }
+  }
+
 
 app.post("/webhook", async (req, res) => {
   // log incoming messages
@@ -55,13 +97,18 @@ app.post("/webhook", async (req, res) => {
             console.log("Successfully firebase5" + response.data);
           
           
+      
+          
             axios
       .get(
-      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/-ODvWrCbH47cu21VClQr/options/.json"
+      'https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/-ODvWrCbH47cu21VClQr/options/.json'
       )
       .then((response) => {
               
-              console.log("estado1: "+  response.body);
+               const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
+    console.log('Datos en formato JSON:', jsonData);
+              
+         
               
               
       
@@ -69,7 +116,7 @@ app.post("/webhook", async (req, res) => {
               // var messageId = body.message_id;
               
                         
-                var obj = JSON.parse(response.data);
+                var obj = JSON.parse(jsonData);
           
       var listJson =     json2array(obj);
           console.log("lenghtoptions: "+json2array(obj).length+" : "+json2array(obj)[0]);
