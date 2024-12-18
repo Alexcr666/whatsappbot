@@ -24,38 +24,22 @@ function json2array(json) {
 
 const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
+function validationMsj(receiver, value) {
+  axios
+    .post(
+      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
+        idChat +
+        "/options/" +
+        value +
+        "/.json"
+    )
+    .then((response) => {
+      if (response.status == 200) {
+        if (response.status == 200) {
+          const jsonData = JSON.stringify(response.data, null, 2);
+          var dataItemSelected = JSON.parse(jsonData);
 
-
-
-
-function validationMsj( value){
-  
-  
-   axios
-      .post(
-     "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/"+idChat+"/options/"+value+"/.json"
-      )
-      .then((response) => {
-     if( response.status == 200) {
-       
-       
-     }});
-  
-  
-  request(
-          {
-            uri: "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/"+idChat+"/options/"+value+"/.json",
-
-            method: "GET",
-          },
-          function (error, response, body) {
-          
-      if (!error && response.statusCode == 200) {
-           var dataItemSelected = JSON.parse(body);
-        
-        
-             
-/*      if(dataItemSelected.isNull("routeStep")){
+          /*      if(dataItemSelected.isNull("routeStep")){
         
         
           var keys = Object.keys( dataItemSelected["optionsStep"]);
@@ -68,38 +52,30 @@ function validationMsj( value){
         
         
       }else{*/
-        
-           var type = dataItemSelected["type"];
-         var route = dataItemSelected["routeStep"];
-        
-        
+
+          var type = dataItemSelected["type"];
+          var route = dataItemSelected["routeStep"];
+
           var title = dataItemSelected["title"];
-              if (type == "chat") {
-                sendMsj("8370375226358762", title, route);
+          if (type == "chat") {
+            sendMsj(receiver, title, route);
+          }
 
-             
-              }
-        
-        
-              if (type == "multiple") {
-                
-                
-      var list = dataItemSelected["optionsMulti"];
+          if (type == "multiple") {
+            var list = dataItemSelected["optionsMulti"];
 
-      var listString = "";
+            var listString = "";
 
-      for (var i = 0; i < list.length; i++) {
-        listString += list[i].capitalize() + "\n";
-      }
-      var message = title.capitalize() + ":" + " \n\n" + listString;
+            for (var i = 0; i < list.length; i++) {
+              listString += list[i].capitalize() + "\n";
+            }
+            var message = title.capitalize() + ":" + " \n\n" + listString;
 
-    //  setTimeout(function () {
-        sendMsj("8370375226358762", message, route);
-     // }, 500);
-    
-                
-            
-/*
+            //  setTimeout(function () {
+            sendMsj(receiver, message, route);
+            // }, 500);
+
+            /*
            var keys = Object.keys( dataItemSelected["optionsStep"]);
                 
     keys.forEach(function(key){
@@ -107,72 +83,58 @@ function validationMsj( value){
       if(key.toLowerCase() ==   messageReceip.toLowerCase()){
 
       }});*/
-    
+          }
 
-             
-              }
-        
-        
-             
-              if (type == "link") {
-                sendMsj("8370375226358762", title, route);
-
-             
-              }
-     // }
-        
-        
+          if (type == "link") {
+            sendMsj(receiver, title, route);
+          }
+        }
       }
+      // }
     });
 }
 
-function sendMsj(recipientData,recipientId, messageText, route) {
-
+function sendMsj(recipientData, recipientId, messageText, route) {
   //if(route != null){
 
-  console.log("routeSend: "+route);
+  console.log("routeSend: " + route);
   //if(route != null){
-    
-      console.log("routestep: "+route);
+
+  console.log("routestep: " + route);
   var messageData2 = {
     userId: recipientData,
     routeStep: route,
     text: messageText,
     receipt: recipientData,
   };
-  
-    axios
-      .post(
+
+  axios
+    .post(
       "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
         recipientData +
-        ".json",messageData2
-      )
-      .then((response) => {
-     if( response.status == 200) {
-      /* setTimeout(function () {
+        ".json",
+      messageData2
+    )
+    .then((response) => {
+      if (response.status == 200) {
+        validationMsj(response);
+        /* setTimeout(function () {
                  validationMsjRepeat(route);
                 }, 700);*/
-      
-        
+
         //  var recipientId = body.recipient_id;
         // var messageId = body.message_id;
-           //  var obj = JSON.parse(body);
+        //  var obj = JSON.parse(body);
 
         console.log("Successfully firebase id ");
-        
-      
       } else {
         console.error("Unable to send message.");
         console.error(response);
-        console.error(error);
       }
-      
     });
 
-
- // }
-  }
-
+  // }
+}
 
 app.post("/webhook", async (req, res) => {
   // log incoming messages
@@ -191,57 +153,49 @@ app.post("/webhook", async (req, res) => {
     var recipientData = business_phone_number_id;
     axios
       .get(
-        'https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/'+recipientData+'/.json'
+        "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
+          recipientData +
+          "/.json"
       )
       .then((response) => {
-      
-      
-         console.log("Successfully firebase4" + response.data);
-        if(response.data == null){
-            console.log("Successfully firebase5" + response.data);
-          
-          
-      
-          
-            axios
-      .get(
-      'https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/-ODvWrCbH47cu21VClQr/options/.json'
-      )
-      .then((response) => {
-              
-               const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
-    console.log('Datos en formato JSON:', jsonData);
-              
-         
-              
-              
-      
+        console.log("Successfully firebase4" + response.data);
+        if (response.data == null) {
+          console.log("Successfully firebase5" + response.data);
+
+          axios
+            .get(
+              "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/-ODvWrCbH47cu21VClQr/options/.json"
+            )
+            .then((response) => {
+              const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
+              console.log("Datos en formato JSON:", jsonData);
+
               //  var recipientId = body.recipient_id;
               // var messageId = body.message_id;
-              
-                        
-                var obj = JSON.parse(jsonData);
-          
-      var listJson =     json2array(obj);
-          console.log("lenghtoptions: "+json2array(obj).length+" : "+json2array(obj)[0]);
-          
-       var dataItemSelected ;  
-for(var i = 0; i < json2array(obj).length;i++){
- var dataItem =  json2array(obj)[i];
-  
-  console.log("welcome: "+ dataItem["welcome"] );
-  
-  if(dataItem["welcome"] == true){
-     dataItemSelected = dataItem;
-  }
 
-}
-            
+              var obj = JSON.parse(jsonData);
+
+              var listJson = json2array(obj);
+              console.log(
+                "lenghtoptions: " +
+                  json2array(obj).length +
+                  " : " +
+                  json2array(obj)[0]
+              );
+
+              var dataItemSelected;
+              for (var i = 0; i < json2array(obj).length; i++) {
+                var dataItem = json2array(obj)[i];
+
+                console.log("welcome: " + dataItem["welcome"]);
+
+                if (dataItem["welcome"] == true) {
+                  dataItemSelected = dataItem;
+                }
+              }
+
               console.log("Successfully firebase2: " + response.data + "  :  ");
 
-   
-              
-              
               var title = dataItemSelected["title"];
               var route = dataItemSelected["routeStep"];
               var type = dataItemSelected["type"];
@@ -249,26 +203,37 @@ for(var i = 0; i < json2array(obj).length;i++){
               console.error("body: " + title);
 
               console.log("Successfully firebase" + response.data);
-                      sendMsj(recipientData,recipientData, title, route);
-           
-          }
-        );
+              sendMsj(recipientData, recipientData, title, route);
+            });
+        } else {
           
-        }else{
+          const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
+              console.log("Datos en formato JSON:", jsonData);
+
+              //  var recipientId = body.recipient_id;
+              // var messageId = body.message_id;
+
+              var obj = JSON.parse(jsonData);
+
+              var listJson = json2array(obj);
+              console.log(
+                "lenghtoptions: " +
+                  json2array(obj).length +
+                  " : " +
+                  json2array(obj)[0]
+              );
           
+             var route = listJson["routeStep"];
           
-          
+           validationMsj(recipientData,route);
         }
-    
-              
-            })  .catch((error) => {
+      })
+      .catch((error) => {
         console.log(error); // Manejo de errores
       });
-          
-    
 
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
-   /* await axios({
+    /* await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
       headers: {
@@ -285,7 +250,7 @@ for(var i = 0; i < json2array(obj).length;i++){
     });*/
 
     // mark incoming message as read
-   /* await axios({
+    /* await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
       headers: {
