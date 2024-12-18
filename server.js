@@ -39,9 +39,9 @@ function validationMsj(receiver, value) {
           const jsonData = JSON.stringify(response.data, null, 2);
         
         
-          var dataItemSelected = JSON.parse(jsonData);
+          var dataItemSelected = jsonData;
         
-          console.log("datos: "+jsonData);
+          console.log("datosnuevo: "+jsonData);
         
         
 
@@ -223,15 +223,15 @@ app.post("/webhook", async (req, res) => {
 
              var listJson = json2array(obj);
               console.log(
-                "lenghtoptions: " +
+                "lenghtoptions34: " +
                   json2array(obj).length +
                   " : " +
                   json2array(obj)[0]
               );
           
-            const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
-          
-             var route =   jsonData2["routeStep"];
+           // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
+                  //   console.log("route99: "+ jsonData2+" - "+json2array(obj)[0]["routeStep"]);
+             var route =   json2array(obj)[0]["routeStep"];
           
            console.log("route", route);
           
