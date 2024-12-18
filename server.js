@@ -84,18 +84,43 @@ function validationMsj(receiver, value) {
                   }
         
             if (type == "answer") {
+              
+              
+              
                     
                   }
         
             if (type == "form") {
+              
+              
+              
+                 
+              var   listString = "Formulario de contacto" + "\n"+ "1.Nombre"+"\n"+"2.Empresa"+"\n"+"3.Correo electronico"+"\n"+"4.Ciudad"+"\n"+"5.Consulta";
+              
+              
+              
+              
+              
                     
                   }
         
             if (type == "agent") {
+              
+           
+              
+               var   listString = "Buscando agentes disponibles";
+              
+              
+              
                     
                   }
         
             if (type == "end") {
+              
+              
+              var   listString = "Deseas terminar la converzación" + "\n"+ "1.Si"+"\n"+"2.Ir al inicio"+"\n"+"3.Contactar a un acesor";
+              
+              
               
               
               
