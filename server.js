@@ -91,6 +91,46 @@ function validationMsj(receiver, value) {
     
     }
     if (type == "media") {
+      
+      
+      
+
+      
+  axios
+    .post(
+      'https://graph.facebook.com/v16.0/$phoneNumberId/messages',
+    {
+      headers: {
+      'Authorization': 'Bearer $accessToken',
+      'Content-Type': 'application/json',
+      },
+      params: {
+      "messaging_product": "whatsapp",
+      "to": destinationPhone,
+      "type": "image",
+      "image": {
+        "link": imageUrl,
+        // Agrega el caption si está disponible
+      }
+    }
+    }
+    
+    )
+    .then((response) => {
+    
+  if (response.status == 200) {
+    print('Imagen enviada con éxito');
+    print('Respuesta: ${response.body}');
+  } else {
+    print('Error enviando la imagen: ${response.statusCode}');
+    print('Detalles del error: ${response.body}');
+  }
+      
+    
+  });
+   
+
+      
     
     }
     if (type == "pause") {
@@ -186,6 +226,8 @@ function sendMsj(recipientData, recipientId, messageText, route)  {
       },
     )
     .then((response) => {
+          
+          
           
           
         });
