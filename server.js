@@ -57,12 +57,14 @@ app.post("/webhook", async (req, res) => {
           
             axios
       .get(
-      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/"+idChat+"/options/.json"
+      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/-ODvWrCbH47cu21VClQr/options/.json"
       )
       .then((response) => {
               
+              console.log("estado1: "+  response.body);
               
-         if (    response.statusCode == 200) {
+              
+      
               //  var recipientId = body.recipient_id;
               // var messageId = body.message_id;
               
@@ -70,7 +72,7 @@ app.post("/webhook", async (req, res) => {
                 var obj = JSON.parse(response.data);
           
       var listJson =     json2array(obj);
-          console.error("lenghtoptions: "+json2array(obj).length+" : "+json2array(obj)[0]);
+          console.log("lenghtoptions: "+json2array(obj).length+" : "+json2array(obj)[0]);
           
        var dataItemSelected ;  
 for(var i = 0; i < json2array(obj).length;i++){
@@ -106,11 +108,7 @@ for(var i = 0; i < json2array(obj).length;i++){
                   sendMsj();
                 
               }
-            } else {
-              console.error("Unable to send message.");
-              console.error(response);
            
-            }
           }
         );
           
