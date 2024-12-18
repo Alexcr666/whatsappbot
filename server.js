@@ -26,7 +26,7 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
 function validationMsj(receiver, value) {
   axios
-    .post(
+    .get(
       "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
         idChat +
         "/options/" +
@@ -35,9 +35,15 @@ function validationMsj(receiver, value) {
     )
     .then((response) => {
       if (response.status == 200) {
-        if (response.status == 200) {
+     
           const jsonData = JSON.stringify(response.data, null, 2);
+        
+        
           var dataItemSelected = JSON.parse(jsonData);
+        
+          console.log("datos: "+jsonData);
+        
+        
 
           /*      if(dataItemSelected.isNull("routeStep")){
         
@@ -89,7 +95,7 @@ function validationMsj(receiver, value) {
             sendMsj(receiver, title, route);
           }
         }
-      }
+      
       // }
     });
 }
@@ -213,9 +219,9 @@ app.post("/webhook", async (req, res) => {
               //  var recipientId = body.recipient_id;
               // var messageId = body.message_id;
 
-              var obj = JSON.parse(jsonData);
+             var obj = JSON.parse(jsonData);
 
-              var listJson = json2array(obj);
+             var listJson = json2array(obj);
               console.log(
                 "lenghtoptions: " +
                   json2array(obj).length +
@@ -223,7 +229,9 @@ app.post("/webhook", async (req, res) => {
                   json2array(obj)[0]
               );
           
-             var route = listJson["routeStep"];
+             var route = jsonData[1]["routeStep"];
+          
+           console.log("route", route);
           
            validationMsj(recipientData,route);
         }
