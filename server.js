@@ -48,24 +48,28 @@ function sendMsj(recipientData,recipientId, messageText, route) {
         ".json",messageData2
       )
       .then((response) => {
+     if( response.status == 200) {
+      /* setTimeout(function () {
+                 validationMsjRepeat(route);
+                }, 700);*/
       
+        
+        //  var recipientId = body.recipient_id;
+        // var messageId = body.message_id;
+           //  var obj = JSON.parse(body);
+
+        console.log("Successfully firebase id ");
+        
+      
+      } else {
+        console.error("Unable to send message.");
+        console.error(response);
+        console.error(error);
+      }
       
     });
 
-axios(
-    {
-      uri:
-        "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-        recipientData +
-        ".json",
-      // qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-      method: "POST",
-      json: messageData2,
-    },
-    function (error, response, body) {
-      if (!error && 
-    }
-  );
+
  // }
   }
 
@@ -145,16 +149,7 @@ for(var i = 0; i < json2array(obj).length;i++){
               console.error("body: " + title);
 
               console.log("Successfully firebase" + response.data);
-              if (type == "chat") {
-                sendMsj();
-
-               /* setTimeout(function () {
-                  validateFlow(body, route);
-                }, 1000);*/
-              }else{
-                  sendMsj();
-                
-              }
+                      sendMsj(recipientData,recipientData, title, route);
            
           }
         );
