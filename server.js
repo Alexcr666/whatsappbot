@@ -140,6 +140,8 @@ function validationMsj(receiver, value) {
 
 function sendMsj(recipientData, recipientId, messageText, route)  {
   //if(route != null){
+    console.log("sendmsj---: " + route);
+  
 
   axios
     .get(
@@ -152,7 +154,13 @@ function sendMsj(recipientData, recipientId, messageText, route)  {
     .then((response) => {
       if (response.status == 200) {
         
-        var business_phone_number_id = recipientData; 
+          const jsonData = JSON.stringify(response.data, null, 2);
+        
+        
+       var title = jsonData["title"];
+        
+        var business_phone_number_id = "545034448685967"; 
+        var to = "573013928129";
        
         
         axios
@@ -160,12 +168,15 @@ function sendMsj(recipientData, recipientId, messageText, route)  {
      `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
     {
         messaging_product: "whatsapp",
-        to: message.from,
-        text: { body: "Echo: " + message.text.body },
+        to: to,
+        text: { body: title },
        
       },
     )
-    .then((response) => {});
+    .then((response) => {
+          
+          
+        });
         
         
       }});
@@ -272,7 +283,7 @@ app.post("/webhook", async (req, res) => {
 
               var listJson = json2array(obj);
               console.log(
-                "lenghtoptions: " +
+                "lenghtoptionsinit : " +
                   json2array(obj).length +
                   " : " +
                   json2array(obj)[0]
