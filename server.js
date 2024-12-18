@@ -239,6 +239,8 @@ function validationMsj(receiver, value) {
       
 
           if (type == "multiple") {
+            
+            
             var list = dataItemSelected["optionsMulti"];
 
             var listString = "";
@@ -247,9 +249,33 @@ function validationMsj(receiver, value) {
               listString += list[i].capitalize() + "\n";
             }
             var message = title.capitalize() + ":" + " \n\n" + listString;
+            
+            
+            
 
             //  setTimeout(function () {
             sendMsj(receiver, message, route);
+            //hola
+            //firme
+            //poder
+            
+            
+            
+               var keys = Object.keys( dataItemSelected["optionsStep"]);
+                var position = 0;
+    keys.forEach(function(key){
+      console.log("datos: "+key);
+      
+      position+=1;
+      if(key.toLowerCase() ==   messageGlobal.toLowerCase()){
+        
+     var route =   dataItemSelected["optionsStep"]  [ (position-1)];
+        validationMsj("",route);
+        
+
+      }});
+        
+            
             // }, 500);
 
             /*
@@ -434,7 +460,7 @@ app.post("/webhook", async (req, res) => {
     var recipientData = business_phone_number_id;
     
     
-    messageGlobal =message.text.body;
+    messageGlobal = message.text.body;
     
      await axios({
       method: "POST",
