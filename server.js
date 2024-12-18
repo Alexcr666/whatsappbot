@@ -26,6 +26,106 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
 
 
+
+
+function validationMsj( value){
+  
+  
+   axios
+      .post(
+     "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/"+idChat+"/options/"+value+"/.json"
+      )
+      .then((response) => {
+     if( response.status == 200) {
+       
+       
+     }});
+  
+  
+  request(
+          {
+            uri: "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/"+idChat+"/options/"+value+"/.json",
+
+            method: "GET",
+          },
+          function (error, response, body) {
+          
+      if (!error && response.statusCode == 200) {
+           var dataItemSelected = JSON.parse(body);
+        
+        
+             
+/*      if(dataItemSelected.isNull("routeStep")){
+        
+        
+          var keys = Object.keys( dataItemSelected["optionsStep"]);
+                
+    keys.forEach(function(key){
+      console.log("datos: "+key);
+      if(key.toLowerCase() ==   messageReceip.toLowerCase()){
+
+      }});
+        
+        
+      }else{*/
+        
+           var type = dataItemSelected["type"];
+         var route = dataItemSelected["routeStep"];
+        
+        
+          var title = dataItemSelected["title"];
+              if (type == "chat") {
+                sendMsj("8370375226358762", title, route);
+
+             
+              }
+        
+        
+              if (type == "multiple") {
+                
+                
+      var list = dataItemSelected["optionsMulti"];
+
+      var listString = "";
+
+      for (var i = 0; i < list.length; i++) {
+        listString += list[i].capitalize() + "\n";
+      }
+      var message = title.capitalize() + ":" + " \n\n" + listString;
+
+    //  setTimeout(function () {
+        sendMsj("8370375226358762", message, route);
+     // }, 500);
+    
+                
+            
+/*
+           var keys = Object.keys( dataItemSelected["optionsStep"]);
+                
+    keys.forEach(function(key){
+      console.log("datos: "+key);
+      if(key.toLowerCase() ==   messageReceip.toLowerCase()){
+
+      }});*/
+    
+
+             
+              }
+        
+        
+             
+              if (type == "link") {
+                sendMsj("8370375226358762", title, route);
+
+             
+              }
+     // }
+        
+        
+      }
+    });
+}
+
 function sendMsj(recipientData,recipientId, messageText, route) {
 
   //if(route != null){
@@ -91,7 +191,7 @@ app.post("/webhook", async (req, res) => {
     var recipientData = business_phone_number_id;
     axios
       .get(
-        'https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/'+'hola'+'/.json'
+        'https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/'+recipientData+'/.json'
       )
       .then((response) => {
       
@@ -155,6 +255,9 @@ for(var i = 0; i < json2array(obj).length;i++){
         );
           
         }else{
+          
+          
+          
         }
     
               
