@@ -247,20 +247,28 @@ function validationMsj(receiver, value) {
           if (type == "multiple") {
             
             
-            var list = dataItemSelected["optionsMulti"];
+            var list2 = dataItemSelected["optionsMulti"];
+            
+             var list =  json2array(list2);
+            
+             console.log("longitud: "+list[0]);
 
             var listString = "";
+            
+            
+            
 
             for (var i = 0; i < list.length; i++) {
-              listString += list[i].capitalize() + "\n";
+               console.log("longitud2: "+list[i]);
+              listString += list[i] + "\n";
             }
-            var message = title.capitalize() + ":" + " \n\n" + listString;
+            var message = title + ":" + " \n\n" + listString;
             
-            
+                  console.log("longitudnueva: "+message);
             
 
             //  setTimeout(function () {
-            sendMsj(receiver, message, route);
+         //   sendMsj(receiver, message, route);
             //hola
             //firme
             //poder
@@ -276,7 +284,7 @@ function validationMsj(receiver, value) {
       if(key.toLowerCase() ==   messageGlobal.toLowerCase()){
         
      var route =   dataItemSelected["optionsStep"]  [ (position-1)];
-        validationMsj("",route);
+        validationMsj(receiver,route);
         
 
       }});
