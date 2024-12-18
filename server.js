@@ -69,6 +69,8 @@ function validationMsj(receiver, value) {
         
                   if (type == "terms") {
                     
+                     sendMsj(receiver, title, route);
+                    
                   }
         
             if (type == "answer") {
@@ -136,8 +138,55 @@ function validationMsj(receiver, value) {
     });
 }
 
-function sendMsj(recipientData, recipientId, messageText, route) {
+function sendMsj(recipientData, recipientId, messageText, route)  {
   //if(route != null){
+
+  axios
+    .get(
+      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
+        idChat +
+        "/options/" +
+        route +
+        "/.json"
+    )
+    .then((response) => {
+      if (response.status == 200) {
+        
+        var business_phone_number_id = recipientData; 
+       
+        
+        axios
+    .post(
+     `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+    {
+        messaging_product: "whatsapp",
+        to: message.from,
+        text: { body: "Echo: " + message.text.body },
+       
+      },
+    )
+    .then((response) => {});
+        
+        
+      }});
+  
+   
+  /*
+  await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      headers: {
+        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+      },
+      data: {
+        messaging_product: "whatsapp",
+        to: message.from,
+        text: { body: "Echo: " + message.text.body },
+        context: {
+          message_id: message.id, // shows the message as a reply to the original user message
+        },
+      },
+    });*/
 
   console.log("routeSend: " + route);
   //if(route != null){
@@ -160,6 +209,10 @@ function sendMsj(recipientData, recipientId, messageText, route) {
     .then((response) => {
       if (response.status == 200) {
         validationMsj(response);
+        
+        
+        
+        
         /* setTimeout(function () {
                  validationMsjRepeat(route);
                 }, 700);*/
