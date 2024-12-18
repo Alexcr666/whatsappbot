@@ -63,9 +63,17 @@ function validationMsj(receiver, value) {
           var route = dataItemSelected["routeStep"];
 
           var title = dataItemSelected["title"];
+        
+        
+        
+        
+          var business_phone_number_id = "545034448685967"; 
+        var to = "573013928129";
           if (type == "chat" || type == "text") {
             sendMsj(receiver, title, route);
           }
+        
+        
         
                   if (type == "terms") {
                     
@@ -88,6 +96,9 @@ function validationMsj(receiver, value) {
                   }
         
             if (type == "end") {
+              
+              
+              
     
     }
     if (type == "media") {
@@ -98,7 +109,7 @@ function validationMsj(receiver, value) {
       
   axios
     .post(
-      'https://graph.facebook.com/v16.0/$phoneNumberId/messages',
+      'https://graph.facebook.com/v16.0/$business_phone_number_id/messages',
     {
       headers: {
       'Authorization': 'Bearer $accessToken',
@@ -106,10 +117,10 @@ function validationMsj(receiver, value) {
       },
       params: {
       "messaging_product": "whatsapp",
-      "to": destinationPhone,
+      "to": to,
       "type": "image",
       "image": {
-        "link": imageUrl,
+        "link": "imageUrl",
         // Agrega el caption si está disponible
       }
     }
@@ -146,10 +157,55 @@ function validationMsj(receiver, value) {
     }
 
      if (type == "analitic") {
+       
+       
+       
+       
+       
+       
      
     }
 
         if (type == "product") {
+          
+          var value = dataItemSelected["product"];
+          
+      
+  axios
+    .post(
+      'https://graph.facebook.com/v16.0/$business_phone_number_id/messages',
+    {
+      headers: {
+      'Authorization': 'Bearer $accessToken',
+      'Content-Type': 'application/json',
+      },
+      params: {
+      "messaging_product": "whatsapp",
+      "to": to,
+      "type": "link",
+      "link": {
+        "url":value ,
+      
+      }
+    }
+    }
+    
+    )
+    .then((response) => {
+    
+  if (response.status == 200) {
+    print('Imagen enviada con éxito');
+    print('Respuesta: ${response.body}');
+  } else {
+    print('Error enviando la imagen: ${response.statusCode}');
+    print('Detalles del error: ${response.body}');
+  }
+      
+    
+  });
+   
+          
+          
      
     }
         
@@ -180,7 +236,44 @@ function validationMsj(receiver, value) {
           }
 
           if (type == "link") {
-            sendMsj(receiver, title, route);
+            
+            
+            
+           // sendMsj(receiver, title, route);
+            
+            
+  axios
+    .post(
+      'https://graph.facebook.com/v16.0/$business_phone_number_id/messages',
+    {
+      headers: {
+      'Authorization': 'Bearer $accessToken',
+      'Content-Type': 'application/json',
+      },
+      params: {
+      "messaging_product": "whatsapp",
+      "to": to,
+      "type": "link",
+      "link": {
+        "url":value ,
+      
+      }
+    }
+    }
+    
+    )
+    .then((response) => {
+    
+  if (response.status == 200) {
+    print('Imagen enviada con éxito');
+    print('Respuesta: ${response.body}');
+  } else {
+    print('Error enviando la imagen: ${response.statusCode}');
+    print('Detalles del error: ${response.body}');
+  }
+      
+    
+  });
           }
         }
       
