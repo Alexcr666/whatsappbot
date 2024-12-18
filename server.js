@@ -63,9 +63,45 @@ function validationMsj(receiver, value) {
           var route = dataItemSelected["routeStep"];
 
           var title = dataItemSelected["title"];
-          if (type == "chat") {
+          if (type == "chat" || type == "text") {
             sendMsj(receiver, title, route);
           }
+        
+                  if (type == "terms") {
+                    
+                  }
+        
+            if (type == "answer") {
+                    
+                  }
+        
+            if (type == "form") {
+                    
+                  }
+        
+            if (type == "agent") {
+                    
+                  }
+        
+            if (type == "end") {
+    
+    }
+    if (type == "media") {
+    
+    }
+    if (type == "pause") {
+     
+    }
+
+     if (type == "analitic") {
+     
+    }
+
+        if (type == "product") {
+     
+    }
+        
+      
 
           if (type == "multiple") {
             var list = dataItemSelected["optionsMulti"];
