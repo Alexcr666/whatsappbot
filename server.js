@@ -13,6 +13,8 @@ app.use(express.json());
 
 const idChat = "-ODvWrCbH47cu21VClQr";
 
+var messageGlobal = "";
+
 function json2array(json) {
   var result = [];
   var keys = Object.keys(json);
@@ -431,6 +433,9 @@ app.post("/webhook", async (req, res) => {
 
     var recipientData = business_phone_number_id;
     
+    
+    messageGlobal =message.text.body;
+    
      await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
@@ -519,6 +524,9 @@ app.post("/webhook", async (req, res) => {
                   " : " +
                   json2array(obj)[0]
               );
+          
+          
+          
           
            // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
                   //   console.log("route99: "+ jsonData2+" - "+json2array(obj)[0]["routeStep"]);
