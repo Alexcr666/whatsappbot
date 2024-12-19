@@ -470,22 +470,8 @@ function sendMsj(messageText, route, type,/* information,*/ notification) {
   if (notification == true) {
     
        console.error("----MENSAJE ENVIADO---");
-    axios
-      .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
-        headers: {
-          Authorization: "Bearer $accessToken",
-          "Content-Type": "application/json",
-        },
-        params: {
-          messaging_product: "whatsapp",
-          to: to,
-          text: { body: messageText },
-          context: {
-            message_id: messageText, // shows the message as a reply to the original user message
-          },
-        },
-      })
-      .then((response) => {});
+    
+    kkk
   }
 
   /*
@@ -597,6 +583,38 @@ app.post("/webhook", async (req, res) => {
 
     const business_phone_number_id =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
+    
+    await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      headers: {
+        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+      },
+      data: {
+        messaging_product: "whatsapp",
+        to: message.from,
+        text: { body: "Echo: " + message.text.body },
+        context: {
+          message_id: message.id, // shows the message as a reply to the original user message
+        },
+      },
+    });
+
+    // mark incoming message as read
+    await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      headers: {
+        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+      },
+      data: {
+        messaging_product: "whatsapp",
+        status: "read",
+        message_id: message.id,
+      },
+    });
+    
+    
     //  var recipientData = business_phone_number_id;
 
     recipientId = business_phone_number_id;
