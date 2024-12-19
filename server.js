@@ -184,6 +184,8 @@ function validationMsj(value) {
             var title = dataItemSelected["title"];
 
             if (repeatMessageOption == true) {
+              
+              
               validationMsj(route);
               sendMsj(listString, route, type);
             } else {
@@ -219,9 +221,9 @@ function validationMsj(value) {
 
               savedForm(city, company, consult, email, name, phone);
 
-              sendMsj(listString, route, type);
+              sendMsj(listString, route, type,true);
             } else {
-              sendMsj(listString, route, type);
+              sendMsj(listString, route, type,true);
             }
           }
 
