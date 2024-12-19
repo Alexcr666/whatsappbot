@@ -32,6 +32,23 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
 var repeatMessageOption = false;
 
+
+
+function savedAnswerData(value) {
+  var dataForm = {
+    value: value,
+  };
+  axios
+    .post(
+      "https://getdev-b2c0b.firebaseio.com/company/sly/answerValue/.json",
+      dataForm
+    )
+    .then((response) => {
+      if (response.status == 200) {
+      }
+    });
+}
+
 function savedForm(city, company, consult, email, name, phone) {
   var dataForm = {
     city: city,
@@ -185,6 +202,8 @@ function validationMsj(value) {
 
             if (repeatMessageOption == true) {
               
+               savedAnswerData(messageGlobal);
+                 
               
               validationMsj(route);
               sendMsj(listString, route, type);
