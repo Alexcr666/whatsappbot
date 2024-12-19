@@ -15,6 +15,9 @@ const idChat = "-ODvWrCbH47cu21VClQr";
 
 var messageGlobal = "";
 
+
+var recipientId = "";
+
 function json2array(json) {
   var result = [];
   var keys = Object.keys(json);
@@ -301,7 +304,7 @@ function validationMsj(receiver, value) {
   }
 }
 
-function sendMsj(recipientId, messageText, route, type) {
+function sendMsj( messageText, route, type) {
   //if(route != null){
   console.log("-----sendmsj---: " + route);
 
@@ -419,7 +422,9 @@ app.post("/webhook", async (req, res) => {
 
     const business_phone_number_id =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
-    var recipientData = business_phone_number_id;
+  //  var recipientData = business_phone_number_id;
+    
+    recipientId = business_phone_number_id;
 
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
     /* await axios({
