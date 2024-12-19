@@ -32,27 +32,24 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
 var repeatMessageOption = false;
 
-
-function savedForm(city,company,consult,email,name,phone){
-  
-   var dataForm = {
+function savedForm(city, company, consult, email, name, phone) {
+  var dataForm = {
     city: city,
     company: company,
-   consult: consult,
+    consult: consult,
     email: email,
-   name: name,
-     phone:phone
+    name: name,
+    phone: phone,
   };
-    axios
+  axios
     .post(
       "https://getdev-b2c0b.firebaseio.com/company/sly/formContact/.json",
-    dataForm
+      dataForm
     )
     .then((response) => {
       if (response.status == 200) {
-        
-        
-      }});
+      }
+    });
 }
 
 function sendLink(value) {
@@ -82,39 +79,34 @@ function sendLink(value) {
     });
 }
 
-function sendMedia(imageUrl){
-    axios
-              .post(
-                "https://graph.facebook.com/v16.0/" + recipientId + "/messages",
-                {
-                  headers: {
-                     Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-                    "Content-Type": "application/json",
-                  },
-                  params: {
-                    messaging_product: "whatsapp",
-                    to: to,
-                    type: "image",
-                    image: {
-                      link: imageUrl,
-                      // Agrega el caption si está disponible
-                    },
-                  },
-                }
-              )
-              .then((response) => {
-                if (response.status == 200) {
-                  print("Imagen enviada con éxito");
-                  print("Respuesta: ${response.body}");
-                } else {
-                  print("Error enviando la imagen: ${response.statusCode}");
-                  print("Detalles del error: ${response.body}");
-                }
-              });
+function sendMedia(imageUrl) {
+  axios
+    .post("https://graph.facebook.com/v16.0/" + recipientId + "/messages", {
+      headers: {
+        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        messaging_product: "whatsapp",
+        to: to,
+        type: "image",
+        image: {
+          link: imageUrl,
+          // Agrega el caption si está disponible
+        },
+      },
+    })
+    .then((response) => {
+      if (response.status == 200) {
+        print("Imagen enviada con éxito");
+        print("Respuesta: ${response.body}");
+      } else {
+        print("Error enviando la imagen: ${response.statusCode}");
+        print("Detalles del error: ${response.body}");
+      }
+    });
 }
-function sendEventAnalitics(){
-  
-}
+function sendEventAnalitics() {}
 
 function validationMsj(value) {
   if (value != null) {
@@ -174,6 +166,7 @@ function validationMsj(value) {
               "2.Rechazar";
             if (repeatMessageOption == true) {
               if (messageGlobal == "1") {
+                validationMsj(route);
               } else {
                 sendMsj(
                   "Para continuar debes aceptar los terminos y condiciones",
@@ -214,19 +207,18 @@ function validationMsj(value) {
 
             if (repeatMessageOption == true) {
               validationMsj(route);
-              
-              let lista = texto.split(", ");
-              
-             var  city = lista[0];
-  var  company  = lista[1] ;
-  var  consult = lista[2] ;
-   var    email = lista[3] ;
-   name: name,
-     phone:phone
-              
-              savedForm(listString);
-              
-              
+
+              let lista = messageGlobal.split(", ");
+
+              var city = lista[0];
+              var company = lista[1];
+              var consult = lista[2];
+              var email = lista[3];
+              var name = lista[4];
+              var phone = lista[5];
+
+              savedForm(city, company, consult, email, name, phone);
+
               sendMsj(listString, route, type);
             } else {
               sendMsj(listString, route, type);
@@ -263,40 +255,38 @@ function validationMsj(value) {
             }
           }
           if (type == "media") {
-            
-               var url = dataItemSelected["url"];
-          sendMedia(url);
-            
+            var url = dataItemSelected["url"];
+            sendMedia(url);
+
             validationMsj(route);
-            
-                  sendMsj(message, route, type,false);
+
+            sendMsj(message, route, type, false);
           }
           if (type == "pause") {
             // var valuePause = dataItemSelected["value"];
 
             setTimeout(function () {
               validationMsj(route);
-              sendMsj(message, route, type,false);
+              sendMsj(message, route, type, false);
             }, 1000);
           }
 
           if (type == "analitic") {
-            
-             sendEventAnalitics();
-            
+            sendEventAnalitics();
+
             validationMsj(route);
-            
-              sendMsj(message, route, type,false);
+
+            sendMsj(message, route, type, false);
           }
 
           if (type == "product") {
             var value = dataItemSelected["product"];
-            
+
             sendLink(value);
-            
+
             validationMsj(route);
 
-            sendMsj(message, route, type,false);
+            sendMsj(message, route, type, false);
           }
 
           if (type == "multiple") {
@@ -354,7 +344,7 @@ function validationMsj(value) {
       )
       .then((response) => {});*/
 
-                  sendMsj(message, route, type,true);
+                  sendMsj(message, route, type, true);
                   validationMsj(route);
                   messageGlobal = "";
                 }
@@ -363,9 +353,9 @@ function validationMsj(value) {
               console.error("DATOS SELECTED1------: " + route);
 
               if (route == undefined) {
-                sendMsj("multiple", "route", "multiple",true);
+                sendMsj("multiple", "route", "multiple", true);
               } else {
-                sendMsj(message, route, type,true);
+                sendMsj(message, route, type, true);
               }
             }
 
@@ -382,35 +372,14 @@ function validationMsj(value) {
           }
 
           if (type == "link") {
-            // sendMsj(receiver, title, route);
+            var link = dataItemSelected["link"];
 
-            axios
-              .post(
-                "https://graph.facebook.com/v16.0/$business_phone_number_id/messages",
-                {
-                  headers: {
-                    Authorization: "Bearer $accessToken",
-                    "Content-Type": "application/json",
-                  },
-                  params: {
-                    messaging_product: "whatsapp",
-                    to: to,
-                    type: "link",
-                    link: {
-                      url: value,
-                    },
-                  },
-                }
-              )
-              .then((response) => {
-                if (response.status == 200) {
-                  print("Imagen enviada con éxito");
-                  print("Respuesta: ${response.body}");
-                } else {
-                  print("Error enviando la imagen: ${response.statusCode}");
-                  print("Detalles del error: ${response.body}");
-                }
-              });
+            sendLink(link);
+
+            sendMsj(message, route, type, false);
+            
+                validationMsj(route);
+            // sendMsj(receiver, title, route);
           }
         }
 
