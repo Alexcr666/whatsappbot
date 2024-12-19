@@ -11,7 +11,7 @@ import axios from "axios";
 const app = express();
 app.use(express.json());
 
-   var to = "573013928129";
+var to = "573013928129";
 
 const idChat = "-ODvWrCbH47cu21VClQr";
 
@@ -32,22 +32,49 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
 var repeatMessageOption = false;
 
-function sendLink(value){
+function sendLink(value) {
+  axios
+    .post("https://graph.facebook.com/v16.0/" + recipientId + "/messages", {
+      headers: {
+        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        messaging_product: "whatsapp",
+        to: to,
+        type: "link",
+        link: {
+          url: value,
+        },
+      },
+    })
+    .then((response) => {
+      if (response.status == 200) {
+        print("Imagen enviada con éxito");
+        print("Respuesta: ${response.body}");
+      } else {
+        print("Error enviando la imagen: ${response.statusCode}");
+        print("Detalles del error: ${response.body}");
+      }
+    });
+}
 
-   axios
+function sendMedia(imageUrl){
+    axios
               .post(
-                "https://graph.facebook.com/v16.0/"+recipientId+"/messages",
+                "https://graph.facebook.com/v16.0/" + recipientId + "/messages",
                 {
                   headers: {
-                   Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+                     Authorization: `Bearer ${GRAPH_API_TOKEN}`,
                     "Content-Type": "application/json",
                   },
                   params: {
                     messaging_product: "whatsapp",
                     to: to,
-                    type: "link",
-                    link: {
-                      url:value,
+                    type: "image",
+                    image: {
+                      link: imageUrl,
+                      // Agrega el caption si está disponible
                     },
                   },
                 }
@@ -61,7 +88,6 @@ function sendLink(value){
                   print("Detalles del error: ${response.body}");
                 }
               });
-  
 }
 
 function validationMsj(value) {
@@ -105,8 +131,8 @@ function validationMsj(value) {
 
           console.log("datosnuevo1: " + route);
 
-        //  var business_phone_number_id = "545034448685967";
-       
+          //  var business_phone_number_id = "545034448685967";
+
           if (type == "chat" || type == "text") {
             sendMsj(title, route, type);
 
@@ -114,49 +140,36 @@ function validationMsj(value) {
           }
 
           if (type == "terms") {
-            
-             var listString =
+            var listString =
               "Aceptar los terminos y condiciones" +
               "\n" +
               "1.Aceptar" +
               "\n" +
-              "2.Rechazar" 
-              ;
-            
-             if (repeatMessageOption == true) {
-               
-               if(messageGlobal == "1"){
-                 
-               }else{
-                 
-                   sendMsj("Para continuar debes aceptar los terminos y condiciones", route, type,true);
-                 
-                 
-               }
-             }else{
-            
-            
-            sendMsj(title, route, type,false);
-             }
+              "2.Rechazar";
+            if (repeatMessageOption == true) {
+              if (messageGlobal == "1") {
+              } else {
+                sendMsj(
+                  "Para continuar debes aceptar los terminos y condiciones",
+                  route,
+                  type,
+                  true
+                );
+              }
+            } else {
+              sendMsj(title, route, type, false);
+            }
           }
 
           if (type == "answer") {
-            
-               var title = dataItemSelected["title"];
-        
-            
-              
-              if (repeatMessageOption == true) {
-                
-             validationMsj(route);
-                   sendMsj(listString, route, type);
-                
-                
-              }else{
-                
-                     sendMsj(title, route, type);
-                
-              }
+            var title = dataItemSelected["title"];
+
+            if (repeatMessageOption == true) {
+              validationMsj(route);
+              sendMsj(listString, route, type);
+            } else {
+              sendMsj(title, route, type);
+            }
           }
 
           if (type == "form") {
@@ -172,123 +185,69 @@ function validationMsj(value) {
               "4.Ciudad" +
               "\n" +
               "5.Consulta";
-            
-              if (repeatMessageOption == true) {
-                
-             validationMsj(route);
-                   sendMsj(listString, route, type);
-                
-                
-              }else{
-                
-                     sendMsj(listString, route, type);
-                
-              }
+
+            if (repeatMessageOption == true) {
+              validationMsj(route);
+              sendMsj(listString, route, type);
+            } else {
+              sendMsj(listString, route, type);
+            }
           }
 
           if (type == "agent") {
-           
-
-            sendMsj("Buscando agentes disponibles", route, type,true);
+            sendMsj("Buscando agentes disponibles", route, type, true);
           }
 
           if (type == "end") {
-            
-            
             if (repeatMessageOption == true) {
-              
-            if(  messageGlobal == "1"){
-              
-              
-              
-                sendMsj("Gracias por comunicarte", route, type,true);
-           
-              
-            }
-              
-               if(  messageGlobal == "2"){
-                 
-                   repeatChat();
-              
-            }
-               if(  messageGlobal == "3"){
-                 
-                    sendMsj("Buscando", route, type,true);
-                 
-                 
-              
-            }
-            }else{
-            var listString =
-              "Deseas terminar la converzación" +
-              "\n" +
-              "1.Si" +
-              "\n" +
-              "2.Ir al inicio" +
-              "\n" +
-              "3.Contactar a un acesor";
-            
-            
-            
+              if (messageGlobal == "1") {
+                sendMsj("Gracias por comunicarte", route, type, true);
+              }
 
-            sendMsj(listString, route, type);
+              if (messageGlobal == "2") {
+                repeatChat();
+              }
+              if (messageGlobal == "3") {
+                sendMsj("Buscando", route, type, true);
+              }
+            } else {
+              var listString =
+                "Deseas terminar la converzación" +
+                "\n" +
+                "1.Si" +
+                "\n" +
+                "2.Ir al inicio" +
+                "\n" +
+                "3.Contactar a un acesor";
+
+              sendMsj(listString, route, type);
             }
           }
           if (type == "media") {
-            axios
-              .post(
-                "https://graph.facebook.com/v16.0/$business_phone_number_id/messages",
-                {
-                  headers: {
-                    Authorization: "Bearer $accessToken",
-                    "Content-Type": "application/json",
-                  },
-                  params: {
-                    messaging_product: "whatsapp",
-                    to: to,
-                    type: "image",
-                    image: {
-                      link: "imageUrl",
-                      // Agrega el caption si está disponible
-                    },
-                  },
-                }
-              )
-              .then((response) => {
-                if (response.status == 200) {
-                  print("Imagen enviada con éxito");
-                  print("Respuesta: ${response.body}");
-                } else {
-                  print("Error enviando la imagen: ${response.statusCode}");
-                  print("Detalles del error: ${response.body}");
-                }
-              });
+            
+               var url = dataItemSelected["url"];
+          sendMedia(url);
+            
+                  sendMsj(message, route, type,false);
           }
           if (type == "pause") {
             // var valuePause = dataItemSelected["value"];
 
             setTimeout(function () {
-              
-                validationMsj(route);
-              sendMsj(message, route, type);
-              
-              
+              validationMsj(route);
+              sendMsj(message, route, type,false);
             }, 1000);
           }
 
           if (type == "analitic") {
+            
+              sendMsj(message, route, type,false);
           }
 
           if (type == "product") {
-            
-            
-            
             var value = dataItemSelected["product"];
 
-           
-            
-            
-              sendMsj(message, route, type);
+            sendMsj(message, route, type,false);
           }
 
           if (type == "multiple") {
@@ -346,7 +305,7 @@ function validationMsj(value) {
       )
       .then((response) => {});*/
 
-                  sendMsj(message, route, type);
+                  sendMsj(message, route, type,true);
                   validationMsj(route);
                   messageGlobal = "";
                 }
@@ -355,9 +314,9 @@ function validationMsj(value) {
               console.error("DATOS SELECTED1------: " + route);
 
               if (route == undefined) {
-                sendMsj("multiple", "route", "multiple");
+                sendMsj("multiple", "route", "multiple",true);
               } else {
-                sendMsj(message, route, type);
+                sendMsj(message, route, type,true);
               }
             }
 
@@ -416,13 +375,7 @@ function validationMsj(value) {
   }
 }
 
-
-
-
-
-
-
-function sendMsj(messageText, route, type,information,noNotification) {
+function sendMsj(messageText, route, type, information, notification) {
   //if(route != null){
   console.log("-----sendmsj---: " + route);
 
@@ -430,8 +383,8 @@ function sendMsj(messageText, route, type,information,noNotification) {
   var messageData2 = {
     routeStep: route,
     type: type,
-    
-    information : information,
+
+    information: information,
     text: messageText,
     receipt: recipientId,
   };
@@ -461,36 +414,25 @@ function sendMsj(messageText, route, type,information,noNotification) {
         console.error(response);
       }
     });
-  
-   axios.post("https://graph.facebook.com/v18.0/"++"/messages" 
-        ,
-           {
-                  headers: {
-                    Authorization: "Bearer $accessToken",
-                    "Content-Type": "application/json",
-                  },
-                  params: {}}
-      messageData2
-    )
-    .then((response) => {});
-  
-  
-  
-  await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-      headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        to: message.from,
-        text: { body: "Echo: " + message.text.body },
-        context: {
-          message_id: message.id, // shows the message as a reply to the original user message
+
+  if (notification == true) {
+    axios
+      .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
+        headers: {
+          Authorization: "Bearer $accessToken",
+          "Content-Type": "application/json",
         },
-      },
-    });
+        params: {
+          messaging_product: "whatsapp",
+          to: to,
+          text: { body: messageText },
+          context: {
+            message_id: messageText, // shows the message as a reply to the original user message
+          },
+        },
+      })
+      .then((response) => {});
+  }
 
   /*
   axios
@@ -530,9 +472,6 @@ function sendMsj(messageText, route, type,information,noNotification) {
         
         
       }});*/
-  
-   
-  
 
   console.log("routeSend: " + route);
   //if(route != null){
@@ -540,55 +479,52 @@ function sendMsj(messageText, route, type,information,noNotification) {
   // }
 }
 
+function repeatChat() {
+  axios
+    .get(
+      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/-ODvWrCbH47cu21VClQr/options/.json"
+    )
+    .then((response) => {
+      const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
+      console.log("Datos en formato JSON:", jsonData);
 
+      //  var recipientId = body.recipient_id;
+      // var messageId = body.message_id;
 
+      var obj = JSON.parse(jsonData);
 
- function repeatChat(){
-   axios
-            .get(
-              "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/-ODvWrCbH47cu21VClQr/options/.json"
-            )
-            .then((response) => {
-              const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
-              console.log("Datos en formato JSON:", jsonData);
+      var listJson = json2array(obj);
+      console.log(
+        "lenghtoptionsinit : " +
+          json2array(obj).length +
+          " : " +
+          json2array(obj)[0]
+      );
 
-              //  var recipientId = body.recipient_id;
-              // var messageId = body.message_id;
+      var dataItemSelected;
+      for (var i = 0; i < json2array(obj).length; i++) {
+        var dataItem = json2array(obj)[i];
 
-              var obj = JSON.parse(jsonData);
+        console.log("welcome: " + dataItem["welcome"]);
 
-              var listJson = json2array(obj);
-              console.log(
-                "lenghtoptionsinit : " +
-                  json2array(obj).length +
-                  " : " +
-                  json2array(obj)[0]
-              );
+        if (dataItem["welcome"] == true) {
+          dataItemSelected = dataItem;
+        }
+      }
 
-              var dataItemSelected;
-              for (var i = 0; i < json2array(obj).length; i++) {
-                var dataItem = json2array(obj)[i];
+      console.log("Successfully firebase2: " + response.data + "  :  ");
 
-                console.log("welcome: " + dataItem["welcome"]);
+      var title = dataItemSelected["title"];
+      var route = dataItemSelected["routeStep"];
+      var type = dataItemSelected["type"];
 
-                if (dataItem["welcome"] == true) {
-                  dataItemSelected = dataItem;
-                }
-              }
+      console.error("body: " + title);
 
-              console.log("Successfully firebase2: " + response.data + "  :  ");
+      console.log("Successfully firebase" + response.data);
+      sendMsj(title, route, type);
 
-              var title = dataItemSelected["title"];
-              var route = dataItemSelected["routeStep"];
-              var type = dataItemSelected["type"];
-
-              console.error("body: " + title);
-
-              console.log("Successfully firebase" + response.data);
-              sendMsj(title, route, type);
-
-              validationMsj(route);
-            });
+      validationMsj(route);
+    });
 }
 
 app.post("/webhook", async (req, res) => {
@@ -655,7 +591,7 @@ app.post("/webhook", async (req, res) => {
         if (response.data == null) {
           console.log("Successfully firebase5" + response.data);
 
-       repeatChat();
+          repeatChat();
         } else {
           const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
           console.log("Datos en formato JSON:", jsonData);
@@ -666,25 +602,19 @@ app.post("/webhook", async (req, res) => {
           var obj = JSON.parse(jsonData);
 
           var listJson = json2array(obj);
-         
-          
-         
-           
-          
+
           let dataItemSelected = [];
-              for (var i = 0; i < json2array(obj).length; i++) {
-                var dataItem = json2array(obj)[i];
+          for (var i = 0; i < json2array(obj).length; i++) {
+            var dataItem = json2array(obj)[i];
 
-                console.log("welcome: " + dataItem["welcome"]);
+            console.log("welcome: " + dataItem["welcome"]);
 
-                if (dataItem["information"] != true) {
-                  dataItemSelected.push(dataItem);
-                }
-              }
-          
-             console.error("routefirme23: " + dataItemSelected);
-          
-          
+            if (dataItem["information"] != true) {
+              dataItemSelected.push(dataItem);
+            }
+          }
+
+          console.error("routefirme23: " + dataItemSelected);
 
           var position = dataItemSelected.length - 2;
 
@@ -694,7 +624,7 @@ app.post("/webhook", async (req, res) => {
 
           // var route2 = json2array(obj)[1]["routeStep"];
 
-           console.error("routefirme: " + route);
+          console.error("routefirme: " + route);
           var type = dataItemSelected[dataItemSelected.length - 1]["type"];
 
           console.error("validation: " + type);
