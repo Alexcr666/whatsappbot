@@ -461,6 +461,36 @@ function sendMsj(messageText, route, type,information,noNotification) {
         console.error(response);
       }
     });
+  
+   axios.post("https://graph.facebook.com/v18.0/"++"/messages" 
+        ,
+           {
+                  headers: {
+                    Authorization: "Bearer $accessToken",
+                    "Content-Type": "application/json",
+                  },
+                  params: {}}
+      messageData2
+    )
+    .then((response) => {});
+  
+  
+  
+  await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      headers: {
+        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+      },
+      data: {
+        messaging_product: "whatsapp",
+        to: message.from,
+        text: { body: "Echo: " + message.text.body },
+        context: {
+          message_id: message.id, // shows the message as a reply to the original user message
+        },
+      },
+    });
 
   /*
   axios
@@ -499,25 +529,10 @@ function sendMsj(messageText, route, type,information,noNotification) {
         });
         
         
-      }});
+      }});*/
   
    
-  /*
-  await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-      headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        to: message.from,
-        text: { body: "Echo: " + message.text.body },
-        context: {
-          message_id: message.id, // shows the message as a reply to the original user message
-        },
-      },
-    });*/
+  
 
   console.log("routeSend: " + route);
   //if(route != null){
