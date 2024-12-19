@@ -33,6 +33,22 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 var repeatMessageOption = false;
 
 
+function savedAlertAgentData() {
+  var dataForm = {
+    agent: true,
+    idUser:recipientId,
+  };
+  axios
+    .post(
+      "https://getdev-b2c0b.firebaseio.com/company/sly/alertAgent/.json",
+      dataForm
+    )
+    .then((response) => {
+      if (response.status == 200) {
+      }
+    });
+}
+
 
 function savedAnswerData(value) {
   var dataForm = {
@@ -247,6 +263,8 @@ function validationMsj(value) {
           }
 
           if (type == "agent") {
+            
+           savedAlertAgentData();
             sendMsj("Buscando agentes disponibles", route, type, true);
           }
 
@@ -311,27 +329,7 @@ function validationMsj(value) {
           }
 
           if (type == "multiple") {
-            var list2 = dataItemSelected["optionsMulti"];
-
-            var list = json2array(list2);
-
-            console.log("longitud: " + list[0]);
-
-            var listString = "";
-
-            for (var i = 0; i < list.length; i++) {
-              console.log("longitud2: " + list[i]);
-              listString += list[i] + "\n";
-            }
-            var message = title + ":" + " \n\n" + listString;
-
-            console.log("mensajeopcionmultiple: " + message);
-
-            //  setTimeout(function () {
-            //   sendMsj(receiver, message, route);
-            //hola
-            //firme
-            //poder
+          
 
             if (repeatMessageOption == true) {
               var keys = Object.keys(dataItemSelected["optionsStep"]);
