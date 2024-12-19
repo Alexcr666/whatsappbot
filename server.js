@@ -26,28 +26,27 @@ function json2array(json) {
 
 const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
+bool repeatMessageOption = false;
+
 function validationMsj(receiver, value) {
-  axios
-    .get(
-      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
-        idChat +
-        "/options/" +
-        value +
-        "/.json"
-    )
-    .then((response) => {
-      if (response.status == 200) {
-     
+  if (value != null) {
+    axios
+      .get(
+        "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
+          idChat +
+          "/options/" +
+          value +
+          "/.json"
+      )
+      .then((response) => {
+        if (response.status == 200) {
           const jsonData = JSON.stringify(response.data, null, 2);
-        
-        
-          var dataItemSelected =  JSON.parse(jsonData);
-        
-       //    var obj = JSON.parse(jsonData);
-        
-          console.log("datosnuevo: "+route+" - "+jsonData);
-        
-        
+
+          var dataItemSelected = JSON.parse(jsonData);
+
+          //    var obj = JSON.parse(jsonData);
+
+          console.log("datosnuevo: " + route + " - " + jsonData);
 
           /*      if(dataItemSelected.isNull("routeStep")){
         
@@ -67,241 +66,178 @@ function validationMsj(receiver, value) {
           var route = dataItemSelected["routeStep"];
 
           var title = dataItemSelected["title"];
-        
-         console.log("datosnuevo1: "+ route);
-        
-        
-        
-        
-          var business_phone_number_id = "545034448685967"; 
-        var to = "573013928129";
+
+          console.log("datosnuevo1: " + route);
+
+          var business_phone_number_id = "545034448685967";
+          var to = "573013928129";
           if (type == "chat" || type == "text") {
-           sendMsj(receiver, title, route);
-            
-               validationMsj(receiver,route);
+            sendMsj(receiver, title, route);
+
+            validationMsj(receiver, route);
           }
-        
-        
-        
-                  if (type == "terms") {
-                    
-                    
-                    
-                     sendMsj(receiver, title, route);
-                    
-                  }
-        
-            if (type == "answer") {
-              
-              
-              
-                    
-                  }
-        
-            if (type == "form") {
-              
-              
-              
-                 
-              var   listString = "Formulario de contacto" + "\n"+ "1.Nombre"+"\n"+"2.Empresa"+"\n"+"3.Correo electronico"+"\n"+"4.Ciudad"+"\n"+"5.Consulta";
-              
-              
-              
-              
-              
-                    
-                  }
-        
-            if (type == "agent") {
-              
-           
-              
-               var   listString = "Buscando agentes disponibles";
-              
-              
-              
-                    
-                  }
-        
-            if (type == "end") {
-              
-              
-              var   listString = "Deseas terminar la converzación" + "\n"+ "1.Si"+"\n"+"2.Ir al inicio"+"\n"+"3.Contactar a un acesor";
-              
-              
-              
-              
-              
-    
-    }
-    if (type == "media") {
-      
-      
-      
 
-      
-  axios
-    .post(
-      'https://graph.facebook.com/v16.0/$business_phone_number_id/messages',
-    {
-      headers: {
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'application/json',
-      },
-      params: {
-      "messaging_product": "whatsapp",
-      "to": to,
-      "type": "image",
-      "image": {
-        "link": "imageUrl",
-        // Agrega el caption si está disponible
-      }
-    }
-    }
-    
-    )
-    .then((response) => {
-    
-  if (response.status == 200) {
-    print('Imagen enviada con éxito');
-    print('Respuesta: ${response.body}');
-  } else {
-    print('Error enviando la imagen: ${response.statusCode}');
-    print('Detalles del error: ${response.body}');
-  }
-      
-    
-  });
-   
+          if (type == "terms") {
+            sendMsj(receiver, title, route);
+          }
 
-      
-    
-    }
-    if (type == "pause") {
-      
-         // var valuePause = dataItemSelected["value"];
-      
-      setTimeout(function () {
-                sendMsj(receiver, message, route);
-                }, 1000);
-      
-         
-     
-    }
+          if (type == "answer") {
+            sendMsj(receiver, title, route);
+          }
 
-     if (type == "analitic") {
-       
-       
-       
-       
-       
-       
-     
-    }
+          if (type == "form") {
+            var listString =
+              "Formulario de contacto" +
+              "\n" +
+              "1.Nombre" +
+              "\n" +
+              "2.Empresa" +
+              "\n" +
+              "3.Correo electronico" +
+              "\n" +
+              "4.Ciudad" +
+              "\n" +
+              "5.Consulta";
+          }
 
-        if (type == "product") {
-          
-          var value = dataItemSelected["product"];
-          
-      
-  axios
-    .post(
-      'https://graph.facebook.com/v16.0/$business_phone_number_id/messages',
-    {
-      headers: {
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'application/json',
-      },
-      params: {
-      "messaging_product": "whatsapp",
-      "to": to,
-      "type": "link",
-      "link": {
-        "url":value ,
-      
-      }
-    }
-    }
-    
-    )
-    .then((response) => {
-    
-  if (response.status == 200) {
-    print('Imagen enviada con éxito');
-    print('Respuesta: ${response.body}');
-  } else {
-    print('Error enviando la imagen: ${response.statusCode}');
-    print('Detalles del error: ${response.body}');
-  }
-      
-    
-  });
-   
-          
-          
-     
-    }
-        
-      
+          if (type == "agent") {
+            var listString = "Buscando agentes disponibles";
+
+            sendMsj(receiver, listString, route);
+          }
+
+          if (type == "end") {
+            var listString =
+              "Deseas terminar la converzación" +
+              "\n" +
+              "1.Si" +
+              "\n" +
+              "2.Ir al inicio" +
+              "\n" +
+              "3.Contactar a un acesor";
+
+            sendMsj(receiver, listString, route);
+          }
+          if (type == "media") {
+            axios
+              .post(
+                "https://graph.facebook.com/v16.0/$business_phone_number_id/messages",
+                {
+                  headers: {
+                    Authorization: "Bearer $accessToken",
+                    "Content-Type": "application/json",
+                  },
+                  params: {
+                    messaging_product: "whatsapp",
+                    to: to,
+                    type: "image",
+                    image: {
+                      link: "imageUrl",
+                      // Agrega el caption si está disponible
+                    },
+                  },
+                }
+              )
+              .then((response) => {
+                if (response.status == 200) {
+                  print("Imagen enviada con éxito");
+                  print("Respuesta: ${response.body}");
+                } else {
+                  print("Error enviando la imagen: ${response.statusCode}");
+                  print("Detalles del error: ${response.body}");
+                }
+              });
+          }
+          if (type == "pause") {
+            // var valuePause = dataItemSelected["value"];
+
+            setTimeout(function () {
+              sendMsj(receiver, message, route);
+            }, 1000);
+          }
+
+          if (type == "analitic") {
+          }
+
+          if (type == "product") {
+            var value = dataItemSelected["product"];
+
+            axios
+              .post(
+                "https://graph.facebook.com/v16.0/$business_phone_number_id/messages",
+                {
+                  headers: {
+                    Authorization: "Bearer $accessToken",
+                    "Content-Type": "application/json",
+                  },
+                  params: {
+                    messaging_product: "whatsapp",
+                    to: to,
+                    type: "link",
+                    link: {
+                      url: value,
+                    },
+                  },
+                }
+              )
+              .then((response) => {
+                if (response.status == 200) {
+                  print("Imagen enviada con éxito");
+                  print("Respuesta: ${response.body}");
+                } else {
+                  print("Error enviando la imagen: ${response.statusCode}");
+                  print("Detalles del error: ${response.body}");
+                }
+              });
+          }
 
           if (type == "multiple") {
-            
-            
             var list2 = dataItemSelected["optionsMulti"];
-            
-             var list =  json2array(list2);
-            
-             console.log("longitud: "+list[0]);
+
+            var list = json2array(list2);
+
+            console.log("longitud: " + list[0]);
 
             var listString = "";
-            
-            
-            
 
             for (var i = 0; i < list.length; i++) {
-               console.log("longitud2: "+list[i]);
+              console.log("longitud2: " + list[i]);
               listString += list[i] + "\n";
             }
             var message = title + ":" + " \n\n" + listString;
-            
-                  console.log("longitudnueva: "+message);
-            
+
+            console.log("longitudnueva: " + message);
 
             //  setTimeout(function () {
-         //   sendMsj(receiver, message, route);
+            //   sendMsj(receiver, message, route);
             //hola
             //firme
             //poder
-            
-            
-            
-               var keys = Object.keys( dataItemSelected["optionsStep"]);
-                var position = 0;
-    keys.forEach(function(key){
-      console.log("datos: "+key);
-      
-      position+=1;
-      if(/*key.toLowerCase()*/"this is a text message" ==   messageGlobal.toLowerCase()){
-        
-          console.log("datosselected: "+key);
-        
-             var list2 = dataItemSelected["optionsStep"];
-        
-            var listProm =  json2array( list2);
-        
-          console.log("datosselected67: "+  listProm);
-     var route =   listProm[0];
-        
-     
-        
-        
-                 console.log("datosselected66: "+ route);
-        validationMsj(receiver,route);
-        
 
-      }});
-        
-            
+            var keys = Object.keys(dataItemSelected["optionsStep"]);
+            var position = 0;
+            keys.forEach(function (key) {
+              console.log("datos: " + key);
+
+              position += 1;
+              if (
+                /*key.toLowerCase()*/ "this is a text message" ==
+                messageGlobal.toLowerCase()
+              ) {
+                console.log("datosselected: " + key);
+
+                var list2 = dataItemSelected["optionsStep"];
+
+                var listProm = json2array(list2);
+
+                console.log("datosselected67: " + listProm);
+                var route = listProm[0];
+
+                console.log("datosselected66: " + route);
+                validationMsj(receiver, route);
+              }
+            });
+
             // }, 500);
 
             /*
@@ -313,60 +249,51 @@ function validationMsj(receiver, value) {
 
       }});*/
           }
-        
 
           if (type == "link") {
-            
-            
-            
-           // sendMsj(receiver, title, route);
-            
-            
-  axios
-    .post(
-      'https://graph.facebook.com/v16.0/$business_phone_number_id/messages',
-    {
-      headers: {
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'application/json',
-      },
-      params: {
-      "messaging_product": "whatsapp",
-      "to": to,
-      "type": "link",
-      "link": {
-        "url":value ,
-      
-      }
-    }
-    }
-    
-    )
-    .then((response) => {
-    
-  if (response.status == 200) {
-    print('Imagen enviada con éxito');
-    print('Respuesta: ${response.body}');
-  } else {
-    print('Error enviando la imagen: ${response.statusCode}');
-    print('Detalles del error: ${response.body}');
-  }
-      
-    
-  });
+            // sendMsj(receiver, title, route);
+
+            axios
+              .post(
+                "https://graph.facebook.com/v16.0/$business_phone_number_id/messages",
+                {
+                  headers: {
+                    Authorization: "Bearer $accessToken",
+                    "Content-Type": "application/json",
+                  },
+                  params: {
+                    messaging_product: "whatsapp",
+                    to: to,
+                    type: "link",
+                    link: {
+                      url: value,
+                    },
+                  },
+                }
+              )
+              .then((response) => {
+                if (response.status == 200) {
+                  print("Imagen enviada con éxito");
+                  print("Respuesta: ${response.body}");
+                } else {
+                  print("Error enviando la imagen: ${response.statusCode}");
+                  print("Detalles del error: ${response.body}");
+                }
+              });
           }
         }
-      
-      // }
-    });
+
+        // }
+      });
+  } else {
+    console.log("------CHAT FINALIZADO------");
+  }
 }
 
-function sendMsj( recipientId, messageText, route)  {
+function sendMsj(recipientId, messageText, route) {
   //if(route != null){
-    console.log("-----sendmsj---: " + route);
-  
-  
-  
+  console.log("-----sendmsj---: " + route);
+
   console.log("routestep: " + route);
   var messageData2 = {
     userId: recipientId,
@@ -378,17 +305,14 @@ function sendMsj( recipientId, messageText, route)  {
   axios
     .post(
       "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-       recipientId+
+        recipientId +
         ".json",
       messageData2
     )
     .then((response) => {
       if (response.status == 200) {
         validationMsj(response);
-        
-        
-        
-        
+
         /* setTimeout(function () {
                  validationMsjRepeat(route);
                 }, 700);*/
@@ -403,8 +327,8 @@ function sendMsj( recipientId, messageText, route)  {
         console.error(response);
       }
     });
-  
-/*
+
+  /*
   axios
     .get(
       "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
@@ -464,8 +388,6 @@ function sendMsj( recipientId, messageText, route)  {
   console.log("routeSend: " + route);
   //if(route != null){
 
-  
-
   // }
 }
 
@@ -473,10 +395,6 @@ app.post("/webhook", async (req, res) => {
   // log incoming messages
   console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
 
-  
-  
-  
-  
   // check if the webhook request contains a message
   // details on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
   const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
@@ -484,20 +402,15 @@ app.post("/webhook", async (req, res) => {
   // check if the incoming message contains text
   if (message?.type === "text") {
     // extract the business number to send the reply from it
- 
-  
-    
-    
+
     messageGlobal = message.text.body;
-    
-    
-    
-     const business_phone_number_id =
+
+    const business_phone_number_id =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
-      var recipientData = business_phone_number_id;
+    var recipientData = business_phone_number_id;
 
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
-   /* await axios({
+    /* await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
       headers: {
@@ -526,8 +439,7 @@ app.post("/webhook", async (req, res) => {
         message_id: message.id,
       },
     });*/
-    
-    
+
     axios
       .get(
         "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
@@ -549,8 +461,6 @@ app.post("/webhook", async (req, res) => {
 
               //  var recipientId = body.recipient_id;
               // var messageId = body.message_id;
-            
-            
 
               var obj = JSON.parse(jsonData);
 
@@ -582,36 +492,32 @@ app.post("/webhook", async (req, res) => {
               console.error("body: " + title);
 
               console.log("Successfully firebase" + response.data);
-              sendMsj( recipientData, title, route);
+              sendMsj(recipientData, title, route);
             });
         } else {
-          
           const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
-              console.log("Datos en formato JSON:", jsonData);
+          console.log("Datos en formato JSON:", jsonData);
 
-              //  var recipientId = body.recipient_id;
-              // var messageId = body.message_id;
+          //  var recipientId = body.recipient_id;
+          // var messageId = body.message_id;
 
-             var obj = JSON.parse(jsonData);
+          var obj = JSON.parse(jsonData);
 
-             var listJson = json2array(obj);
-              console.log(
-                "lenghtoptions34: " +
-                  json2array(obj).length +
-                  " : " +
-                  json2array(obj)[0]
-              );
-          
-          
-          
-          
-           // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
-                  //   console.log("route99: "+ jsonData2+" - "+json2array(obj)[0]["routeStep"]);
-             var route =   json2array(obj)[0]["routeStep"];
-          
-           console.log("route", route);
-          
-           validationMsj(recipientData,route);
+          var listJson = json2array(obj);
+          console.log(
+            "lenghtoptions34: " +
+              json2array(obj).length +
+              " : " +
+              json2array(obj)[0]
+          );
+
+          // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
+          //   console.log("route99: "+ jsonData2+" - "+json2array(obj)[0]["routeStep"]);
+          var route = json2array(obj)[0]["routeStep"];
+
+          console.log("route", route);
+
+          validationMsj(recipientData, route);
         }
       })
       .catch((error) => {
@@ -619,7 +525,6 @@ app.post("/webhook", async (req, res) => {
       });
 
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
-    
 
     // mark incoming message as read
     /* await axios({
