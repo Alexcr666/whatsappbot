@@ -641,7 +641,7 @@ function sendMsj(messageText, route, type) {
   console.log("-----sendmsj---: " + route);
 
   console.log("routestep: " + route);
-  var messageData2 = 
+  var messageData2 = {
     routeStep: route,
     type: type,
     text: messageText,
@@ -939,3 +939,4 @@ Checkout README.md to start.</pre>`);
 app.listen(PORT, () => {
   console.log(`Server is listening on port: ${PORT}`);
 });
+}
