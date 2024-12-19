@@ -515,106 +515,6 @@ function sendMsj(messageText, route, type,information) {
 
 
 
-function sendMsj(messageText, route, type) {
-  //if(route != null){
-  console.log("-----sendmsj---: " + route);
-
-  console.log("routestep: " + route);
-  var messageData2 = {
-    routeStep: route,
-    type: type,
-    text: messageText,
-    receipt: recipientId,
-  };
-
-  axios
-    .post(
-      "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-        recipientId +
-        ".json",
-      messageData2
-    )
-    .then((response) => {
-      if (response.status == 200) {
-        validationMsj(response);
-
-        /* setTimeout(function () {
-                 validationMsjRepeat(route);
-                }, 700);*/
-
-        //  var recipientId = body.recipient_id;
-        // var messageId = body.message_id;
-        //  var obj = JSON.parse(body);
-
-        console.log("Successfully firebase id ");
-      } else {
-        console.error("Unable to send message.");
-        console.error(response);
-      }
-    });
-
-  /*
-  axios
-    .get(
-      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
-        idChat +
-        "/options/" +
-        route +
-        "/.json"
-    )
-    .then((response) => {
-      if (response.status == 200) {
-        
-         console.log("sendmsj---1: " + route);
-        
-          const jsonData = JSON.stringify(response.data, null, 2);
-        
-        
-       var title = jsonData["title"];
-        
-        var business_phone_number_id = "545034448685967"; 
-        var to = "573013928129";
-       
-        
-        axios
-    .post(
-     `https://graph.facebook.com/v18.0/545034448685967/messages`,
-    {
-        messaging_product: "whatsapp",
-        to: to,
-        text: { body: "title" },
-       
-      },
-    )
-    .then((response) => { 
-        });
-        
-        
-      }});
-  
-   
-  /*
-  await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-      headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        to: message.from,
-        text: { body: "Echo: " + message.text.body },
-        context: {
-          message_id: message.id, // shows the message as a reply to the original user message
-        },
-      },
-    });*/
-
-  console.log("routeSend: " + route);
-  //if(route != null){
-
-  // }
-}
 
  function repeatChat(){
    axios
@@ -739,23 +639,36 @@ app.post("/webhook", async (req, res) => {
           var obj = JSON.parse(jsonData);
 
           var listJson = json2array(obj);
-          console.log(
-            "lenghtoptions34: " +
-              json2array(obj).length +
-              " : " +
-              json2array(obj)[0]
-          );
+         
+          
+         
+           
+          
+          let dataItemSelected = [];
+              for (var i = 0; i < json2array(obj).length; i++) {
+                var dataItem = json2array(obj)[i];
 
-          var position = json2array(obj).length - 2;
+                console.log("welcome: " + dataItem["welcome"]);
+
+                if (dataItem["information"] != true) {
+                  dataItemSelected.push(dataItem);
+                }
+              }
+          
+             console.error("routefirme23: " + dataItemSelected);
+          
+          
+
+          var position = dataItemSelected.length - 2;
 
           // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
           //   console.log("route99: "+ jsonData2+" - "+json2array(obj)[0]["routeStep"]);
-          var route = json2array(obj)[position]["routeStep"];
+          var route = dataItemSelected[position]["routeStep"];
 
           // var route2 = json2array(obj)[1]["routeStep"];
 
-          //  console.log("routemultiple: " + route2);
-          var type = json2array(obj)[json2array(obj).length - 1]["type"];
+           console.error("routefirme: " + route);
+          var type = dataItemSelected[dataItemSelected.length - 1]["type"];
 
           console.error("validation: " + type);
 
