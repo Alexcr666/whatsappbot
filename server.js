@@ -32,6 +32,29 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
 var repeatMessageOption = false;
 
+
+function savedForm(city,company,consult,email,name,phone){
+  
+   var dataForm = {
+    city: city,
+    company: company,
+   consult: consult,
+    email: email,
+   name: name,
+     phone:phone
+  };
+    axios
+    .post(
+      "https://getdev-b2c0b.firebaseio.com/company/sly/formContact/.json",
+    dataForm
+    )
+    .then((response) => {
+      if (response.status == 200) {
+        
+        
+      }});
+}
+
 function sendLink(value) {
   axios
     .post("https://graph.facebook.com/v16.0/" + recipientId + "/messages", {
@@ -191,6 +214,19 @@ function validationMsj(value) {
 
             if (repeatMessageOption == true) {
               validationMsj(route);
+              
+              let lista = texto.split(", ");
+              
+             var  city = lista[0];
+  var  company  = lista[1] ;
+  var  consult = lista[2] ;
+   var    email = lista[3] ;
+   name: name,
+     phone:phone
+              
+              savedForm(listString);
+              
+              
               sendMsj(listString, route, type);
             } else {
               sendMsj(listString, route, type);
@@ -231,6 +267,8 @@ function validationMsj(value) {
                var url = dataItemSelected["url"];
           sendMedia(url);
             
+            validationMsj(route);
+            
                   sendMsj(message, route, type,false);
           }
           if (type == "pause") {
@@ -246,6 +284,8 @@ function validationMsj(value) {
             
              sendEventAnalitics();
             
+            validationMsj(route);
+            
               sendMsj(message, route, type,false);
           }
 
@@ -253,6 +293,8 @@ function validationMsj(value) {
             var value = dataItemSelected["product"];
             
             sendLink(value);
+            
+            validationMsj(route);
 
             sendMsj(message, route, type,false);
           }
