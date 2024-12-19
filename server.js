@@ -338,7 +338,7 @@ function validationMsj(value) {
 
                 position += 1;
                 if (
-                  /*key.toLowerCase()*/ "this is a text message" ==
+                  key.toLowerCase()  ==
                   messageGlobal.toLowerCase()
                 ) {
                   console.log("datosselected: " + key);
