@@ -32,11 +32,10 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
 var repeatMessageOption = false;
 
-
 function savedAlertAgentData() {
   var dataForm = {
     agent: true,
-    idUser:recipientId,
+    idUser: recipientId,
   };
   axios
     .post(
@@ -48,7 +47,6 @@ function savedAlertAgentData() {
       }
     });
 }
-
 
 function savedAnswerData(value) {
   var dataForm = {
@@ -217,10 +215,8 @@ function validationMsj(value) {
             var title = dataItemSelected["title"];
 
             if (repeatMessageOption == true) {
-              
-               savedAnswerData(messageGlobal);
-                 
-              
+              savedAnswerData(messageGlobal);
+
               validationMsj(route);
               sendMsj(listString, route, type);
             } else {
@@ -256,15 +252,14 @@ function validationMsj(value) {
 
               savedForm(city, company, consult, email, name, phone);
 
-              sendMsj(listString, route, type,true);
+              sendMsj(listString, route, type, true);
             } else {
-              sendMsj(listString, route, type,true);
+              sendMsj(listString, route, type, true);
             }
           }
 
           if (type == "agent") {
-            
-           savedAlertAgentData();
+            savedAlertAgentData();
             sendMsj("Buscando agentes disponibles", route, type, true);
           }
 
@@ -329,8 +324,6 @@ function validationMsj(value) {
           }
 
           if (type == "multiple") {
-          
-
             if (repeatMessageOption == true) {
               var keys = Object.keys(dataItemSelected["optionsStep"]);
               var position = 0;
@@ -371,6 +364,28 @@ function validationMsj(value) {
             } else {
               console.error("DATOS SELECTED1------: " + route);
 
+              var list2 = dataItemSelected["optionsMulti"];
+
+              var list = json2array(list2);
+
+              console.log("longitud: " + list[0]);
+
+              var listString = "";
+
+              for (var i = 0; i < list.length; i++) {
+                console.log("longitud2: " + list[i]);
+                listString += list[i] + "\n";
+              }
+              var message = title + ":" + " \n\n" + listString;
+
+              console.log("mensajeopcionmultiple: " + message);
+
+              //  setTimeout(function () {
+              //   sendMsj(receiver, message, route);
+              //hola
+              //firme
+              //poder
+
               if (route == undefined) {
                 sendMsj("multiple", "route", "multiple", true);
               } else {
@@ -396,8 +411,8 @@ function validationMsj(value) {
             sendLink(link);
 
             sendMsj(message, route, type, false);
-            
-                validationMsj(route);
+
+            validationMsj(route);
             // sendMsj(receiver, title, route);
           }
         }
