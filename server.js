@@ -18,6 +18,7 @@ const idChat = "-ODvWrCbH47cu21VClQr";
 var messageGlobal = "";
 
 var recipientId = "";
+var messageFinal;
 
 function json2array(json) {
   var result = [];
@@ -183,7 +184,7 @@ function validationMsj(value) {
           //  var business_phone_number_id = "545034448685967";
 
           if (type == "chat" || type == "text") {
-            sendMsj(title, route, type,true);
+            sendMsj(title, route, type, true);
 
             validationMsj(route);
           }
@@ -218,9 +219,9 @@ function validationMsj(value) {
               savedAnswerData(messageGlobal);
 
               validationMsj(route);
-              sendMsj(listString, route, type,false);
+              sendMsj(listString, route, type, false);
             } else {
-              sendMsj(title, route, type,true);
+              sendMsj(title, route, type, true);
             }
           }
 
@@ -285,7 +286,7 @@ function validationMsj(value) {
                 "\n" +
                 "3.Contactar a un acesor";
 
-              sendMsj(listString, route, type,true);
+              sendMsj(listString, route, type, true);
             }
           }
           if (type == "media") {
@@ -389,7 +390,7 @@ function validationMsj(value) {
               if (route == undefined) {
                 sendMsj("multiple", "route", "multiple", true);
               } else {
-                sendMsj(message, route, type,true);
+                sendMsj(message, route, type, true);
               }
             }
 
@@ -427,7 +428,12 @@ function validationMsj(value) {
   }
 }
 
-function sendMsj(messageText, route, type,/* information,*/ notification) {
+async function sendMsj(
+  messageText,
+  route,
+  type,
+  /* information,*/ notification
+) {
   //if(route != null){
   console.log("-----sendmsj---: " + route);
 
@@ -468,10 +474,62 @@ function sendMsj(messageText, route, type,/* information,*/ notification) {
     });
 
   if (notification == true) {
-    
-       console.error("----MENSAJE ENVIADO---");
-    
-    kkk
+    console.error("----MENSAJE ENVIADO---");
+
+    await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${recipientId}/messages`,
+      headers: {
+        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+      },
+      data: {
+        messaging_product: "whatsapp",
+        to: to,
+        text: { body: messageText },
+       /* context: {
+          message_id: messageFinal.id, // shows the message as a reply to the original user message
+        },*/
+      },
+    });
+
+    // mark incoming message as read
+   /* await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${recipientId}/messages`,
+      headers: {
+        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+      },
+      data: {
+        messaging_product: "whatsapp",
+        status: "read",
+        message_id: messageFinal.id,
+      },
+    });*/
+
+    /* axios
+      .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
+        headers: {
+          Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+     
+          "Content-Type": "application/json",
+          
+          
+        },
+        params: {
+          messaging_product: "whatsapp",
+          to: to,
+          text: { body: messageText },
+          context: {
+            message_id: messageText, // shows the message as a reply to the original user message
+          },
+        },
+      })
+      .then((response) => {
+      
+        console.error("mensaje enviado--" );
+    }).catch((error) => {
+        console.error("errorfirebassend: " + error); // Manejo de errores
+      });;*/
   }
 
   /*
@@ -561,7 +619,7 @@ function repeatChat() {
       console.error("body: " + title);
 
       console.log("Successfully firebase" + response.data);
-      sendMsj(title, route, type,true);
+      sendMsj(title, route, type, true);
 
       validationMsj(route);
     });
@@ -575,6 +633,7 @@ app.post("/webhook", async (req, res) => {
   // details on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
   const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
 
+  messageFinal = message;
   // check if the incoming message contains text
   if (message?.type === "text") {
     // extract the business number to send the reply from it
@@ -583,38 +642,9 @@ app.post("/webhook", async (req, res) => {
 
     const business_phone_number_id =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
-    
-    await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-      headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        to: message.from,
-        text: { body: "Echo: " + message.text.body },
-        context: {
-          message_id: message.id, // shows the message as a reply to the original user message
-        },
-      },
-    });
 
-    // mark incoming message as read
-    await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-      headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        status: "read",
-        message_id: message.id,
-      },
-    });
     
-    
+
     //  var recipientData = business_phone_number_id;
 
     recipientId = business_phone_number_id;
