@@ -26,7 +26,7 @@ function json2array(json) {
 
 const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
-bool repeatMessageOption = false;
+var repeatMessageOption = false;
 
 function validationMsj(receiver, value) {
   if (value != null) {
@@ -72,17 +72,17 @@ function validationMsj(receiver, value) {
           var business_phone_number_id = "545034448685967";
           var to = "573013928129";
           if (type == "chat" || type == "text") {
-            sendMsj(receiver, title, route);
+            sendMsj(receiver, title, route,type);
 
             validationMsj(receiver, route);
           }
 
           if (type == "terms") {
-            sendMsj(receiver, title, route);
+            sendMsj(receiver, title, route,type);
           }
 
           if (type == "answer") {
-            sendMsj(receiver, title, route);
+            sendMsj(receiver, title, route,type);
           }
 
           if (type == "form") {
@@ -103,7 +103,7 @@ function validationMsj(receiver, value) {
           if (type == "agent") {
             var listString = "Buscando agentes disponibles";
 
-            sendMsj(receiver, listString, route);
+            sendMsj(receiver, listString, route,type);
           }
 
           if (type == "end") {
@@ -116,7 +116,7 @@ function validationMsj(receiver, value) {
               "\n" +
               "3.Contactar a un acesor";
 
-            sendMsj(receiver, listString, route);
+            sendMsj(receiver, listString, route,type);
           }
           if (type == "media") {
             axios
@@ -152,7 +152,7 @@ function validationMsj(receiver, value) {
             // var valuePause = dataItemSelected["value"];
 
             setTimeout(function () {
-              sendMsj(receiver, message, route);
+              sendMsj(receiver, message, route,type);
             }, 1000);
           }
 
@@ -213,6 +213,8 @@ function validationMsj(receiver, value) {
             //hola
             //firme
             //poder
+            
+            if(repeatMessageOption == true){
 
             var keys = Object.keys(dataItemSelected["optionsStep"]);
             var position = 0;
@@ -234,9 +236,12 @@ function validationMsj(receiver, value) {
                 var route = listProm[0];
 
                 console.log("datosselected66: " + route);
+                
+                  sendMsj(receiver, message, route,type);
                 validationMsj(receiver, route);
               }
             });
+            }
 
             // }, 500);
 
@@ -290,7 +295,7 @@ function validationMsj(receiver, value) {
   }
 }
 
-function sendMsj(recipientId, messageText, route) {
+function sendMsj(recipientId, messageText, route,type) {
   //if(route != null){
   console.log("-----sendmsj---: " + route);
 
@@ -298,6 +303,7 @@ function sendMsj(recipientId, messageText, route) {
   var messageData2 = {
     userId: recipientId,
     routeStep: route,
+    type:type,
     text: messageText,
     receipt: recipientId,
   };
@@ -510,12 +516,16 @@ app.post("/webhook", async (req, res) => {
               " : " +
               json2array(obj)[0]
           );
+          
+          var position =  (json2array(obj).length-1)
 
           // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
           //   console.log("route99: "+ jsonData2+" - "+json2array(obj)[0]["routeStep"]);
-          var route = json2array(obj)[0]["routeStep"];
+          var route = json2array(obj)[position]["routeStep"];
 
           console.log("route", route);
+          
+          repeatMessageOption
 
           validationMsj(recipientData, route);
         }
