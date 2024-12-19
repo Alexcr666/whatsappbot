@@ -45,7 +45,7 @@ function validationMsj(receiver, value) {
         
        //    var obj = JSON.parse(jsonData);
         
-          console.log("datosnuevo: "+jsonData);
+          console.log("datosnuevo: "+route+" - "+jsonData);
         
         
 
@@ -78,7 +78,7 @@ function validationMsj(receiver, value) {
           if (type == "chat" || type == "text") {
            sendMsj(receiver, title, route);
             
-               validationMsj(receiver,'hola',route);
+               validationMsj(receiver,route);
           }
         
         
