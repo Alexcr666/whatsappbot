@@ -89,6 +89,9 @@ function sendMedia(imageUrl){
                 }
               });
 }
+function sendEventAnalitics(){
+  
+}
 
 function validationMsj(value) {
   if (value != null) {
@@ -241,11 +244,15 @@ function validationMsj(value) {
 
           if (type == "analitic") {
             
+             sendEventAnalitics();
+            
               sendMsj(message, route, type,false);
           }
 
           if (type == "product") {
             var value = dataItemSelected["product"];
+            
+            sendLink(value);
 
             sendMsj(message, route, type,false);
           }
