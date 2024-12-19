@@ -234,7 +234,7 @@ function validationMsj(receiver, value) {
                   console.log("datosselected67: " + listProm);
                   var route = listProm[0];
 
-                  console.error("datosselected66: " + route);
+                  console.error("datosselected66------: " + route);
 
                   sendMsj(receiver, message, route, type);
                   validationMsj(receiver, route);
@@ -502,6 +502,8 @@ app.post("/webhook", async (req, res) => {
 
               console.log("Successfully firebase" + response.data);
               sendMsj(recipientData, title, route, type);
+
+              validationMsj(recipientData, route);
             });
         } else {
           const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
@@ -524,11 +526,21 @@ app.post("/webhook", async (req, res) => {
 
           // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
           //   console.log("route99: "+ jsonData2+" - "+json2array(obj)[0]["routeStep"]);
-          var route = json2array(obj)[0]["routeStep"];
+          var route = json2array(obj)[position]["routeStep"];
 
-          var type = json2array(obj)[0]["type"];
+          var route2 = json2array(obj)[1]["routeStep"];
 
-          console.log("routemultiple", route);
+          console.log("routemultiple: " + route2);
+          var type = json2array(obj)[position]["type"];
+
+          console.log(
+            "routemultiple: " +
+              position +
+              " : " +
+              route +
+              " : " +
+              json2array(obj)
+          );
 
           if (
             type == "multiple" ||
