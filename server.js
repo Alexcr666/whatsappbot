@@ -240,8 +240,8 @@ function validationMsj(receiver, value) {
                   validationMsj(receiver, route);
                 }
               });
-            }else{
-                  sendMsj(receiver, message, route, type);
+            } else {
+              sendMsj(receiver, message, route, type);
             }
 
             // }, 500);
@@ -446,8 +446,8 @@ app.post("/webhook", async (req, res) => {
         message_id: message.id,
       },
     });*/
-    
-     repeatMessageOption = false;
+
+    repeatMessageOption = false;
 
     axios
       .get(
@@ -520,7 +520,7 @@ app.post("/webhook", async (req, res) => {
               json2array(obj)[0]
           );
 
-          var position = (json2array(obj).length - 1);
+          var position = json2array(obj).length - 1;
 
           // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
           //   console.log("route99: "+ jsonData2+" - "+json2array(obj)[0]["routeStep"]);
@@ -530,7 +530,13 @@ app.post("/webhook", async (req, res) => {
 
           console.log("routemultiple", route);
 
-          if (type == "multiple" || type == "answer" || type == "form" ||  ) {
+          if (
+            type == "multiple" ||
+            type == "answer" ||
+            type == "form" ||
+            type == "end" ||
+            type == "terms"
+          ) {
             repeatMessageOption = true;
           }
 
