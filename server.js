@@ -31,7 +31,7 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
 var repeatMessageOption = false;
 
-function validationMsj( value) {
+function validationMsj(value) {
   if (value != null) {
     axios
       .get(
@@ -261,7 +261,16 @@ function validationMsj( value) {
             } else {
               
                   console.error("DATOS SELECTED1------: " + route);
-              sendMsj( message, route, type);
+            
+              if(route == undefined){
+                   sendMsj( "multiple", "route", "multiple");
+                
+              }else{
+                
+                   sendMsj( message, route, type);
+                
+              }
+           
               
             
             }
@@ -312,6 +321,8 @@ function validationMsj( value) {
         }
 
         // }
+      }) .catch((error) => {
+        console.log("errorfirebasE: "+error); // Manejo de errores
       });
   } else {
     console.log("------CHAT FINALIZADO------");
