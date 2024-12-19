@@ -78,7 +78,7 @@ function validationMsj(receiver, value) {
           if (type == "chat" || type == "text") {
            sendMsj(receiver, title, route);
             
-               validationMsj(receiver,route);
+               validationMsj(receiver,'hola',route);
           }
         
         
@@ -361,11 +361,50 @@ function validationMsj(receiver, value) {
     });
 }
 
-function sendMsj(recipientData, recipientId, messageText, route)  {
+function sendMsj( recipientId, messageText, route)  {
   //if(route != null){
     console.log("-----sendmsj---: " + route);
   
+  
+  
+  console.log("routestep: " + route);
+  var messageData2 = {
+    userId: recipientId,
+    routeStep: route,
+    text: messageText,
+    receipt: recipientId,
+  };
 
+  axios
+    .post(
+      "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
+       recipientId+
+        ".json",
+      messageData2
+    )
+    .then((response) => {
+      if (response.status == 200) {
+        validationMsj(response);
+        
+        
+        
+        
+        /* setTimeout(function () {
+                 validationMsjRepeat(route);
+                }, 700);*/
+
+        //  var recipientId = body.recipient_id;
+        // var messageId = body.message_id;
+        //  var obj = JSON.parse(body);
+
+        console.log("Successfully firebase id ");
+      } else {
+        console.error("Unable to send message.");
+        console.error(response);
+      }
+    });
+  
+/*
   axios
     .get(
       "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
@@ -398,11 +437,7 @@ function sendMsj(recipientData, recipientId, messageText, route)  {
        
       },
     )
-    .then((response) => {
-          
-          
-          
-          
+    .then((response) => { 
         });
         
         
@@ -429,42 +464,7 @@ function sendMsj(recipientData, recipientId, messageText, route)  {
   console.log("routeSend: " + route);
   //if(route != null){
 
-  console.log("routestep: " + route);
-  var messageData2 = {
-    userId: recipientData,
-    routeStep: route,
-    text: messageText,
-    receipt: recipientData,
-  };
-
-  axios
-    .post(
-      "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-        recipientData +
-        ".json",
-      messageData2
-    )
-    .then((response) => {
-      if (response.status == 200) {
-        validationMsj(response);
-        
-        
-        
-        
-        /* setTimeout(function () {
-                 validationMsjRepeat(route);
-                }, 700);*/
-
-        //  var recipientId = body.recipient_id;
-        // var messageId = body.message_id;
-        //  var obj = JSON.parse(body);
-
-        console.log("Successfully firebase id ");
-      } else {
-        console.error("Unable to send message.");
-        console.error(response);
-      }
-    });
+  
 
   // }
 }
@@ -485,7 +485,7 @@ app.post("/webhook", async (req, res) => {
   if (message?.type === "text") {
     // extract the business number to send the reply from it
  
-    var recipientData = business_phone_number_id;
+  
     
     
     messageGlobal = message.text.body;
@@ -494,9 +494,10 @@ app.post("/webhook", async (req, res) => {
     
      const business_phone_number_id =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
+      var recipientData = business_phone_number_id;
 
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
-    await axios({
+   /* await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
       headers: {
@@ -524,7 +525,7 @@ app.post("/webhook", async (req, res) => {
         status: "read",
         message_id: message.id,
       },
-    });
+    });*/
     
     
     axios
@@ -581,7 +582,7 @@ app.post("/webhook", async (req, res) => {
               console.error("body: " + title);
 
               console.log("Successfully firebase" + response.data);
-              sendMsj(recipientData, recipientData, title, route);
+              sendMsj( recipientData, title, route);
             });
         } else {
           
