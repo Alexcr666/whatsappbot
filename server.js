@@ -76,7 +76,7 @@ function validationMsj(receiver, value) {
           var business_phone_number_id = "545034448685967"; 
         var to = "573013928129";
           if (type == "chat" || type == "text") {
-        //    sendMsj(receiver, title, route);
+           sendMsj(receiver, title, route);
             
                validationMsj(receiver,route);
           }
@@ -363,7 +363,7 @@ function validationMsj(receiver, value) {
 
 function sendMsj(recipientData, recipientId, messageText, route)  {
   //if(route != null){
-    console.log("sendmsj---: " + route);
+    console.log("-----sendmsj---: " + route);
   
 
   axios
@@ -473,6 +473,10 @@ app.post("/webhook", async (req, res) => {
   // log incoming messages
   console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
 
+  
+  
+  
+  
   // check if the webhook request contains a message
   // details on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
   const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
@@ -480,17 +484,21 @@ app.post("/webhook", async (req, res) => {
   // check if the incoming message contains text
   if (message?.type === "text") {
     // extract the business number to send the reply from it
-    const business_phone_number_id =
-      req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
-
+ 
     var recipientData = business_phone_number_id;
     
     
     messageGlobal = message.text.body;
     
-   /*  await axios({
+    
+    
+     const business_phone_number_id =
+      req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
+
+    // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
+    await axios({
       method: "POST",
-      url: `https://graph.facebook.com/v18.0/545034448685967/messages`,
+      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
       headers: {
         Authorization: `Bearer ${GRAPH_API_TOKEN}`,
       },
@@ -502,7 +510,23 @@ app.post("/webhook", async (req, res) => {
           message_id: message.id, // shows the message as a reply to the original user message
         },
       },
-    });*/
+    });
+
+    // mark incoming message as read
+    await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      headers: {
+        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+      },
+      data: {
+        messaging_product: "whatsapp",
+        status: "read",
+        message_id: message.id,
+      },
+    });
+    
+    
     axios
       .get(
         "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
