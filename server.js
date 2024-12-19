@@ -31,7 +31,7 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
 var repeatMessageOption = false;
 
-function validationMsj(receiver, value) {
+function validationMsj( value) {
   if (value != null) {
     axios
       .get(
@@ -75,17 +75,17 @@ function validationMsj(receiver, value) {
           var business_phone_number_id = "545034448685967";
           var to = "573013928129";
           if (type == "chat" || type == "text") {
-            sendMsj(receiver, title, route, type);
+            sendMsj( title, route, type);
 
-            validationMsj(receiver, route);
+            validationMsj(route);
           }
 
           if (type == "terms") {
-            sendMsj(receiver, title, route, type);
+            sendMsj( title, route, type);
           }
 
           if (type == "answer") {
-            sendMsj(receiver, title, route, type);
+            sendMsj(title, route, type);
           }
 
           if (type == "form") {
@@ -106,7 +106,7 @@ function validationMsj(receiver, value) {
           if (type == "agent") {
             var listString = "Buscando agentes disponibles";
 
-            sendMsj(receiver, listString, route, type);
+            sendMsj( listString, route, type);
           }
 
           if (type == "end") {
@@ -119,7 +119,7 @@ function validationMsj(receiver, value) {
               "\n" +
               "3.Contactar a un acesor";
 
-            sendMsj(receiver, listString, route, type);
+            sendMsj( listString, route, type);
           }
           if (type == "media") {
             axios
@@ -155,7 +155,7 @@ function validationMsj(receiver, value) {
             // var valuePause = dataItemSelected["value"];
 
             setTimeout(function () {
-              sendMsj(receiver, message, route, type);
+              sendMsj( message, route, type);
             }, 1000);
           }
 
@@ -241,15 +241,15 @@ function validationMsj(receiver, value) {
 
                   console.error("DATOS SELECTED------: " + route);
 
-                  sendMsj(receiver, message, route, type);
-                  validationMsj(receiver, route);
+                  sendMsj( message, route, type);
+                  validationMsj(route);
                   messageGlobal = "";
                 }
               });
             } else {
               
                   console.error("DATOS SELECTED1------: " + route);
-              sendMsj(receiver, message, route, type);
+              sendMsj( message, route, type);
             }
 
             // }, 500);
@@ -424,7 +424,7 @@ app.post("/webhook", async (req, res) => {
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
   //  var recipientData = business_phone_number_id;
     
-    recipientId = business_phone_number_id;
+    recipientId = "mensaje";
 
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
     /* await axios({
@@ -462,7 +462,7 @@ app.post("/webhook", async (req, res) => {
     axios
       .get(
         "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-          recipientData +
+          recipientId +
           "/.json"
       )
       .then((response) => {
@@ -511,9 +511,9 @@ app.post("/webhook", async (req, res) => {
               console.error("body: " + title);
 
               console.log("Successfully firebase" + response.data);
-              sendMsj(recipientData, title, route, type);
+              sendMsj( title, route, type);
 
-              validationMsj(recipientData, route);
+              validationMsj( route);
             });
         } else {
           const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
@@ -561,7 +561,7 @@ app.post("/webhook", async (req, res) => {
             repeatMessageOption = true;
           }
 
-          validationMsj(recipientData, route);
+          validationMsj( route);
         }
       })
       .catch((error) => {
