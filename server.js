@@ -32,6 +32,38 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PORT } = process.env;
 
 var repeatMessageOption = false;
 
+function sendLink(value){
+
+   axios
+              .post(
+                "https://graph.facebook.com/v16.0/"+recipientId+"/messages",
+                {
+                  headers: {
+                   Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+                    "Content-Type": "application/json",
+                  },
+                  params: {
+                    messaging_product: "whatsapp",
+                    to: to,
+                    type: "link",
+                    link: {
+                      url:value,
+                    },
+                  },
+                }
+              )
+              .then((response) => {
+                if (response.status == 200) {
+                  print("Imagen enviada con éxito");
+                  print("Respuesta: ${response.body}");
+                } else {
+                  print("Error enviando la imagen: ${response.statusCode}");
+                  print("Detalles del error: ${response.body}");
+                }
+              });
+  
+}
+
 function validationMsj(value) {
   if (value != null) {
     axios
@@ -248,35 +280,15 @@ function validationMsj(value) {
           }
 
           if (type == "product") {
+            
+            
+            
             var value = dataItemSelected["product"];
 
-            axios
-              .post(
-                "https://graph.facebook.com/v16.0/$business_phone_number_id/messages",
-                {
-                  headers: {
-                    Authorization: "Bearer $accessToken",
-                    "Content-Type": "application/json",
-                  },
-                  params: {
-                    messaging_product: "whatsapp",
-                    to: to,
-                    type: "link",
-                    link: {
-                      url: value,
-                    },
-                  },
-                }
-              )
-              .then((response) => {
-                if (response.status == 200) {
-                  print("Imagen enviada con éxito");
-                  print("Respuesta: ${response.body}");
-                } else {
-                  print("Error enviando la imagen: ${response.statusCode}");
-                  print("Detalles del error: ${response.body}");
-                }
-              });
+           
+            
+            
+              sendMsj(message, route, type);
           }
 
           if (type == "multiple") {
@@ -410,7 +422,7 @@ function validationMsj(value) {
 
 
 
-function sendMsj(messageText, route, type,information) {
+function sendMsj(messageText, route, type,information,noNotification) {
   //if(route != null){
   console.log("-----sendmsj---: " + route);
 
@@ -433,7 +445,7 @@ function sendMsj(messageText, route, type,information) {
     )
     .then((response) => {
       if (response.status == 200) {
-        validationMsj(response);
+        //validationMsj(response);
 
         /* setTimeout(function () {
                  validationMsjRepeat(route);
