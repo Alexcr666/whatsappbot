@@ -240,6 +240,10 @@ function validationMsj( value) {
                   var route = listProm[0];
 
                   console.error("DATOS SELECTED------: " + route);
+                  
+                  kkk
+                  
+                  
 
                   sendMsj( message, route, type);
                   validationMsj(route);
