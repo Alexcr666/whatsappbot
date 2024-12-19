@@ -206,7 +206,7 @@ function validationMsj(receiver, value) {
             }
             var message = title + ":" + " \n\n" + listString;
 
-            console.log("longitudnueva: " + message);
+            console.log("mensajeopcionmultiple: " + message);
 
             //  setTimeout(function () {
             //   sendMsj(receiver, message, route);
@@ -234,7 +234,7 @@ function validationMsj(receiver, value) {
                   console.log("datosselected67: " + listProm);
                   var route = listProm[0];
 
-                  console.log("datosselected66: " + route);
+                  console.error("datosselected66: " + route);
 
                   sendMsj(receiver, message, route, type);
                   validationMsj(receiver, route);
@@ -446,6 +446,8 @@ app.post("/webhook", async (req, res) => {
         message_id: message.id,
       },
     });*/
+    
+     repeatMessageOption = false;
 
     axios
       .get(
@@ -528,7 +530,7 @@ app.post("/webhook", async (req, res) => {
 
           console.log("routemultiple", route);
 
-          if (type == "multiple") {
+          if (type == "multiple" || type == "answer" || type == "form" ||  ) {
             repeatMessageOption = true;
           }
 
