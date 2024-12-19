@@ -225,6 +225,8 @@ function validationMsj(receiver, value) {
                   /*key.toLowerCase()*/ "this is a text message" ==
                   messageGlobal.toLowerCase()
                 ) {
+                  
+                  
                   console.log("datosselected: " + key);
 
                   var list2 = dataItemSelected["optionsStep"];
@@ -234,13 +236,16 @@ function validationMsj(receiver, value) {
                   console.log("datosselected67: " + listProm);
                   var route = listProm[0];
 
-                  console.error("datosselected66------: " + route);
+                  console.error("DATOS SELECTED------: " + route);
 
                   sendMsj(receiver, message, route, type);
                   validationMsj(receiver, route);
+                  messageGlobal = "";
                 }
               });
             } else {
+              
+                  console.error("DATOS SELECTED1------: " + route);
               sendMsj(receiver, message, route, type);
             }
 
@@ -522,24 +527,23 @@ app.post("/webhook", async (req, res) => {
               json2array(obj)[0]
           );
 
-          var position = json2array(obj).length - 1;
+          var position = (json2array(obj).length - 2);
 
           // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
           //   console.log("route99: "+ jsonData2+" - "+json2array(obj)[0]["routeStep"]);
           var route = json2array(obj)[position]["routeStep"];
 
-          var route2 = json2array(obj)[1]["routeStep"];
+         // var route2 = json2array(obj)[1]["routeStep"];
 
-          console.log("routemultiple: " + route2);
-          var type = json2array(obj)[position]["type"];
+        //  console.log("routemultiple: " + route2);
+          var type = json2array(obj)[(json2array(obj).length-1)]["type"];
+          
+          
+          
+          
 
-          console.log(
-            "routemultiple: " +
-              position +
-              " : " +
-              route +
-              " : " +
-              json2array(obj)
+          console.error(
+            "validation: "+type
           );
 
           if (
