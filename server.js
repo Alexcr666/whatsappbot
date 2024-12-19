@@ -183,7 +183,7 @@ function validationMsj(value) {
           //  var business_phone_number_id = "545034448685967";
 
           if (type == "chat" || type == "text") {
-            sendMsj(title, route, type);
+            sendMsj(title, route, type,true);
 
             validationMsj(route);
           }
@@ -218,9 +218,9 @@ function validationMsj(value) {
               savedAnswerData(messageGlobal);
 
               validationMsj(route);
-              sendMsj(listString, route, type);
+              sendMsj(listString, route, type,false);
             } else {
-              sendMsj(title, route, type);
+              sendMsj(title, route, type,true);
             }
           }
 
@@ -285,7 +285,7 @@ function validationMsj(value) {
                 "\n" +
                 "3.Contactar a un acesor";
 
-              sendMsj(listString, route, type);
+              sendMsj(listString, route, type,true);
             }
           }
           if (type == "media") {
@@ -389,7 +389,7 @@ function validationMsj(value) {
               if (route == undefined) {
                 sendMsj("multiple", "route", "multiple", true);
               } else {
-                sendMsj(message, route, type, true);
+                sendMsj(message, route, type,true);
               }
             }
 
@@ -427,7 +427,7 @@ function validationMsj(value) {
   }
 }
 
-function sendMsj(messageText, route, type, information, notification) {
+function sendMsj(messageText, route, type,/* information,*/ notification) {
   //if(route != null){
   console.log("-----sendmsj---: " + route);
 
@@ -436,7 +436,7 @@ function sendMsj(messageText, route, type, information, notification) {
     routeStep: route,
     type: type,
 
-    information: information,
+    information: notification,
     text: messageText,
     receipt: recipientId,
   };
@@ -468,6 +468,8 @@ function sendMsj(messageText, route, type, information, notification) {
     });
 
   if (notification == true) {
+    
+       console.error("----MENSAJE ENVIADO---");
     axios
       .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
         headers: {
@@ -573,7 +575,7 @@ function repeatChat() {
       console.error("body: " + title);
 
       console.log("Successfully firebase" + response.data);
-      sendMsj(title, route, type);
+      sendMsj(title, route, type,true);
 
       validationMsj(route);
     });
@@ -597,7 +599,7 @@ app.post("/webhook", async (req, res) => {
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
     //  var recipientData = business_phone_number_id;
 
-    recipientId = "mensaje";
+    recipientId = business_phone_number_id;
 
     // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
     /* await axios({
