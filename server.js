@@ -11,6 +11,11 @@ import axios from "axios";
 const app = express();
 app.use(express.json());
 
+function capitalize(str) {
+  if (!str) return ""; // Maneja cadenas vacías
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
 var to = "573013928129";
 
 const idChat = "-ODvWrCbH47cu21VClQr";
@@ -375,7 +380,7 @@ function validationMsj(value) {
 
               for (var i = 0; i < list.length; i++) {
                 console.log("longitud2: " + list[i]);
-                listString += list[i] + "\n";
+                listString += (i+1)+". "+capitalize(list[i]) + "\n";
               }
               var message = title + ":" + " \n\n" + listString;
 
@@ -388,7 +393,7 @@ function validationMsj(value) {
               //poder
 
               if (route == undefined) {
-                sendMsj("multiple", "route", "multiple", true);
+                sendMsj(message, "route", "multiple", true);
               } else {
                 sendMsj(message, route, type, true);
               }
