@@ -241,7 +241,15 @@ function validationMsj( value) {
 
                   console.error("DATOS SELECTED------: " + route);
                   
-                  kkk
+     /*  axios
+      .delete(
+        "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
+          idChat +
+          "/options/" +
+          value +
+          "/.json"
+      )
+      .then((response) => {});*/
                   
                   
 
@@ -254,6 +262,8 @@ function validationMsj( value) {
               
                   console.error("DATOS SELECTED1------: " + route);
               sendMsj( message, route, type);
+              
+            
             }
 
             // }, 500);
