@@ -281,9 +281,21 @@ function validationMsj(receiver, value) {
       console.log("datos: "+key);
       
       position+=1;
-      if(key.toLowerCase() ==   messageGlobal.toLowerCase()){
+      if(/*key.toLowerCase()*/"this is a text message" ==   messageGlobal.toLowerCase()){
         
-     var route =   dataItemSelected["optionsStep"]  [ (position-1)];
+          console.log("datosselected: "+key);
+        
+             var list2 = dataItemSelected["optionsStep"];
+        
+            var listProm =  json2array( list2);
+        
+          console.log("datosselected67: "+  listProm);
+     var route =   listProm[0];
+        
+     
+        
+        
+                 console.log("datosselected66: "+ route);
         validationMsj(receiver,route);
         
 
