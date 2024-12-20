@@ -116,6 +116,36 @@ function sendLink(value) {
     });
 }
 
+
+
+function sendVideo(imageUrl) {
+  axios
+    .post("https://graph.facebook.com/v16.0/" + recipientId + "/messages", {
+      headers: {
+        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        messaging_product: "whatsapp",
+        to: to,
+        type: "video",
+         "video": {
+    "link": imageUrl,
+    "caption": "Aquí tienes el video solicitado."
+  },
+      },
+    })
+    .then((response) => {
+      if (response.status == 200) {
+        print("Imagen enviada con éxito");
+        print("Respuesta: ${response.body}");
+      } else {
+        print("Error enviando la imagen: ${response.statusCode}");
+        print("Detalles del error: ${response.body}");
+      }
+    });
+}
+
 function sendMedia(imageUrl) {
   axios
     .post("https://graph.facebook.com/v16.0/" + recipientId + "/messages", {
@@ -296,7 +326,18 @@ function validationMsj(value) {
           }
           if (type == "media") {
             var url = dataItemSelected["url"];
-            sendMedia(url);
+            
+              var type = dataItemSelected["type"];
+            
+            if(type == "photo"){
+                sendMedia(url);
+              
+            }else{
+              
+               sendVideo(url);
+              
+            }
+          
 
             validationMsj(route);
 
