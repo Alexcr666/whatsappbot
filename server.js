@@ -116,8 +116,6 @@ function sendLink(value) {
     });
 }
 
-
-
 function sendVideo(imageUrl) {
   axios
     .post("https://graph.facebook.com/v16.0/" + recipientId + "/messages", {
@@ -129,10 +127,10 @@ function sendVideo(imageUrl) {
         messaging_product: "whatsapp",
         to: to,
         type: "video",
-         "video": {
-    "link": imageUrl,
-    "caption": "Aquí tienes el video solicitado."
-  },
+        video: {
+          link: imageUrl,
+          caption: "Aquí tienes el video solicitado.",
+        },
       },
     })
     .then((response) => {
@@ -326,18 +324,14 @@ function validationMsj(value) {
           }
           if (type == "media") {
             var url = dataItemSelected["url"];
-            
-              var type = dataItemSelected["type"];
-            
-            if(type == "photo"){
-                sendMedia(url);
-              
-            }else{
-              
-               sendVideo(url);
-              
+
+            var type = dataItemSelected["type"];
+
+            if (type == "photo") {
+              sendMedia(url);
+            } else {
+              sendVideo(url);
             }
-          
 
             validationMsj(route);
 
@@ -378,10 +372,7 @@ function validationMsj(value) {
                 console.log("datos: " + key);
 
                 position += 1;
-                if (
-                  key.toLowerCase()  ==
-                  messageGlobal.toLowerCase()
-                ) {
+                if (key.toLowerCase() == messageGlobal.toLowerCase()) {
                   console.log("datosselected: " + key);
 
                   var list2 = dataItemSelected["optionsStep"];
@@ -421,7 +412,7 @@ function validationMsj(value) {
 
               for (var i = 0; i < list.length; i++) {
                 console.log("longitud2: " + list[i]);
-                listString += (i+1)+". "+capitalize(list[i]) + "\n";
+                listString += i + 1 + ". " + capitalize(list[i]) + "\n";
               }
               var message = title + ":" + " \n\n" + listString;
 
@@ -532,14 +523,14 @@ async function sendMsj(
         messaging_product: "whatsapp",
         to: to,
         text: { body: messageText },
-       /* context: {
+        /* context: {
           message_id: messageFinal.id, // shows the message as a reply to the original user message
         },*/
       },
     });
 
     // mark incoming message as read
-   /* await axios({
+    /* await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${recipientId}/messages`,
       headers: {
@@ -688,8 +679,6 @@ app.post("/webhook", async (req, res) => {
 
     const business_phone_number_id =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
-
-    
 
     //  var recipientData = business_phone_number_id;
 
