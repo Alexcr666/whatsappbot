@@ -809,7 +809,7 @@ app.post("/webhook", async (req, res) => {
             titleEtiqueta: "Compras",
             titleTrigger: "Nuevo",
             totalHour: 4,
-            type: "0",
+            type: "2",
           };
 
           axios
