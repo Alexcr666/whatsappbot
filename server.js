@@ -18,7 +18,7 @@ function capitalize(str) {
 
 var to = "573013928129";
 
-const idChat = "-OFPs0CgE1K7UIqi4YuL";
+const idChat = "-OFgeOd2BaXFQqqmMLU_";
 
 var messageGlobal = "";
 
