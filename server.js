@@ -373,7 +373,7 @@ function validationMsj(value) {
 
                 position += 1;
                 console.log("global: "+messageGlobal.toLowerCase());
-                if (/*key.toLowerCase()*/"this is a text message" == messageGlobal.toLowerCase()) {
+                if (key.toLowerCase() == messageGlobal.toLowerCase()) {
                   console.log("datosselected: " + key);
 
                   var list2 = dataItemSelected["optionsStep"];
@@ -758,7 +758,7 @@ app.post("/webhook", async (req, res) => {
 
           console.error("routefirme23: " + dataItemSelected);
 
-          var position = dataItemSelected.length - 1; //changed1
+          var position = dataItemSelected.length - 2; //changed1
 
           // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
              console.log("route99: "+ dataItemSelected[position]["type"]);
