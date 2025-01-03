@@ -372,7 +372,8 @@ function validationMsj(value) {
                 console.log("datos: " + key);
 
                 position += 1;
-                if (key.toLowerCase() == messageGlobal.toLowerCase()) {
+                console.log("global: "+messageGlobal.toLowerCase());
+                if (/*key.toLowerCase()*/"this is a text message" == messageGlobal.toLowerCase()) {
                   console.log("datosselected: " + key);
 
                   var list2 = dataItemSelected["optionsStep"];
@@ -527,7 +528,10 @@ async function sendMsj(
           message_id: messageFinal.id, // shows the message as a reply to the original user message
         },*/
       },
-    });
+      
+    }).catch((error) => {
+        console.error("errorfirebaseend: msj: " + error); // Manejo de errores
+      });
 
     // mark incoming message as read
     /* await axios({
@@ -813,7 +817,7 @@ app.get("/webhook", (req, res) => {
   // check the mode and token sent are correct
   if (mode === "subscribe" && token === WEBHOOK_VERIFY_TOKEN) {
     // respond with 200 OK and challenge token from the request
-    res.status(200).send(challenge);
+    res.status(200).send(challenge); 
     console.log("Webhook verified successfully!");
   } else {
     // respond with '403 Forbidden' if verify tokens do not match
