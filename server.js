@@ -18,7 +18,7 @@ function capitalize(str) {
 
 var to = "573013928129";
 
-const idChat = "-ODvWrCbH47cu21VClQr";
+const idChat = "-OFPs0CgE1K7UIqi4YuL";
 
 var messageGlobal = "";
 
@@ -617,7 +617,7 @@ async function sendMsj(
 function repeatChat() {
   axios
     .get(
-      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/-ODvWrCbH47cu21VClQr/options/.json"
+      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/"+idChat+  "/options/.json"
     )
     .then((response) => {
       const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
