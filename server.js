@@ -384,6 +384,8 @@ function validationMsj(value) {
                   var route = listProm[0];
 
                   console.error("DATOS SELECTED------: " + route);
+                  
+                  var message = kkk
 
                   /*  axios
       .delete(
@@ -512,7 +514,7 @@ async function sendMsj(
     });
 
   if (notification == true) {
-    console.error("----MENSAJE ENVIADO---");
+    console.error("----MENSAJE ENVIADO---"+messageText);
 
     await axios({
       method: "POST",
