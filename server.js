@@ -218,8 +218,13 @@ function validationMsj(value) {
 
           if (type == "chat" || type == "text") {
             sendMsj(title, route, type, true);
-
-            validationMsj(route);
+            console.error("SEND CHAT----: "+route);
+repeatMessageOption = false;
+            
+          setTimeout(() => {
+ validationMsj(route);
+}, 1000);
+            
           }
 
           if (type == "terms") {
@@ -386,6 +391,8 @@ function validationMsj(value) {
                   console.error("DATOS SELECTED------3: " + route);
                      validationMsj(route);
                   
+                     console.error("DATOS SELECTED------4: " + route);
+                  
                   
                   
                   axios
@@ -405,6 +412,8 @@ function validationMsj(value) {
           var dataItemSelected = JSON.parse(jsonData);
                     
                     var list2 = dataItemSelected["optionsMulti"];
+                    
+                    if(dataItemSelected["optionsMulti"] != null){
 
               var list = json2array(list2);
 
@@ -417,11 +426,13 @@ function validationMsj(value) {
                 listString += i + 1 + ". " + capitalize(list[i]) + "\n";
               }
               var message = title + ":" + " \n\n" + listString;
-                    
-                
-                      sendMsj(message, route, type, true);
+                         sendMsj(message, route, type, true);
                //   validationMsj(route);
-                  messageGlobal = "";
+                 
+                    }
+                     messageGlobal = "";
+                
+                   
                     
                     
                     
