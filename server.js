@@ -735,7 +735,7 @@ app.post("/webhook", async (req, res) => {
           repeatChat();
         } else {
           const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
-          console.log("Datos en formato JSON:", jsonData);
+          console.log("Datos en formato JSON22:", jsonData);
 
           //  var recipientId = body.recipient_id;
           // var messageId = body.message_id;
@@ -751,16 +751,18 @@ app.post("/webhook", async (req, res) => {
             console.log("welcome: " + dataItem["welcome"]);
 
             if (dataItem["information"] != true) {
+              
               dataItemSelected.push(dataItem);
             }
           }
 
           console.error("routefirme23: " + dataItemSelected);
 
-          var position = dataItemSelected.length - 2;
+          var position = dataItemSelected.length - 1; //changed1
 
           // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
-          //   console.log("route99: "+ jsonData2+" - "+json2array(obj)[0]["routeStep"]);
+             console.log("route99: "+ dataItemSelected[position]["type"]);
+          
           var route = dataItemSelected[position]["routeStep"];
 
           // var route2 = json2array(obj)[1]["routeStep"];
