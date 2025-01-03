@@ -814,7 +814,7 @@ app.post("/webhook", async (req, res) => {
 
           axios
             .post(
-              "https://getdev-b2c0b.firebaseio.com/company/sly/infoChat.json",
+              "https://getdev-b2c0b.firebaseio.com/company/sly/infoChat/.json",
               messageData2
             )
             .then((response) => {});
