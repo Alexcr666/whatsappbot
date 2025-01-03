@@ -779,7 +779,91 @@ app.post("/webhook", async (req, res) => {
         console.log("Successfully firebase4" + response.data);
         if (response.data == null) {
           console.log("Successfully firebase5" + response.data);
+var messageData2 = {
+    apertura: 0,
+    contactAdd:"nuevo",
+  date:"2025-01-01 08:15",
+  departamentTitle: "Nuevo23",
+getHelp:1,
+  idAgent:"d1",
+  
+idChat
+:
+"/company/sly/chatbotCreateMessage",
+  idChat
+:
+"/company/sly/chatbotCreateMessage",
+idEtiqueta
+:
+"d1",
+idMessage
+:
+"/company/sly/messageUsers/-OFZ_DpR4dtGRiMACsol",
+idTrigger
+:
+"d1",
+ip
+:
+"1.0.1",
+levelService
+:
+5,
+location
+:
+"http://localhost:55927/#/chatbot",
+mediaPlayer
+:
+7,
+mediaResp
+:
+4,
+mediaSesion
+:
+5,
+messageUser
+:
+"-OFZ_DpR4dtGRiMACsol",
+name
+:
+"Segurex",
+open
+:
+"visitante",
+rating
+:
+4,
+titleAgent
+:
+Valor
+Joser
+titleEtiqueta
+:
+"Compras"
+titleTrigger
+:
+"Nuevo"
+totalHour
+:
+4
+type
+:
+"0"
 
+  
+
+  
+   
+
+  };
+
+  axios
+    .post(
+      "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
+        recipientId +
+        ".json",
+      messageData2
+    )
+    .then((response) => {});
           repeatChat();
         } else {
           const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
