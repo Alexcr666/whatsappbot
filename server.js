@@ -385,7 +385,19 @@ function validationMsj(value) {
 
                   console.error("DATOS SELECTED------: " + route);
                   
-                  var message = kkk
+                 var list2 = dataItemSelected["optionsMulti"];
+
+              var list = json2array(list2);
+
+              console.log("longitud: " + list[0]);
+
+              var listString = "";
+
+              for (var i = 0; i < list.length; i++) {
+                console.log("longitud2: " + list[i]);
+                listString += i + 1 + ". " + capitalize(list[i]) + "\n";
+              }
+              var message = title + ":" + " \n\n" + listString;
 
                   /*  axios
       .delete(
