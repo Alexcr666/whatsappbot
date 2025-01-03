@@ -383,7 +383,10 @@ function validationMsj(value) {
                   console.log("datosselected67: " + listProm);
                   var route = listProm[0];
 
-                  console.error("DATOS SELECTED------: " + route);
+                  console.error("DATOS SELECTED------3: " + route);
+                     validationMsj(route);
+                  
+                  
                   
                   axios
       .get(
@@ -395,7 +398,9 @@ function validationMsj(value) {
       )
       .then((response) => {
                     
-                     const jsonData = JSON.stringify(response.data, null, 2);
+                    
+                    
+                    const jsonData = JSON.stringify(response.data, null, 2);
 
           var dataItemSelected = JSON.parse(jsonData);
                     
@@ -415,7 +420,7 @@ function validationMsj(value) {
                     
                 
                       sendMsj(message, route, type, true);
-                  validationMsj(route);
+               //   validationMsj(route);
                   messageGlobal = "";
                     
                     
