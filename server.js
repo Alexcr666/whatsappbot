@@ -218,22 +218,18 @@ function validationMsj(value) {
 
           if (type == "chat" || type == "text") {
             sendMsj(title, route, type, false);
-            console.error("-------SEND CHAT----: "+route+" "+oneChat);
+            console.error("-------SEND CHAT----: " + route + " " + oneChat);
 
-            
-            if(oneChat ){
-              
+            if (oneChat) {
               oneChat = false;
               repeatMessageOption = true;
-            }else{
+            } else {
               repeatMessageOption = false;
             }
-            
-          setTimeout(() => {
-            
- validationMsj(route);
-}, 1000);
-            
+
+            setTimeout(() => {
+              validationMsj(route);
+            }, 1000);
           }
 
           if (type == "terms") {
@@ -382,12 +378,15 @@ function validationMsj(value) {
             if (repeatMessageOption == true) {
               var keys = Object.keys(dataItemSelected["optionsStep"]);
               var position = 0;
+              var result45 = true;
               keys.forEach(function (key) {
                 console.log("datos: " + key);
 
                 position += 1;
-                console.log("global: "+messageGlobal.toLowerCase());
-                if (key.toLowerCase() == messageGlobal.toLowerCase()) {
+                console.log("global: " + messageGlobal.toLowerCase());
+              
+                if (/*key.toLowerCase() == messageGlobal.toLowerCase()*/result45) {
+                  result45  = false;
                   console.log("datosselected: " + key);
 
                   var list2 = dataItemSelected["optionsStep"];
@@ -398,56 +397,43 @@ function validationMsj(value) {
                   var route = listProm[0];
 
                   console.error("DATOS SELECTED------3: " + route);
-                     validationMsj(route);
-                  
-                     console.error("DATOS SELECTED------4: " + route);
-                  
-                  
-                  
+                  validationMsj(route);
+
+                  console.error("DATOS SELECTED------4: " + route);
+
                   axios
-      .get(
-        "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
-          idChat +
-          "/options/" +
-          route +
-          "/.json"
-      )
-      .then((response) => {
-                    
-                    
-                    
-                    const jsonData = JSON.stringify(response.data, null, 2);
+                    .get(
+                      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
+                        idChat +
+                        "/options/" +
+                        route +
+                        "/.json"
+                    )
+                    .then((response) => {
+                      const jsonData = JSON.stringify(response.data, null, 2);
 
-          var dataItemSelected = JSON.parse(jsonData);
-                    
-                    var list2 = dataItemSelected["optionsMulti"];
-                    
-                    if(dataItemSelected["optionsMulti"] != null){
+                      var dataItemSelected = JSON.parse(jsonData);
 
-              var list = json2array(list2);
+                      var list2 = dataItemSelected["optionsMulti"];
 
-              console.log("longitud: " + list[0]);
+                      if (dataItemSelected["optionsMulti"] != null) {
+                        var list = json2array(list2);
 
-              var listString = "";
+                        console.log("longitud: " + list[0]);
 
-              for (var i = 0; i < list.length; i++) {
-                console.log("longitud2: " + list[i]);
-                listString += i + 1 + ". " + capitalize(list[i]) + "\n";
-              }
-              var message = title + ":" + " \n\n" + listString;
-                         sendMsj(message, route, type, false);
-               //   validationMsj(route);
-                 
-                    }
-                     messageGlobal = "";
-                
-                   
-                    
-                    
-                    
-                  });
-                  
-                 
+                        var listString = "";
+
+                        for (var i = 0; i < list.length; i++) {
+                          console.log("longitud2: " + list[i]);
+                          listString +=
+                            i + 1 + ". " + capitalize(list[i]) + "\n";
+                        }
+                        var message = title + ":" + " \n\n" + listString;
+                        sendMsj(message, route, type, false);
+                        //   validationMsj(route);
+                      }
+                      messageGlobal = "";
+                    });
 
                   /*  axios
       .delete(
@@ -458,8 +444,6 @@ function validationMsj(value) {
           "/.json"
       )
       .then((response) => {});*/
-
-                
                 }
               });
             } else {
@@ -542,7 +526,7 @@ async function sendMsj(
     routeStep: route,
     type: type,
 
-    information: notification,
+    information: false,
     text: messageText,
     receipt: recipientId,
   };
@@ -573,30 +557,29 @@ async function sendMsj(
       }
     });
 
- // if (notification == true) {
-    console.error("----MENSAJE ENVIADO---"+messageText);
+  // if (notification == true) {
+  console.error("----MENSAJE ENVIADO---" + messageText);
 
-    await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${recipientId}/messages`,
-      headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        to: to,
-        text: { body: messageText },
-        /* context: {
+  await axios({
+    method: "POST",
+    url: `https://graph.facebook.com/v18.0/${recipientId}/messages`,
+    headers: {
+      Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+    },
+    data: {
+      messaging_product: "whatsapp",
+      to: to,
+      text: { body: messageText },
+      /* context: {
           message_id: messageFinal.id, // shows the message as a reply to the original user message
         },*/
-      },
-      
-    }).catch((error) => {
-        console.error("errorfirebaseend: msj: " + error); // Manejo de errores
-      });
+    },
+  }).catch((error) => {
+    console.error("errorfirebaseend: msj: " + error); // Manejo de errores
+  });
 
-    // mark incoming message as read
-    /* await axios({
+  // mark incoming message as read
+  /* await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${recipientId}/messages`,
       headers: {
@@ -609,7 +592,7 @@ async function sendMsj(
       },
     });*/
 
-    /* axios
+  /* axios
       .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
         headers: {
           Authorization: `Bearer ${GRAPH_API_TOKEN}`,
@@ -683,7 +666,9 @@ async function sendMsj(
 function repeatChat() {
   axios
     .get(
-      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/"+idChat+  "/options/.json"
+      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
+        idChat +
+        "/options/.json"
     )
     .then((response) => {
       const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
@@ -723,7 +708,7 @@ function repeatChat() {
 
       console.log("Successfully firebase" + response.data);
       sendMsj(title, route, type, true);
-    oneChat = true;
+      oneChat = true;
 
       validationMsj(route);
     });
@@ -814,7 +799,6 @@ app.post("/webhook", async (req, res) => {
             console.log("welcome: " + dataItem["welcome"]);
 
             if (dataItem["information"] != true) {
-              
               dataItemSelected.push(dataItem);
             }
           }
@@ -824,8 +808,8 @@ app.post("/webhook", async (req, res) => {
           var position = dataItemSelected.length - 2; //changed1
 
           // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
-             console.log("route99: "+ dataItemSelected[position]["type"]);
-          
+          console.log("route99: " + dataItemSelected[position]["type"]);
+
           var route = dataItemSelected[position]["routeStep"];
 
           // var route2 = json2array(obj)[1]["routeStep"];
@@ -844,7 +828,6 @@ app.post("/webhook", async (req, res) => {
           ) {
             repeatMessageOption = true;
           }
-          
 
           validationMsj(route);
         }
@@ -883,7 +866,7 @@ app.get("/webhook", (req, res) => {
   // check the mode and token sent are correct
   if (mode === "subscribe" && token === WEBHOOK_VERIFY_TOKEN) {
     // respond with 200 OK and challenge token from the request
-    res.status(200).send(challenge); 
+    res.status(200).send(challenge);
     console.log("Webhook verified successfully!");
   } else {
     // respond with '403 Forbidden' if verify tokens do not match
