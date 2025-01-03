@@ -381,7 +381,7 @@ function validationMsj(value) {
                   var listProm = json2array(list2);
 
                   console.log("datosselected67: " + listProm);
-                  var route = listProm[2];
+                  var route = listProm[0];
 
                   console.error("DATOS SELECTED------: " + route);
                   
