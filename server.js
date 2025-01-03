@@ -17,7 +17,7 @@ function capitalize(str) {
 }
 
 var to = "573013928129";
-
+var oneChat = false;
 const idChat = "-OFgeOd2BaXFQqqmMLU_";
 
 var messageGlobal = "";
@@ -217,11 +217,20 @@ function validationMsj(value) {
           //  var business_phone_number_id = "545034448685967";
 
           if (type == "chat" || type == "text") {
-            sendMsj(title, route, type, true);
+            sendMsj(title, route, type, false);
             console.error("SEND CHAT----: "+route);
-repeatMessageOption = false;
+
+            
+            if(oneChat ){
+              
+              oneChat = false;
+              repeatMessageOption = true;
+            }else{
+              repeatMessageOption = false;
+            }
             
           setTimeout(() => {
+            
  validationMsj(route);
 }, 1000);
             
@@ -426,7 +435,7 @@ repeatMessageOption = false;
                 listString += i + 1 + ". " + capitalize(list[i]) + "\n";
               }
               var message = title + ":" + " \n\n" + listString;
-                         sendMsj(message, route, type, true);
+                         sendMsj(message, route, type, false);
                //   validationMsj(route);
                  
                     }
@@ -479,9 +488,9 @@ repeatMessageOption = false;
               //poder
 
               if (route == undefined) {
-                sendMsj(message, "route", "multiple", true);
+                sendMsj(message, "route", "multiple", false);
               } else {
-                sendMsj(message, route, type, true);
+                sendMsj(message, route, type, false);
               }
             }
 
@@ -714,6 +723,7 @@ function repeatChat() {
 
       console.log("Successfully firebase" + response.data);
       sendMsj(title, route, type, true);
+    oneChat = true;
 
       validationMsj(route);
     });
@@ -834,6 +844,7 @@ app.post("/webhook", async (req, res) => {
           ) {
             repeatMessageOption = true;
           }
+          
 
           validationMsj(route);
         }
