@@ -381,11 +381,25 @@ function validationMsj(value) {
                   var listProm = json2array(list2);
 
                   console.log("datosselected67: " + listProm);
-                  var route = listProm[0];
+                  var route = listProm[2];
 
                   console.error("DATOS SELECTED------: " + route);
                   
-                 var list2 = dataItemSelected["optionsMulti"];
+                  axios
+      .get(
+        "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
+          idChat +
+          "/options/" +
+          route +
+          "/.json"
+      )
+      .then((response) => {
+                    
+                     const jsonData = JSON.stringify(response.data, null, 2);
+
+          var dataItemSelected = JSON.parse(jsonData);
+                    
+                    var list2 = dataItemSelected["optionsMulti"];
 
               var list = json2array(list2);
 
@@ -398,6 +412,17 @@ function validationMsj(value) {
                 listString += i + 1 + ". " + capitalize(list[i]) + "\n";
               }
               var message = title + ":" + " \n\n" + listString;
+                    
+                
+                      sendMsj(message, route, type, true);
+                  validationMsj(route);
+                  messageGlobal = "";
+                    
+                    
+                    
+                  });
+                  
+                 
 
                   /*  axios
       .delete(
@@ -409,9 +434,7 @@ function validationMsj(value) {
       )
       .then((response) => {});*/
 
-                  sendMsj(message, route, type, true);
-                  validationMsj(route);
-                  messageGlobal = "";
+                
                 }
               });
             } else {
