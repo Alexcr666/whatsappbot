@@ -218,7 +218,7 @@ function validationMsj(value) {
 
           if (type == "chat" || type == "text") {
             sendMsj(title, route, type, false);
-            console.error("SEND CHAT----: "+route);
+            console.error("-------SEND CHAT----: "+route+" "+oneChat);
 
             
             if(oneChat ){
@@ -573,7 +573,7 @@ async function sendMsj(
       }
     });
 
-  if (notification == true) {
+ // if (notification == true) {
     console.error("----MENSAJE ENVIADO---"+messageText);
 
     await axios({
@@ -633,7 +633,7 @@ async function sendMsj(
     }).catch((error) => {
         console.error("errorfirebassend: " + error); // Manejo de errores
       });;*/
-  }
+  //}
 
   /*
   axios
