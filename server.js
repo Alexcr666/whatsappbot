@@ -437,7 +437,8 @@ function validationMsj(value) {
               }
               if (messageGlobal == "3") {
                 repeatMessageOption = false;
-                sendMsj("Buscando", route, type, true);
+                savedAlertAgentData();
+                sendMsj("Buscando agentes disponibles", route, type, true);
               }
             } else {
               var listString =
@@ -725,6 +726,44 @@ function repeatChat() {
 app.post("/webhook", async (req, res) => {
   // log incoming messages
   console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
+
+
+
+  axios
+  .get(
+    "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/.json"
+  )
+  .then((response) => {
+    const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
+    console.log("Datos en formato JSONprincipal:", jsonData);
+
+    //  var recipientId = body.recipient_id;
+    // var messageId = body.message_id;
+
+    var obj = JSON.parse(jsonData);
+
+    var listJson = json2array(obj);
+    console.log(
+      "lenghtoptionsinit : " +
+        json2array(obj).length +
+        " : " +
+        json2array(obj)[0]
+    );
+
+
+    for (var i = 0; i < json2array(obj).length; i++) {
+      var dataItem = json2array(obj)[i];
+
+    
+
+      if (dataItem["principal"] == true) {
+        idChat = dataItem["id"];
+        console.log("principal: " + dataItem["id"]);
+       // dataItemSelected = dataItem;
+      }
+    }
+  });
+
 
   // check if the webhook request contains a message
   // details on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
