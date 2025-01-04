@@ -15,7 +15,7 @@ function capitalize(str) {
   if (!str) return ""; // Maneja cadenas vacías
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
-var tokenFacebook = "EAAMLZAcqhqNcBO5GTZC4jheYf9KFbgyRiVENBBDhv45LF4WpZCbACHiiaTGuZB4C0qZBdcxF5hNrXP4aF95NLNAzJr87dXOEmubwtPlZBQyzWAysn1ZAnLkcMLCgZCgKgkU96lpaKhsjDzmsd7eKohBZCTSahzUrBui3aZA6eZA7ddqNTpcVij5k5UlezauPLmFdEdM4hgPDfrRJTSRGIQ58CZADOZC6OLgZDZD";
+var tokenFacebook = "EAAMLZAcqhqNcBOzZA74KZCbYlFjDZA0txgIYagPir93a2D5XwQ3xJuVVc7HaQpk1seZBeHheGrd8ImQ4NRxPV2UGfAAbYtFKi7pLBFZBC4cU7u5higtLH8T9OVEgyqNkm2tHybqU9408XTK1BSqoJYgcMYbQhYn9MU9AFVHXyiOwhNZBg8puZB4slBwZD";
 var to = "573013928129";
 var oneChat = false;
 const idChat = "-OFgeOd2BaXFQqqmMLU_";
