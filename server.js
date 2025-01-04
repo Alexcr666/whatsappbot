@@ -177,7 +177,7 @@ function sendMedia(imageUrl) {
     .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
       headers: {
      
-          Authorization:"Bearer EAAMLZAcqhqNcBO2W3UOhFjfOfzt6QgX1ficehVKcVZAQaKozWDy1rS2ZCZAG3bQBWZBn6wlgL11vRxhX5bdxs1muERZAimyqQQtLpeNXASnVS2osignMbfOHkIfBHPxtoah8ZA8rl5atTIoZCpXlUeSqmMuSbcTbna3UTV63ozJ3KvEspGqKoyxAUIOFscHDL2WeKRykn2ZBtF4bVpZAkDtkIzLJ1JiAZDZD",
+          "Authorization":"Bearer EAAMLZAcqhqNcBO2W3UOhFjfOfzt6QgX1ficehVKcVZAQaKozWDy1rS2ZCZAG3bQBWZBn6wlgL11vRxhX5bdxs1muERZAimyqQQtLpeNXASnVS2osignMbfOHkIfBHPxtoah8ZA8rl5atTIoZCpXlUeSqmMuSbcTbna3UTV63ozJ3KvEspGqKoyxAUIOFscHDL2WeKRykn2ZBtF4bVpZAkDtkIzLJ1JiAZDZD",
         
         "Content-Type": "application/json",
       },
