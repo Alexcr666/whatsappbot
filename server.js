@@ -740,12 +740,13 @@ app.post("/webhook", async (req, res) => {
   // check if the incoming message contains text
   if (message?.type === "text") {
 
-
-  axios
-  .get(
-    "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/.json"
-  )
-  .then((response) => {
+    axios
+    .get(
+      "https://getdev-b2c0b.firebaseio.com/company/sly/chatMessage/" +
+        "whatsapp" +
+        "/.json"
+    )
+    .then((response) => {
     const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
     console.log("Datos en formato JSONprincipal:", jsonData);
 
