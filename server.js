@@ -174,7 +174,7 @@ function sendVideo(imageUrl) {
 
 function sendMedia(imageUrl) {
   axios
-    .post("https://graph.facebook.com/v16.0/" + recipientId + "/messages", {
+    .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
       headers: {
      
           Authorization:"Bearer EAAMLZAcqhqNcBO2W3UOhFjfOfzt6QgX1ficehVKcVZAQaKozWDy1rS2ZCZAG3bQBWZBn6wlgL11vRxhX5bdxs1muERZAimyqQQtLpeNXASnVS2osignMbfOHkIfBHPxtoah8ZA8rl5atTIoZCpXlUeSqmMuSbcTbna3UTV63ozJ3KvEspGqKoyxAUIOFscHDL2WeKRykn2ZBtF4bVpZAkDtkIzLJ1JiAZDZD",
@@ -199,7 +199,9 @@ function sendMedia(imageUrl) {
         print("Error enviando la imagen: ${response.statusCode}");
         print("Detalles del error: ${response.body}");
       }
-    });
+    }) .catch((error) => {
+      console.log("errorfirebaseimage: " + error); // Manejo de errores
+    });;
 }
 function sendEventAnalitics() {}
 
