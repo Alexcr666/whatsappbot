@@ -119,31 +119,32 @@ function savedForm(city, company, consult, email, name, phone) {
 
 function sendLink(value) {
 
-
-  axios
-    .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
-      headers: {
-        Authorization: `Bearer ${tokenFacebook}`,
-        "Content-Type": "application/json",
-      },
-      params: {
-        messaging_product: "whatsapp",
-        to: to,
-        type: "link",
-        link: {
-          url: value,
-        },
-      },
-    })
-    .then((response) => {
-      if (response.status == 200) {
-        print("Imagen enviada con éxito");
-        print("Respuesta: ${response.body}");
-      } else {
-        print("Error enviando la imagen: ${response.statusCode}");
-        print("Detalles del error: ${response.body}");
-      }
-    });
+console.error("ENVIANDO LINK: "+value);
+  
+axios.post(
+  `https://graph.facebook.com/v18.0/${recipientId}/messages`,
+  {
+    messaging_product: 'whatsapp', // Obligatorio
+    to: recipientId, // Número del destinatario
+    type: 'image',
+    image: {
+      link: value, // Enlace a la imagen
+      caption: 'Aquí está tu imagen' // Opcional
+    }
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${tokenFacebook}`, // Token de acceso
+      'Content-Type': 'application/json'
+    }
+  }
+)
+  .then(response => {
+    console.log('Mensaje enviado con éxito:', response.data);
+  })
+  .catch(error => {
+    console.error('Error al enviar el mensaje:', error.response?.data || error.message);
+  });
 }
 
 function sendVideo(imageUrl) {
@@ -206,7 +207,7 @@ function sendMedia(imageUrl) {
       }
     }) .catch((error) => {
       console.log("errorfirebaseimage: " + error); // Manejo de errores
-    });;
+    });
 }
 function sendEventAnalitics() {}
 
@@ -371,7 +372,12 @@ function validationMsj(value) {
               repeatMessageOption = false;
               validationMsj(route);
 
+              console.error("GUARDANDO FORMULARIO");
+
               let lista = messageGlobal.split(", ");
+
+
+           
 
               var city = lista[0];
               var company = lista[1];
@@ -382,7 +388,7 @@ function validationMsj(value) {
 
               savedForm(city, company, consult, email, name, phone);
 
-              sendMsj(listString, route, type, true);
+            //  sendMsj("Gracias por compartir", route, type, true);
             } else {
               sendMsj(listString, route, type, true);
             }
