@@ -729,6 +729,18 @@ app.post("/webhook", async (req, res) => {
 
 
 
+
+
+
+  // check if the webhook request contains a message
+  // details on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
+  const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
+
+  messageFinal = message;
+  // check if the incoming message contains text
+  if (message?.type === "text") {
+
+
   axios
   .get(
     "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/.json"
@@ -750,6 +762,8 @@ app.post("/webhook", async (req, res) => {
         json2array(obj)[0]
     );
 
+    console.error("BUSCANDO RUTAS: " );
+
 
     for (var i = 0; i < json2array(obj).length; i++) {
       var dataItem = json2array(obj)[i];
@@ -758,7 +772,7 @@ app.post("/webhook", async (req, res) => {
 
       if (dataItem["principal"] == true) {
         idChat = dataItem["id"];
-        console.log("savedprincipal: " + dataItem["id"]);
+        console.error("savedprincipal: " + dataItem["id"]);
        // dataItemSelected = dataItem;
       }
     }
@@ -766,16 +780,6 @@ app.post("/webhook", async (req, res) => {
     console.eror("errorprincipal: "+error); // Manejo de errores
   });
 
-
-
-
-  // check if the webhook request contains a message
-  // details on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
-  const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
-
-  messageFinal = message;
-  // check if the incoming message contains text
-  if (message?.type === "text") {
     // extract the business number to send the reply from it
 
     messageGlobal = message.text.body;
