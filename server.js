@@ -393,6 +393,7 @@ function validationMsj(value) {
 
           if (type == "end") {
             if (repeatMessageOption == true) {
+              console.log("VALIDAR FINALIZACIÓN CHAT");
               if (messageGlobal == "1") {
                 repeatMessageOption = false;
                 sendMsj("Gracias por comunicarte", route, type, true);
@@ -454,7 +455,7 @@ function validationMsj(value) {
           }
 
           if (type == "product") {
-            var value = dataItemSelected["product"];
+            var value = dataItemSelected["link"];
 
             sendLink(value);
 
