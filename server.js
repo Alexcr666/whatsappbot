@@ -758,11 +758,15 @@ app.post("/webhook", async (req, res) => {
 
       if (dataItem["principal"] == true) {
         idChat = dataItem["id"];
-        console.log("principal: " + dataItem["id"]);
+        console.log("savedprincipal: " + dataItem["id"]);
        // dataItemSelected = dataItem;
       }
     }
+  }) .catch((error) => {
+    console.eror("errorprincipal: "+error); // Manejo de errores
   });
+
+
 
 
   // check if the webhook request contains a message
