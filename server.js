@@ -821,14 +821,14 @@ app.post("/webhook", async (req, res) => {
           var position = dataItemSelected.length - 2; //changed1
 
           var route = dataItemSelected[position]["routeStep"];
-
+          console.error("LA RUTA EN EL INICIO DE LA APP1: " + route);
           if(route == "route"){
 
           route = dataItemSelected[dataItemSelected.length - 1]["routeStep"];
 
           }
 
-          console.error("LA RUTA EN EL INICIO DE LA APP: " + route);
+          console.error("LA RUTA EN EL INICIO DE LA APP2: " + route);
           var type = dataItemSelected[dataItemSelected.length - 1]["type"];
 
           console.error("EL TIPO DE MENSAJE EN EL INICIO DE LA APP: " + type);
