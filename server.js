@@ -301,12 +301,16 @@ function validationMsj(value) {
               "2.Rechazar";
             if (repeatMessageOption == true) {
               
-              console.error("VALIDA EL MENSAJE RESPUESTA POLITICAS"+ messageGlobal );
+              console.error("VALIDA EL MENSAJE RESPUESTA POLITICAS: "+ messageGlobal );
               if (messageGlobal == "1") {
 
                 var list2 = dataItemSelected["optionsStep"];
 
                   var listProm = json2array(list2);
+                  
+
+
+                  console.error("VALIDA EL CONTENIDO DE LA LISTA TEMS: "+ listProm );
                   var route = listProm["si"];
 
                   console.error("RUTA SELECCIONADA TERMS"+ route);
