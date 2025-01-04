@@ -119,32 +119,29 @@ function savedForm(city, company, consult, email, name, phone) {
 
 function sendLink(value) {
 
-console.error("ENVIANDO LINK: "+value);
-  
-axios.post(
-  `https://graph.facebook.com/v18.0/${recipientId}/messages`,
-  {
-    messaging_product: 'whatsapp', // Obligatorio
-    to: to, // Número del destinatario
-    type: 'image',
-    image: {
-      link: value, // Enlace a la imagen
-      caption: 'Aquí está tu imagen' // Opcional
+  axios.post(
+    `https://graph.facebook.com/v18.0/${recipientId}/messages`,
+    {
+      messaging_product: 'whatsapp', // Obligatorio
+      to: to,               // Número del destinatario
+      type: 'text',
+      text: {
+        body: `Visita este enlace: ${value}` // Cuerpo del mensaje con la URL
+      }
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${tokenFacebook}`, // Token de acceso
+        'Content-Type': 'application/json'
+      }
     }
-  },
-  {
-    headers: {
-      Authorization: `Bearer ${tokenFacebook}`, // Token de acceso
-      'Content-Type': 'application/json'
-    }
-  }
-)
-  .then(response => {
-    console.log('Mensaje enviado con éxito:', response.data);
-  })
-  .catch(error => {
-    console.error('Error al enviar el mensaje:', error.response?.data || error.message);
-  });
+  )
+    .then(response => {
+      console.log('Mensaje enviado con éxito:', response.data);
+    })
+    .catch(error => {
+      console.error('Error al enviar el mensaje:', error.response?.data || error.message);
+    });
 }
 
 function sendVideo(imageUrl) {
@@ -179,34 +176,29 @@ function sendMedia(imageUrl) {
   console.error("IMAGEN REFERENCIA: "+imageUrl);
 
   
-  axios
-    .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
-      headers: {
-        Authorization: `Bearer ${tokenFacebook}`,
-      
-        
-        "Content-Type": "application/json",
-      },
-      params: {
-        messaging_product: "whatsapp",
-        to: to,
-        type: "image",
-        image: {
-          link: imageUrl,
-          // Agrega el caption si está disponible
-        },
-      },
-    })
-    .then((response) => {
-      if (response.status == 200) {
-        print("Imagen enviada con éxito");
-        print("Respuesta: ${response.body}");
-      } else {
-        print("Error enviando la imagen: ${response.statusCode}");
-        print("Detalles del error: ${response.body}");
+  axios.post(
+    `https://graph.facebook.com/v18.0/${recipientId}/messages`,
+    {
+      messaging_product: 'whatsapp', // Obligatorio
+      to: to, // Número del destinatario
+      type: 'image',
+      image: {
+        link: imageUrl, // Enlace a la imagen
+        caption: 'Aquí está tu imagen' // Opcional
       }
-    }) .catch((error) => {
-      console.log("errorfirebaseimage: " + error); // Manejo de errores
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${tokenFacebook}`, // Token de acceso
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+    .then(response => {
+      console.log('Mensaje enviado con éxito:', response.data);
+    })
+    .catch(error => {
+      console.error('Error al enviar el mensaje:', error.response?.data || error.message);
     });
 }
 function sendEventAnalitics() {}
