@@ -125,7 +125,7 @@ axios.post(
   `https://graph.facebook.com/v18.0/${recipientId}/messages`,
   {
     messaging_product: 'whatsapp', // Obligatorio
-    to: recipientId, // Número del destinatario
+    to: to, // Número del destinatario
     type: 'image',
     image: {
       link: value, // Enlace a la imagen
