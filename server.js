@@ -127,7 +127,8 @@ function sendLink(value) {
       type: 'text',
       text: {
         body: `Visita este enlace: ${value}` // Cuerpo del mensaje con la URL
-      }
+      },
+      preview_url: true
     },
     {
       headers: {
@@ -820,6 +821,12 @@ app.post("/webhook", async (req, res) => {
           var position = dataItemSelected.length - 2; //changed1
 
           var route = dataItemSelected[position]["routeStep"];
+
+          if(route == "route"){
+
+          route = dataItemSelected[(position+1)]["routeStep"];
+
+          }
 
           console.error("LA RUTA EN EL INICIO DE LA APP: " + route);
           var type = dataItemSelected[dataItemSelected.length - 1]["type"];
