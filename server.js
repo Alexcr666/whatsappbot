@@ -41,6 +41,7 @@ app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
+   res.status(200);
 
   // check the mode and token sent are correct
   if (mode === "subscribe" && token === WEBHOOK_VERIFY_TOKEN) {
@@ -54,6 +55,7 @@ app.get("/webhook", (req, res) => {
 });
 
 app.get("/", (req, res) => {
+  res.status(200);
   res.send(`<pre>Nothing to see here.
 Checkout README.md to start.</pre>`);
 });
@@ -200,6 +202,7 @@ function sendMedia(imageUrl) {
 function sendEventAnalitics() {}
 
 function validationMsj(value) {
+  //VALIDA QUE LA RUTA NO SEA VACIA
   if (value != null) {
     axios
       .get(
@@ -215,50 +218,81 @@ function validationMsj(value) {
 
           var dataItemSelected = JSON.parse(jsonData);
 
-          //    var obj = JSON.parse(jsonData);
-
-          console.log("datosnuevo: " + route + " - " + jsonData);
-
-          /*      if(dataItemSelected.isNull("routeStep")){
-        
-        
-          var keys = Object.keys( dataItemSelected["optionsStep"]);
-                
-    keys.forEach(function(key){
-      console.log("datos: "+key);
-      if(key.toLowerCase() ==   messageReceip.toLowerCase()){
-
-      }});
-        
-        
-      }else{*/
-
           var type = dataItemSelected["type"];
           var route = dataItemSelected["routeStep"];
 
           var title = dataItemSelected["title"];
 
-          console.log("datosnuevo1: " + route);
-
-          //  var business_phone_number_id = "545034448685967";
-
           if (type == "chat" || type == "text") {
             sendMsj(title, route, type, false);
-            console.error("-------SEND CHAT----: " + route + " " + oneChat);
-
-            if (oneChat) {
-              oneChat = false;
-              repeatMessageOption = true;
-            } else {
-              repeatMessageOption = false;
-            }
+            console.error("ENVIADA EL CHAT: " + route);
 
             setTimeout(() => {
               validationMsj(route);
             }, 1000);
           }
+          if (type == "multiple") {
+            if (repeatMessageOption == true) {
+              repeatMessageOption = false;
+              var keys = Object.keys(dataItemSelected["optionsStep"]);
+              var position = 0;
+              var result45 = true;
+              keys.forEach(function (key) {
+                console.log("datos: " + key);
+
+                position += 1;
+                console.log("global: " + messageGlobal.toLowerCase());
+
+                if (key.toLowerCase() == messageGlobal.toLowerCase()) {
+                  var list2 = dataItemSelected["optionsStep"];
+
+                  var listProm = json2array(list2);
+                  console.error("RESULTADO DE MULTIPLE: " + listProm);
+
+                  var positionFinal = position - 1;
+                  console.error("SELECCIONADO DE MULTIPLE: " + positionFinal);
+                  var route = listProm[positionFinal];
+                  console.error("RUTA SELECCIONADA MULTIPLE: " + route);
+
+                  validationMsj(route);
+                }
+              });
+            } else {
+              console.error("DATOS SELECTED1------: " + route);
+
+              var list2 = dataItemSelected["optionsMulti"];
+
+              var list = json2array(list2);
+
+              console.log("longitud: " + list[0]);
+
+              var listString = "";
+
+              for (var i = 0; i < list.length; i++) {
+                console.log("longitud2: " + list[i]);
+                listString += i + 1 + ". " + capitalize(list[i]) + "\n";
+              }
+              var message = title + ":" + " \n\n" + listString;
+
+              console.log("mensajeopcionmultiple: " + message);
+
+              //  setTimeout(function () {
+              //   sendMsj(receiver, message, route);
+              //hola
+              //firme
+              //poder
+
+              if (route == undefined) {
+                sendMsj(message, "route", "multiple", false);
+              } else {
+                sendMsj(message, route, type, false);
+              }
+            }
+          }
 
           if (type == "terms") {
+            //VALIDA POLICIAS
+            console.error("VALIDA POLITICAS");
             var listString =
               "Aceptar los terminos y condiciones" +
               "\n" +
@@ -266,7 +300,9 @@ function validationMsj(value) {
               "\n" +
               "2.Rechazar";
             if (repeatMessageOption == true) {
+              console.error("VALIDA EL MENSAJE RESPUESTA POLITICAS");
               if (messageGlobal == "1") {
+                repeatMessageOption = false;
                 validationMsj(route);
               } else {
                 sendMsj(
@@ -277,7 +313,8 @@ function validationMsj(value) {
                 );
               }
             } else {
-              sendMsj(title, route, type, false);
+              console.error("ENVIA MENSAJE POLITICAS");
+              sendMsj(listString, route, type, false);
             }
           }
 
@@ -285,6 +322,7 @@ function validationMsj(value) {
             var title = dataItemSelected["title"];
 
             if (repeatMessageOption == true) {
+              repeatMessageOption = false;
               savedAnswerData(messageGlobal);
 
               validationMsj(route);
@@ -309,6 +347,7 @@ function validationMsj(value) {
               "5.Consulta";
 
             if (repeatMessageOption == true) {
+              repeatMessageOption = false;
               validationMsj(route);
 
               let lista = messageGlobal.split(", ");
@@ -336,13 +375,16 @@ function validationMsj(value) {
           if (type == "end") {
             if (repeatMessageOption == true) {
               if (messageGlobal == "1") {
+                repeatMessageOption = false;
                 sendMsj("Gracias por comunicarte", route, type, true);
               }
 
               if (messageGlobal == "2") {
+                repeatMessageOption = false;
                 repeatChat();
               }
               if (messageGlobal == "3") {
+                repeatMessageOption = false;
                 sendMsj("Buscando", route, type, true);
               }
             } else {
@@ -379,7 +421,7 @@ function validationMsj(value) {
             setTimeout(function () {
               validationMsj(route);
               sendMsj(message, route, type, false);
-            }, 1000);
+            }, 2000);
           }
 
           if (type == "analitic") {
@@ -398,124 +440,6 @@ function validationMsj(value) {
             validationMsj(route);
 
             sendMsj(message, route, type, false);
-          }
-
-          if (type == "multiple") {
-            if (repeatMessageOption == true) {
-              var keys = Object.keys(dataItemSelected["optionsStep"]);
-              var position = 0;
-              var result45 = true;
-              keys.forEach(function (key) {
-                console.log("datos: " + key);
-
-                position += 1;
-                console.log("global: " + messageGlobal.toLowerCase());
-
-                if (
-                  /*key.toLowerCase() == messageGlobal.toLowerCase()*/ result45
-                ) {
-                  result45 = false;
-                  console.log("datosselected: " + key);
-
-                  var list2 = dataItemSelected["optionsStep"];
-
-                  var listProm = json2array(list2);
-
-                  console.log("datosselected67: " + listProm);
-                  var route = listProm[0];
-
-                  console.error("DATOS SELECTED------3: " + route);
-                  validationMsj(route);
-
-                  console.error("DATOS SELECTED------4: " + route);
-
-                  axios
-                    .get(
-                      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
-                        idChat +
-                        "/options/" +
-                        route +
-                        "/.json"
-                    )
-                    .then((response) => {
-                      const jsonData = JSON.stringify(response.data, null, 2);
-
-                      var dataItemSelected = JSON.parse(jsonData);
-
-                      var list2 = dataItemSelected["optionsMulti"];
-
-                      if (dataItemSelected["optionsMulti"] != null) {
-                        var list = json2array(list2);
-
-                        console.log("longitud: " + list[0]);
-
-                        var listString = "";
-
-                        for (var i = 0; i < list.length; i++) {
-                          console.log("longitud2: " + list[i]);
-                          listString +=
-                            i + 1 + ". " + capitalize(list[i]) + "\n";
-                        }
-                        var message = title + ":" + " \n\n" + listString;
-                        sendMsj(message, route, type, false);
-                        //   validationMsj(route);
-                      }
-                      messageGlobal = "";
-                    });
-
-                  /*  axios
-      .delete(
-        "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
-          idChat +
-          "/options/" +
-          value +
-          "/.json"
-      )
-      .then((response) => {});*/
-                }
-              });
-            } else {
-              console.error("DATOS SELECTED1------: " + route);
-
-              var list2 = dataItemSelected["optionsMulti"];
-
-              var list = json2array(list2);
-
-              console.log("longitud: " + list[0]);
-
-              var listString = "";
-
-              for (var i = 0; i < list.length; i++) {
-                console.log("longitud2: " + list[i]);
-                listString += i + 1 + ". " + capitalize(list[i]) + "\n";
-              }
-              var message = title + ":" + " \n\n" + listString;
-
-              console.log("mensajeopcionmultiple: " + message);
-
-              //  setTimeout(function () {
-              //   sendMsj(receiver, message, route);
-              //hola
-              //firme
-              //poder
-
-              if (route == undefined) {
-                sendMsj(message, "route", "multiple", false);
-              } else {
-                sendMsj(message, route, type, false);
-              }
-            }
-
-            // }, 500);
-
-            /*
-           var keys = Object.keys( dataItemSelected["optionsStep"]);
-                
-    keys.forEach(function(key){
-      console.log("datos: "+key);
-      if(key.toLowerCase() ==   messageReceip.toLowerCase()){
-
-      }});*/
           }
 
           if (type == "link") {
@@ -760,40 +684,7 @@ app.post("/webhook", async (req, res) => {
     const business_phone_number_id =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
 
-    //  var recipientData = business_phone_number_id;
-
     recipientId = business_phone_number_id;
-
-    // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
-    /* await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-      headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        to: message.from,
-        text: { body: "Echo: " + message.text.body },
-        context: {
-          message_id: message.id, // shows the message as a reply to the original user message
-        },
-      },
-    });
-
-    // mark incoming message as read
-    await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-      headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        status: "read",
-        message_id: message.id,
-      },
-    });*/
 
     repeatMessageOption = false;
 
@@ -804,22 +695,22 @@ app.post("/webhook", async (req, res) => {
           "/.json"
       )
       .then((response) => {
-        console.log("Successfully firebase4" + response.data);
+        //CONSULTA LOS MENSAJES DEL USUARIO
+
         if (response.data == null) {
-          console.log("Successfully firebase5" + response.data);
           var messageData2 = {
             apertura: 0,
-            typeOpen:"whatsapp",
+            typeOpen: "whatsapp",
             contactAdd: "nuevo",
             date: "2025-01-01 08:15",
             departamentTitle: "Nuevo23",
             getHelp: 1,
             idAgent: "d1",
 
-            idChat: "/company/sly/chatbotCreateMessage/"+idChat,
-          
+            idChat: "/company/sly/chatbotCreateMessage/" + idChat,
+
             idEtiqueta: "d1",
-            idMessage: "/company/sly/messageUsers/"+ recipientId,
+            idMessage: "/company/sly/messageUsers/" + recipientId,
             idTrigger: "d1",
             ip: "1.0.1",
             levelService: 5,
@@ -838,16 +729,19 @@ app.post("/webhook", async (req, res) => {
             type: "2",
           };
 
+          //CREA LA INFORMACIÓN DE LA CONVERZACIÓN
+
           axios
             .post(
               "https://getdev-b2c0b.firebaseio.com/company/sly/infoChat/.json",
               messageData2
             )
-            .then((response) => {});
-          repeatChat();
+            .then((response) => {
+              repeatChat();
+              //INICIA EL CHAT
+            });
         } else {
           const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
-          console.log("Datos en formato JSON22:", jsonData);
 
           //  var recipientId = body.recipient_id;
           // var messageId = body.message_id;
@@ -857,31 +751,25 @@ app.post("/webhook", async (req, res) => {
           var listJson = json2array(obj);
 
           let dataItemSelected = [];
+
+          //VALIDA LOS MENSAJES INFORMATIVOS
           for (var i = 0; i < json2array(obj).length; i++) {
             var dataItem = json2array(obj)[i];
-
-            console.log("welcome: " + dataItem["welcome"]);
 
             if (dataItem["information"] != true) {
               dataItemSelected.push(dataItem);
             }
           }
 
-          console.error("routefirme23: " + dataItemSelected);
-
+          // GENERA LA POSICION DE LAS 2 ULTIMAS
           var position = dataItemSelected.length - 2; //changed1
-
-          // const jsonData2 = JSON.stringify(json2array(obj)[0], null, 2);
-          console.log("route99: " + dataItemSelected[position]["type"]);
 
           var route = dataItemSelected[position]["routeStep"];
 
-          // var route2 = json2array(obj)[1]["routeStep"];
-
-          console.error("routefirme: " + route);
+          console.error("LA RUTA EN EL INICIO DE LA APP: " + route);
           var type = dataItemSelected[dataItemSelected.length - 1]["type"];
 
-          console.error("validation: " + type);
+          console.error("EL TIPO DE MENSAJE EN EL INICIO DE LA APP: " + type);
 
           if (
             type == "multiple" ||
@@ -919,4 +807,3 @@ app.post("/webhook", async (req, res) => {
 
   res.sendStatus(200);
 });
-
