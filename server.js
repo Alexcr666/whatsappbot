@@ -516,7 +516,7 @@ async function sendMsj(
     method: "POST",
     url: `https://graph.facebook.com/v18.0/${recipientId}/messages`,
     headers: {
-      Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+      Authorization: `Bearer EAAMLZAcqhqNcBO2W3UOhFjfOfzt6QgX1ficehVKcVZAQaKozWDy1rS2ZCZAG3bQBWZBn6wlgL11vRxhX5bdxs1muERZAimyqQQtLpeNXASnVS2osignMbfOHkIfBHPxtoah8ZA8rl5atTIoZCpXlUeSqmMuSbcTbna3UTV63ozJ3KvEspGqKoyxAUIOFscHDL2WeKRykn2ZBtF4bVpZAkDtkIzLJ1JiAZDZD`,
     },
     data: {
       messaging_product: "whatsapp",
