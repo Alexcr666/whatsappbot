@@ -172,7 +172,7 @@ function sendVideo(imageUrl) {
     });
 }
 
-function sendMedia(imageUrl) {
+function sendMedia(title,imageUrl,type) {
   console.error("IMAGEN REFERENCIA: "+imageUrl);
 
   
@@ -181,10 +181,10 @@ function sendMedia(imageUrl) {
     {
       messaging_product: 'whatsapp', // Obligatorio
       to: to, // Número del destinatario
-      type: 'image',
+      type: type ,
       image: {
         link: imageUrl, // Enlace a la imagen
-        caption: 'Aquí está tu imagen' // Opcional
+        caption: title // Opcional
       }
     },
     {
@@ -424,13 +424,14 @@ function validationMsj(value) {
 
             console.error("ENVIA MENSAJE MEDIA");
             var url = dataItemSelected["link"];
+            var title = dataItemSelected["subtitle"];
 
             var type = dataItemSelected["typeUrl"];
 
             if (type == "Imagen") {
-              sendMedia(url);
+              sendMedia(title,url,'image');
             } else {
-              sendVideo(url);
+              sendMedia(title,url,'video');
             }
 
             validationMsj(route);
