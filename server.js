@@ -450,7 +450,7 @@ function validationMsj(value) {
             setTimeout(function () {
               validationMsj(route);
               sendMsj(message, route, type, false);
-            }, 2000);
+            }, 6000);
           }
 
           if (type == "analitic") {
