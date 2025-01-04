@@ -15,7 +15,7 @@ function capitalize(str) {
   if (!str) return ""; // Maneja cadenas vacías
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
-
+var tokenFacebook = "EAAMLZAcqhqNcBO5GTZC4jheYf9KFbgyRiVENBBDhv45LF4WpZCbACHiiaTGuZB4C0qZBdcxF5hNrXP4aF95NLNAzJr87dXOEmubwtPlZBQyzWAysn1ZAnLkcMLCgZCgKgkU96lpaKhsjDzmsd7eKohBZCTSahzUrBui3aZA6eZA7ddqNTpcVij5k5UlezauPLmFdEdM4hgPDfrRJTSRGIQ58CZADOZC6OLgZDZD";
 var to = "573013928129";
 var oneChat = false;
 const idChat = "-OFgeOd2BaXFQqqmMLU_";
@@ -119,12 +119,11 @@ function savedForm(city, company, consult, email, name, phone) {
 
 function sendLink(value) {
 
-  var GRAPH_API_TOKEN = "EAAMLZAcqhqNcBO2W3UOhFjfOfzt6QgX1ficehVKcVZAQaKozWDy1rS2ZCZAG3bQBWZBn6wlgL11vRxhX5bdxs1muERZAimyqQQtLpeNXASnVS2osignMbfOHkIfBHPxtoah8ZA8rl5atTIoZCpXlUeSqmMuSbcTbna3UTV63ozJ3KvEspGqKoyxAUIOFscHDL2WeKRykn2ZBtF4bVpZAkDtkIzLJ1JiAZDZD";
-  
+
   axios
     .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
       headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+        Authorization: `Bearer ${tokenFacebook}`,
         "Content-Type": "application/json",
       },
       params: {
@@ -151,7 +150,7 @@ function sendVideo(imageUrl) {
   axios
     .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
       headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+        Authorization: `Bearer ${tokenFacebook}`,
         "Content-Type": "application/json",
       },
       params: {
@@ -178,11 +177,11 @@ function sendVideo(imageUrl) {
 function sendMedia(imageUrl) {
   console.error("IMAGEN REFERENCIA: "+imageUrl);
 
-   var GRAPH_API_TOKEN = "EAAMLZAcqhqNcBO2W3UOhFjfOfzt6QgX1ficehVKcVZAQaKozWDy1rS2ZCZAG3bQBWZBn6wlgL11vRxhX5bdxs1muERZAimyqQQtLpeNXASnVS2osignMbfOHkIfBHPxtoah8ZA8rl5atTIoZCpXlUeSqmMuSbcTbna3UTV63ozJ3KvEspGqKoyxAUIOFscHDL2WeKRykn2ZBtF4bVpZAkDtkIzLJ1JiAZDZD";
+  
   axios
     .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
       headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+        Authorization: `Bearer ${tokenFacebook}`,
       
         
         "Content-Type": "application/json",
@@ -538,9 +537,10 @@ async function sendMsj(
 
   await axios({
     method: "POST",
+ 
     url: `https://graph.facebook.com/v18.0/${recipientId}/messages`,
     headers: {
-      Authorization: `Bearer EAAMLZAcqhqNcBO2W3UOhFjfOfzt6QgX1ficehVKcVZAQaKozWDy1rS2ZCZAG3bQBWZBn6wlgL11vRxhX5bdxs1muERZAimyqQQtLpeNXASnVS2osignMbfOHkIfBHPxtoah8ZA8rl5atTIoZCpXlUeSqmMuSbcTbna3UTV63ozJ3KvEspGqKoyxAUIOFscHDL2WeKRykn2ZBtF4bVpZAkDtkIzLJ1JiAZDZD`,
+         Authorization: `Bearer ${tokenFacebook}`,
     },
     data: {
       messaging_product: "whatsapp",
