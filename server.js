@@ -172,7 +172,7 @@ function sendVideo(imageUrl) {
     });
 }
 
-function sendMedia(title,imageUrl,type) {
+function sendMedia(title,imageUrl,typeUrl) {
   console.error("IMAGEN REFERENCIA: "+imageUrl);
 
   
@@ -181,8 +181,39 @@ function sendMedia(title,imageUrl,type) {
     {
       messaging_product: 'whatsapp', // Obligatorio
       to: to, // Número del destinatario
-      type: type ,
+      type: 'image',
       image: {
+        link: imageUrl, // Enlace a la imagen
+        caption: title // Opcional
+      }
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${tokenFacebook}`, // Token de acceso
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+    .then(response => {
+      console.log('Mensaje enviado con éxito:', response.data);
+    })
+    .catch(error => {
+      console.error('Error al enviar el mensaje:', error.response?.data || error.message);
+    });
+}
+
+
+function sendMediaVideo(title,imageUrl,typeUrl) {
+  console.error("VIDEO REFERENCIA: "+imageUrl);
+
+  
+  axios.post(
+    `https://graph.facebook.com/v18.0/${recipientId}/messages`,
+    {
+      messaging_product: 'whatsapp', // Obligatorio
+      to: to, // Número del destinatario
+      type: 'video',
+      video: {
         link: imageUrl, // Enlace a la imagen
         caption: title // Opcional
       }
@@ -431,7 +462,7 @@ function validationMsj(value) {
             if (type == "Imagen") {
               sendMedia(title,url,'image');
             } else {
-              sendMedia(title,url,'video');
+              sendMediaVideo(title,url,'video');
             }
 
             validationMsj(route);
