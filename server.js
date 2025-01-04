@@ -176,7 +176,9 @@ function sendMedia(imageUrl) {
   axios
     .post("https://graph.facebook.com/v16.0/" + recipientId + "/messages", {
       headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
+     
+          Authorization:"Bearer EAAMLZAcqhqNcBO2W3UOhFjfOfzt6QgX1ficehVKcVZAQaKozWDy1rS2ZCZAG3bQBWZBn6wlgL11vRxhX5bdxs1muERZAimyqQQtLpeNXASnVS2osignMbfOHkIfBHPxtoah8ZA8rl5atTIoZCpXlUeSqmMuSbcTbna3UTV63ozJ3KvEspGqKoyxAUIOFscHDL2WeKRykn2ZBtF4bVpZAkDtkIzLJ1JiAZDZD",
+        
         "Content-Type": "application/json",
       },
       params: {
@@ -311,7 +313,7 @@ function validationMsj(value) {
 
 
                   console.error("VALIDA EL CONTENIDO DE LA LISTA TEMS: "+ listProm );
-                  var route = listProm["si"];
+                  var route = listProm[1];
 
                   console.error("RUTA SELECCIONADA TERMS"+ route);
                 repeatMessageOption = false;
@@ -413,11 +415,13 @@ function validationMsj(value) {
             }
           }
           if (type == "media") {
-            var url = dataItemSelected["url"];
 
-            var type = dataItemSelected["type"];
+            console.error("ENVIA MENSAJE MEDIA");
+            var url = dataItemSelected["link"];
 
-            if (type == "photo") {
+            var type = dataItemSelected["typeUrl"];
+
+            if (type == "Imagen") {
               sendMedia(url);
             } else {
               sendVideo(url);
