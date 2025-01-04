@@ -765,18 +765,10 @@ app.post("/webhook", async (req, res) => {
 
     console.error("BUSCANDO RUTAS: " );
 
-
-    for (var i = 0; i < json2array(obj).length; i++) {
-      var dataItem = json2array(obj)[i];
-
     
 
-      if (dataItem["principal"] == true) {
-        idChat = dataItem["id"];
-        console.error("savedprincipal: " + dataItem["id"]);
-       // dataItemSelected = dataItem;
-      }
-    }
+
+    
   }) .catch((error) => {
     console.eror("errorprincipal: "+error); // Manejo de errores
   });
