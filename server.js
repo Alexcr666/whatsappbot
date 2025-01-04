@@ -824,7 +824,7 @@ app.post("/webhook", async (req, res) => {
 
           if(route == "route"){
 
-          route = dataItemSelected[(position+1)]["routeStep"];
+          route = dataItemSelected[dataItemSelected.length - 1]["routeStep"];
 
           }
 
