@@ -300,8 +300,16 @@ function validationMsj(value) {
               "\n" +
               "2.Rechazar";
             if (repeatMessageOption == true) {
-              console.error("VALIDA EL MENSAJE RESPUESTA POLITICAS");
+              
+              console.error("VALIDA EL MENSAJE RESPUESTA POLITICAS"+ messageGlobal );
               if (messageGlobal == "1") {
+
+                var list2 = dataItemSelected["optionsStep"];
+
+                  var listProm = json2array(list2);
+                  var route = listProm["si"];
+
+                  console.error("RUTA SELECCIONADA TERMS"+ route);
                 repeatMessageOption = false;
                 validationMsj(route);
               } else {
