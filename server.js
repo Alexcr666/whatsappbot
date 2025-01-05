@@ -285,10 +285,26 @@ function validationMsj(value) {
 
                   var positionFinal = position - 1;
                   console.error("SELECCIONADO DE MULTIPLE: " + positionFinal);
-                  var route = listProm[positionFinal];
-                  console.error("RUTA SELECCIONADA MULTIPLE: " + route);
+                  var routeMultiple = listProm[positionFinal];
+                  console.error("RUTA SELECCIONADA MULTIPLE: " + routeMultiple);
+                  const newData = {
+                    routeStep: routeMultiple,
+              
+                  };
+                  axios
+                  .patch(
+                    "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
+                      idChat +
+                      "/options/" +
+                      value +
+                      "/.json",newData
+                  )
+                  .then((response) => {
+                    console.log('Datos actualizados23:', response.data);
 
-                  validationMsj(route);
+                  });
+
+                  validationMsj(routeMultiple);
                 }
               });
             } else {
@@ -421,6 +437,7 @@ function validationMsj(value) {
           if (type == "agent") {
             savedAlertAgentData();
             sendMsj("Buscando agentes disponibles", route, type, true);
+            validationMsj(route);
           }
 
           if (type == "end") {
