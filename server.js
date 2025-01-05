@@ -775,7 +775,7 @@ app.post("/webhook", async (req, res) => {
 
     
   }) .catch((error) => {
-    console.eror("errorprincipal: "+error); // Manejo de errores
+    console.error("errorprincipal: "+error); // Manejo de errores
   });
 
     // extract the business number to send the reply from it
