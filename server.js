@@ -377,7 +377,7 @@ function validationMsj(value) {
                   if (key.toLowerCase() == "si") {
                    
                     var positionFinal = position - 1;
-                    var route = listProm[positionFinal];
+                  route = listProm[positionFinal];
                   }});
 
                   console.error("RUTA SELECCIONADA TERMS"+ route);
