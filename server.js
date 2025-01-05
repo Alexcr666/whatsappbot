@@ -740,43 +740,21 @@ app.post("/webhook", async (req, res) => {
   // check if the incoming message contains text
   if (message?.type === "text") {
 
-    axios
-    .get(
-      "https://getdev-b2c0b.firebaseio.com/company/sly/chatMessage/whatsapp/.json"
-    )
-    .then((response) => {
-
+    try {
+      const response = await axios.get( "https://getdev-b2c0b.firebaseio.com/company/sly/chatMessage/whatsapp/.json");
+      console.log(response.data); // Muestra los datos obtenidos
+   
       const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
       console.log("Datos en formato JSONprincipal:", jsonData);
     //  console.log("Datos en formato JSONprincipal:", response.data);
       idChat = jsonData.replace('"', '');;
 
-      console.log("Datos en formato JSONprincipal68:", jsonData);
-  /*  const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
-    console.log("Datos en formato JSONprincipal:", jsonData);
-
-    //  var recipientId = body.recipient_id;
-    // var messageId = body.message_id;
-
-    var obj = JSON.parse(jsonData);
-
-    var listJson = json2array(obj);
-    console.log(
-      "lenghtoptionsinit : " +
-        json2array(obj).length +
-        " : " +
-        json2array(obj)[0]
-    );
-
-    console.error("BUSCANDO RUTAS: " );*/
+      console.log("Datos en formato JSONprincipal68:", idChat);
+    } catch (error) {
+      console.error('Error al obtener datos:', error.message);
+    }
 
     
-
-
-    
-  }) .catch((error) => {
-    console.error("errorprincipal: "+error); // Manejo de errores
-  });
 
     // extract the business number to send the reply from it
 
