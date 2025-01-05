@@ -742,9 +742,7 @@ app.post("/webhook", async (req, res) => {
 
     axios
     .get(
-      "https://getdev-b2c0b.firebaseio.com/company/sly/chatMessage/" +
-        "whatsapp" +
-        "/.json"
+      "https://getdev-b2c0b.firebaseio.com/company/sly/chatMessage/whatsapp/.json"
     )
     .then((response) => {
 
@@ -753,7 +751,7 @@ app.post("/webhook", async (req, res) => {
     //  console.log("Datos en formato JSONprincipal:", response.data);
       idChat = jsonData.replace('"', '');;
 
-      console.log("Datos en formato JSONprincipal67:", jsonData);
+      console.log("Datos en formato JSONprincipal68:", jsonData);
   /*  const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
     console.log("Datos en formato JSONprincipal:", jsonData);
 
