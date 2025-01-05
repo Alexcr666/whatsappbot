@@ -18,7 +18,7 @@ function capitalize(str) {
 var tokenFacebook = "EAAMLZAcqhqNcBOzZA74KZCbYlFjDZA0txgIYagPir93a2D5XwQ3xJuVVc7HaQpk1seZBeHheGrd8ImQ4NRxPV2UGfAAbYtFKi7pLBFZBC4cU7u5higtLH8T9OVEgyqNkm2tHybqU9408XTK1BSqoJYgcMYbQhYn9MU9AFVHXyiOwhNZBg8puZB4slBwZD";
 var to = "573013928129";
 var oneChat = false;
-const idChat = "-OFgeOd2BaXFQqqmMLU_";
+var  idChat = "-OFgeOd2BaXFQqqmMLU_";
 
 var messageGlobal = "";
 
@@ -747,7 +747,7 @@ app.post("/webhook", async (req, res) => {
       const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
       console.log("Datos en formato JSONprincipal:", jsonData);
     //  console.log("Datos en formato JSONprincipal:", response.data);
-      idChat = jsonData.replace('"', '');;
+      idChat = jsonData.replace('"', '');
 
       console.log("Datos en formato JSONprincipal68:", idChat);
     } catch (error) {
