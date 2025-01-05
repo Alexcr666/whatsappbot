@@ -747,8 +747,13 @@ app.post("/webhook", async (req, res) => {
         "/.json"
     )
     .then((response) => {
-      console.log("Datos en formato JSONprincipal:", response.data);
-      idChat = response.data;
+
+      const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
+      console.log("Datos en formato JSONprincipal:", jsonData);
+    //  console.log("Datos en formato JSONprincipal:", response.data);
+      idChat = jsonData.replace('"', '');;
+
+      console.log("Datos en formato JSONprincipal67:", jsonData);
   /*  const jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
     console.log("Datos en formato JSONprincipal:", jsonData);
 
