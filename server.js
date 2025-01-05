@@ -356,12 +356,29 @@ function validationMsj(value) {
 
                 var list2 = dataItemSelected["optionsStep"];
 
+            
+            
+
                   var listProm = json2array(list2);
                   
 
 
                   console.error("VALIDA EL CONTENIDO DE LA LISTA TEMS: "+ listProm );
-                  var route = listProm[1];
+                
+
+
+
+                var position = 0;
+                keys.forEach(function (key) {
+                 
+                  position += 1;
+               
+  
+                  if (key.toLowerCase() == "si") {
+                   
+                    var positionFinal = position - 1;
+                    var route = listProm[positionFinal];
+                  }});
 
                   console.error("RUTA SELECCIONADA TERMS"+ route);
                 repeatMessageOption = false;
