@@ -369,6 +369,8 @@ function validationMsj(value) {
 
 
                 var position = 0;
+
+                var keys = Object.keys(dataItemSelected["optionsStep"]);
                 keys.forEach(function (key) {
                  
                   position += 1;
