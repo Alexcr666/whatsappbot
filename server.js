@@ -237,14 +237,14 @@ function sendEventAnalitics() {}
 
 async function sendDynamicList() {
 
-  const options = ["Opción 1", "Opción 2", "Opción 3", "Opción 4"]; // Lista dinámica de opciones
+  const options = opcionesMultiple // Lista dinámica de opciones
 
   
   // Construir la lista dinámica de opciones
   const rows = options.map((option, index) => ({
     id: `option_${index + 1}`,
     title: option,
-    description: `Selecciona ${option}`
+    description: `${option}`
   }));
 
   // Construir la solicitud JSON
@@ -321,7 +321,7 @@ function validationMsj(value) {
         )
         .then((response) => {
           if (response.status == 200) {
-            sendDynamicList();
+         
             var jsonData = JSON.stringify(response.data, null, 2);
 
             var dataItemSelected = JSON.parse(jsonData);
@@ -774,7 +774,7 @@ async function sendMsj(
 
   // if (notification == true) {
   console.error("----MENSAJE ENVIADO---" + messageText);
-
+  if(opcionesMultiple.length == 0){
   await axios({
     method: "POST",
 
@@ -795,86 +795,11 @@ async function sendMsj(
   }).catch((error) => {
     console.error("errorfirebaseend: msj: " + error); // Manejo de errores
   });
+}else{
+  sendDynamicList();
+}
 
-  // mark incoming message as read
-  /* await axios({
-      method: "POST",
-      url: `https://graph.facebook.com/v18.0/${recipientId}/messages`,
-      headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-      },
-      data: {
-        messaging_product: "whatsapp",
-        status: "read",
-        message_id: messageFinal.id,
-      },
-    });*/
-
-  /* axios
-      .post("https://graph.facebook.com/v18.0/" + recipientId + "/messages", {
-        headers: {
-          Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-     
-          "Content-Type": "application/json",
-          
-          
-        },
-        params: {
-          messaging_product: "whatsapp",
-          to: to,
-          text: { body: messageText },
-          context: {
-            message_id: messageText, // shows the message as a reply to the original user message
-          },
-        },
-      })
-      .then((response) => {
-      
-        console.error("mensaje enviado--" );
-    }).catch((error) => {
-        console.error("errorfirebassend: " + error); // Manejo de errores
-      });;*/
-  //}
-
-  /*
-  axios
-    .get(
-      "https://getdev-b2c0b.firebaseio.com/company/sly/chatbotCreateMessage/" +
-        idChat +
-        "/options/" +
-        route +
-        "/.json"
-    )
-    .then((response) => {
-      if (response.status == 200) {
-        
-         console.log("sendmsj---1: " + route);
-        
-          const jsonData = JSON.stringify(response.data, null, 2);
-        
-        
-       var title = jsonData["title"];
-        
-        var business_phone_number_id = "545034448685967"; 
-        var to = "573013928129";
-       
-        
-        axios
-    .post(
-     `https://graph.facebook.com/v18.0/545034448685967/messages`,
-    {
-        messaging_product: "whatsapp",
-        to: to,
-        text: { body: "title" },
-       
-      },
-    )
-    .then((response) => { 
-        });
-        
-        
-      }});*/
-
+  
   console.log("routeSend: " + route);
   //if(route != null){
 
