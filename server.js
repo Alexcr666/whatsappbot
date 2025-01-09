@@ -1015,27 +1015,7 @@ app.post("/webhook", async (req, res) => {
 
   //console.log("Incoming webhook message2:",req.body);
   console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
-  try {
-    // Imprimir el JSON recibido para depuración
-    console.log("JSON recibido:", JSON.stringify(req.body, null, 2));
-
-    // Extraer el `title` desde el JSON
-    const messageEntry = req.body?.entry?. [0]?.changes?. [0]?.value?.messages?. [0];
-
-    if (messageEntry?.interactive?.type === "list_reply") {
-      const title = messageEntry.interactive.list_reply.title; // Obtén el `title`
-      console.log("Titulo seleccionado:", title);
-      messageGlobal = title;
-    } else {
-      console.log("No es un mensaje interactivo de tipo 'list_reply'.");
-    }
-
-    // Responder al servidor de Meta
-    // res.sendStatus(200);
-  } catch (error) {
-    console.error("Error al procesar el webhook:", error.message);
-    //res.sendStatus(500);
-  }
+  
 
 
   // check if the webhook request contains a message
@@ -1066,19 +1046,26 @@ app.post("/webhook", async (req, res) => {
 
     messageGlobal = message.text.body;
 
-    const changes = req.body.entry?. [0]?.changes?. [0];
-    const messages = changes?.value?.messages?. [0];
-    console.log("messageglobal1: " + messageGlobal + " " + message);
-    if (messages?.interactive?.type === "list_reply") {
-      const from = messages.from; // Número del usuario
-      const selectedOptionId = messages.interactive.list_reply.id; // ID de la opción seleccionada
-      const selectedOptionTitle = messages.interactive.list_reply.title; // Título de la opción
-      const selectedOptionDescription = messages.interactive.list_reply.description; // Descripción de la opción
-
-      console.log(`Usuario ${from} seleccionó la opción:`);
-      console.log(`ID: ${selectedOptionId}`);
-      console.log(`Título: ${selectedOptionTitle}`);
-      console.log(`Descripción: ${selectedOptionDescription}`);
+    try {
+      // Imprimir el JSON recibido para depuración
+      console.log("JSON recibido:", JSON.stringify(req.body, null, 2));
+  
+      // Extraer el `title` desde el JSON
+      const messageEntry = req.body?.entry?. [0]?.changes?. [0]?.value?.messages?. [0];
+  
+      if (messageEntry?.interactive?.type === "list_reply") {
+        const title = messageEntry.interactive.list_reply.title; // Obtén el `title`
+        console.log("Titulo seleccionado:", title);
+        messageGlobal = title;
+      } else {
+        console.log("No es un mensaje interactivo de tipo 'list_reply'.");
+      }
+  
+      // Responder al servidor de Meta
+      // res.sendStatus(200);
+    } catch (error) {
+      console.error("Error al procesar el webhook:", error.message);
+      //res.sendStatus(500);
     }
 
     const business_phone_number_id =
