@@ -293,6 +293,7 @@ async function sendDynamicList() {
     );
 
     console.log("Mensaje enviado con éxito:", response.data);
+    opcionesMultiple = [];
   } catch (error) {
     console.error("Error al enviar el mensaje:", error.response?.data || error.message);
   }
