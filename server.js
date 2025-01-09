@@ -1047,6 +1047,21 @@ app.post("/webhook", async (req, res) => {
 
     messageGlobal = message.text.body;
 
+    const changes = req.body.entry?.[0]?.changes?.[0];
+    const messages = changes?.value?.messages?.[0];
+
+    if (messages?.type === "interactive" && messages?.interactive?.type === "list_reply") {
+      const from = messages.from; // Número del usuario
+      const selectedOptionId = messages.interactive.list_reply.id; // ID de la opción seleccionada
+      const selectedOptionTitle = messages.interactive.list_reply.title; // Título de la opción
+      const selectedOptionDescription = messages.interactive.list_reply.description; // Descripción de la opción
+
+      console.log(`Usuario ${from} seleccionó la opción:`);
+      console.log(`ID: ${selectedOptionId}`);
+      console.log(`Título: ${selectedOptionTitle}`);
+      console.log(`Descripción: ${selectedOptionDescription}`);
+    }
+
     const business_phone_number_id =
       req.body.entry?. [0].changes?. [0].value?.metadata?.phone_number_id;
 
