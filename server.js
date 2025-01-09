@@ -911,7 +911,7 @@ if(dataItem["welcome"] != null){
         console.log("welcome: " + dataItem["welcome"]);
 
         if (dataItem["welcome"] == true) {
-          dataItemSelected = dataItem;
+          dataItemSelected = json2array(obj)[i];
         }
       }
       }
