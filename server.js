@@ -915,7 +915,7 @@ function repeatChat() {
         }
       }
 
-      console.log("Successfully firebase2: " + response.data + "  :  ");
+      console.log("Successfully firebase2: " + dataItemSelected["id"] + "  :  ");
 
       var route = dataItemSelected["id"];
 
