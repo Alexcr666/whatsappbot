@@ -1015,171 +1015,171 @@ app.post("/webhook", async (req, res) => {
 
   //console.log("Incoming webhook message2:",req.body);
   console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
- 
- initValid(){
+
+  async function initValid() {
 
 
 
-  function executeInit() {
+    function executeInit() {
 
-    axios
-      .get(
-        "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-        recipientId +
-        "/.json"
-      )
-      .then((response) => {
-        //CONSULTA LOS MENSAJES DEL USUARIO
+      axios
+        .get(
+          "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
+          recipientId +
+          "/.json"
+        )
+        .then((response) => {
+          //CONSULTA LOS MENSAJES DEL USUARIO
 
-        if (response.data == null) {
+          if (response.data == null) {
 
-          console.log("CREATE INFO CHAT");
-
-
-          //CREA LA INFORMACIÓN DE LA CONVERZACIÓN
-
-          createInfoChat();
-        } else {
-
-          console.log("CREATE INFO CHAT2");
-          var jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
-
-          //  var recipientId = body.recipient_id;
-          // var messageId = body.message_id;
-
-          var obj = JSON.parse(jsonData);
-
-          var listJson = json2array(obj);
-
-          let dataItemSelected = [];
-
-          //VALIDA LOS MENSAJES INFORMATIVOS
-          for (var i = 0; i < json2array(obj).length; i++) {
-            var dataItem = json2array(obj)[i];
-
-            if (dataItem["information"] != true) {
-              dataItemSelected.push(dataItem);
-            }
-          }
-
-          // GENERA LA POSICION DE LAS 2 ULTIMAS
-          var position = dataItemSelected.length - 2; //changed1
-
-          var route = dataItemSelected[position]["routeStep"];
-          console.error("LA RUTA EN EL INICIO DE LA APP1: " + route);
-          if (route == "route") {
-
-            route = dataItemSelected[dataItemSelected.length - 1]["routeStep"];
-
-          }
-
-          console.error("LA RUTA EN EL INICIO DE LA APP2: " + route);
-          var type = dataItemSelected[dataItemSelected.length - 1]["type"];
-
-          console.error("EL TIPO DE MENSAJE EN EL INICIO DE LA APP: " + type);
-
-          if (route != undefined) {
+            console.log("CREATE INFO CHAT");
 
 
+            //CREA LA INFORMACIÓN DE LA CONVERZACIÓN
 
-            if (
-              type == "multiple" ||
-              type == "answer" ||
-              type == "form" ||
-              type == "end" ||
-              type == "terms"
-            ) {
-              repeatMessageOption = true;
-            }
-
-            validationMsj(route);
+            createInfoChat();
           } else {
-            repeatMessageOption = false;
-            sendMsj("No hay mas opciones", "route", type, false);
-            sendMsj("Iniciando chat", "route", type, false);
+
+            console.log("CREATE INFO CHAT2");
+            var jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
+
+            //  var recipientId = body.recipient_id;
+            // var messageId = body.message_id;
+
+            var obj = JSON.parse(jsonData);
+
+            var listJson = json2array(obj);
+
+            let dataItemSelected = [];
+
+            //VALIDA LOS MENSAJES INFORMATIVOS
+            for (var i = 0; i < json2array(obj).length; i++) {
+              var dataItem = json2array(obj)[i];
+
+              if (dataItem["information"] != true) {
+                dataItemSelected.push(dataItem);
+              }
+            }
+
+            // GENERA LA POSICION DE LAS 2 ULTIMAS
+            var position = dataItemSelected.length - 2; //changed1
+
+            var route = dataItemSelected[position]["routeStep"];
+            console.error("LA RUTA EN EL INICIO DE LA APP1: " + route);
+            if (route == "route") {
+
+              route = dataItemSelected[dataItemSelected.length - 1]["routeStep"];
+
+            }
+
+            console.error("LA RUTA EN EL INICIO DE LA APP2: " + route);
+            var type = dataItemSelected[dataItemSelected.length - 1]["type"];
+
+            console.error("EL TIPO DE MENSAJE EN EL INICIO DE LA APP: " + type);
+
+            if (route != undefined) {
 
 
 
-            setTimeout(function () {
-              repeatChat();
+              if (
+                type == "multiple" ||
+                type == "answer" ||
+                type == "form" ||
+                type == "end" ||
+                type == "terms"
+              ) {
+                repeatMessageOption = true;
+              }
 
-            }, 1500);
+              validationMsj(route);
+            } else {
+              repeatMessageOption = false;
+              sendMsj("No hay mas opciones", "route", type, false);
+              sendMsj("Iniciando chat", "route", type, false);
+
+
+
+              setTimeout(function () {
+                repeatChat();
+
+              }, 1500);
+            }
           }
-        }
-      })
-      .catch((error) => {
-        console.log(error); // Manejo de errores
-      });
+        })
+        .catch((error) => {
+          console.log(error); // Manejo de errores
+        });
 
-  }
-  try {
-    var response = await axios.get("https://getdev-b2c0b.firebaseio.com/company/sly/activeChat/.json");
-    console.log("tokenfacebook: " + response.data); // Muestra los datos obtenidos
-    var jsonData = JSON.stringify(response.data, null, 2);
-
-    var dataItemSelected = JSON.parse(jsonData);
-    // tokenFacebook = dataItemSelected["tokenFacebook"];
-
-
-    activeChat = dataItemSelected["active"];
-
-    console.log("validinit: " + activeChat + " : " + tokenFacebook);
-
-
-
-    //process.env.PAGE_ACCESS_TOKEN = tokenFacebook ;
-
-
-
-
-
-
-    console.log("tokenfacebook: " + response.data);
-
-  } catch (e) {
-
-  }
-
-  if (activeChat) {
-
-
-
-    try {
-      var response = await axios.get("https://getdev-b2c0b.firebaseio.com/company/sly/chatMessage/whatsapp/.json");
-      console.log(response.data); // Muestra los datos obtenidos
-
-      var jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
-      console.log("Datos en formato JSONprincipal:", jsonData);
-      //  console.log("Datos en formato JSONprincipal:", response.data);
-      idChat = jsonData.replace('"', '').replace('"', '');
-
-      executeInit();
-
-
-      setTimeout(function () {
-        if (initChat) {
-          initChat = false;
-
-          //triggersFun();
-        }
-
-        //  sendMsjNoNotification(messageGlobal, "information", "chat", true);
-
-      }, 500);
-
-
-      console.log("Datos en formato JSONprincipal68: " + idChat);
-    } catch (error) {
-      console.error('Error al obtener datos:', error.message);
     }
-  } else {
+    try {
+      var response = await axios.get("https://getdev-b2c0b.firebaseio.com/company/sly/activeChat/.json");
+      console.log("tokenfacebook: " + response.data); // Muestra los datos obtenidos
+      var jsonData = JSON.stringify(response.data, null, 2);
+
+      var dataItemSelected = JSON.parse(jsonData);
+      // tokenFacebook = dataItemSelected["tokenFacebook"];
 
 
-    sendMsj("Chat no disponible", "information", "chat", true);
+      activeChat = dataItemSelected["active"];
 
-  }
- }
- 
+      console.log("validinit: " + activeChat + " : " + tokenFacebook);
+
+
+
+      //process.env.PAGE_ACCESS_TOKEN = tokenFacebook ;
+
+
+
+
+
+
+      console.log("tokenfacebook: " + response.data);
+
+    } catch (e) {
+
+    }
+
+    if (activeChat) {
+
+
+
+      try {
+        var response = await axios.get("https://getdev-b2c0b.firebaseio.com/company/sly/chatMessage/whatsapp/.json");
+        console.log(response.data); // Muestra los datos obtenidos
+
+        var jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
+        console.log("Datos en formato JSONprincipal:", jsonData);
+        //  console.log("Datos en formato JSONprincipal:", response.data);
+        idChat = jsonData.replace('"', '').replace('"', '');
+
+        executeInit();
+
+
+        setTimeout(function () {
+          if (initChat) {
+            initChat = false;
+
+            //triggersFun();
+          }
+
+          //  sendMsjNoNotification(messageGlobal, "information", "chat", true);
+
+        }, 500);
+
+
+        console.log("Datos en formato JSONprincipal68: " + idChat);
+      } catch (error) {
+        console.error('Error al obtener datos:', error.message);
+      }
+    } else {
+
+
+      sendMsj("Chat no disponible", "information", "chat", true);
+
+    }
+  };
+
   try {
     // Imprimir el JSON recibido para depuración
     console.log("JSON recibido:", JSON.stringify(req.body, null, 2));
@@ -1232,7 +1232,7 @@ app.post("/webhook", async (req, res) => {
 
     messageGlobal = message.text.body;
 
-    
+
 
     const business_phone_number_id =
       req.body.entry?. [0].changes?. [0].value?.metadata?.phone_number_id;
