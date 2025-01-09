@@ -244,7 +244,7 @@ async function sendDynamicList() {
   const rows = options.map((option, index) => ({
     id: `option_${index + 1}`,
     title: option,
-    description: `${option}`
+   // description: `${option}`
   }));
 
   // Construir la solicitud JSON
@@ -801,9 +801,7 @@ async function sendMsj(
 
   
   console.log("routeSend: " + route);
-  //if(route != null){
-
-  // }
+  
 }
 
 function repeatChat() {
