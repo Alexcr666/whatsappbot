@@ -907,21 +907,26 @@ function repeatChat() {
       var dataItemSelected;
       for (var i = 0; i < json2array(obj).length; i++) {
         var dataItem = json2array(obj)[i];
-
+if(dataItem["welcome"] != null){
         console.log("welcome: " + dataItem["welcome"]);
 
         if (dataItem["welcome"] == true) {
           dataItemSelected = dataItem;
         }
       }
+      }
+      setTimeout(function () {
+        console.log("Successfully firebase2: " + dataItemSelected["id"] + "  :  ");
 
-      console.log("Successfully firebase2: " + dataItemSelected["id"] + "  :  ");
+        var route = dataItemSelected["id"];
+  
+  
+  
+        validationMsj(route);
 
-      var route = dataItemSelected["id"];
+      }, 300);
 
-
-
-      validationMsj(route);
+    
     });
 }
 
