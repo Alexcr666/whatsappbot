@@ -1033,10 +1033,10 @@ app.post("/webhook", async (req, res) => {
     }
 
     // Responder al servidor de Meta
-    res.sendStatus(200);
+   // res.sendStatus(200);
   } catch (error) {
     console.error("Error al procesar el webhook:", error.message);
-    res.sendStatus(500);
+    //res.sendStatus(500);
   }
 
 
