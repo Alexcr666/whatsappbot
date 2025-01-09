@@ -1015,6 +1015,8 @@ async function sendMsjNoNotification(
 }
 app.post("/webhook", async (req, res) => {
   // log incoming messages
+
+  console.log("Incoming webhook message2:",req.body);
   console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
 
 
