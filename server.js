@@ -1050,7 +1050,7 @@ app.post("/webhook", async (req, res) => {
     const changes = req.body.entry?.[0]?.changes?.[0];
     const messages = changes?.value?.messages?.[0];
 console.log("messageglobal1: "+messageGlobal+" "+message);
-   // if (messages?.type === "interactive" && messages?.interactive?.type === "list_reply") {
+    if (messages?.interactive?.type === "list_reply") {
       const from = messages.from; // Número del usuario
       const selectedOptionId = messages.interactive.list_reply.id; // ID de la opción seleccionada
       const selectedOptionTitle = messages.interactive.list_reply.title; // Título de la opción
@@ -1060,7 +1060,7 @@ console.log("messageglobal1: "+messageGlobal+" "+message);
       console.log(`ID: ${selectedOptionId}`);
       console.log(`Título: ${selectedOptionTitle}`);
       console.log(`Descripción: ${selectedOptionDescription}`);
-   // }
+    }
 
     const business_phone_number_id =
       req.body.entry?. [0].changes?. [0].value?.metadata?.phone_number_id;
