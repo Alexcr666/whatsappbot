@@ -18,6 +18,7 @@ function capitalize(str) {
 var tokenFacebook = "EAAMLZAcqhqNcBOzZA74KZCbYlFjDZA0txgIYagPir93a2D5XwQ3xJuVVc7HaQpk1seZBeHheGrd8ImQ4NRxPV2UGfAAbYtFKi7pLBFZBC4cU7u5higtLH8T9OVEgyqNkm2tHybqU9408XTK1BSqoJYgcMYbQhYn9MU9AFVHXyiOwhNZBg8puZB4slBwZD";
 var to = "573013928129";
 var oneChat = false;
+var activeChat = true;
 var opcionesMultiple  = [];
 var idChat = "-OFgeOd2BaXFQqqmMLU_";
 
