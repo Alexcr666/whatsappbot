@@ -19,7 +19,7 @@ var tokenFacebook = "EAAMLZAcqhqNcBOzZA74KZCbYlFjDZA0txgIYagPir93a2D5XwQ3xJuVVc7
 var to = "573013928129";
 var oneChat = false;
 var activeChat = true;
-var opcionesMultiple  = [];
+var opcionesMultiple = [];
 var idChat = "-OFgeOd2BaXFQqqmMLU_";
 
 var messageGlobal = "";
@@ -239,12 +239,12 @@ async function sendDynamicList() {
 
   const options = opcionesMultiple // Lista dinámica de opciones
 
-  
+
   // Construir la lista dinámica de opciones
   const rows = options.map((option, index) => ({
     id: `option_${index + 1}`,
     title: option,
-   // description: `${option}`
+    // description: `${option}`
   }));
 
   // Construir la solicitud JSON
@@ -267,12 +267,10 @@ async function sendDynamicList() {
       },
       action: {
         button: "Ver opciones",
-        sections: [
-          {
-            title: "Opciones disponibles",
-            rows: rows
-          }
-        ]
+        sections: [{
+          title: "Opciones disponibles",
+          rows: rows
+        }]
       }
     }
   };
@@ -283,8 +281,7 @@ async function sendDynamicList() {
 
     const response = await axios.post(
       `https://graph.facebook.com/v17.0/${recipientId}/messages`,
-      requestBody,
-      {
+      requestBody, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${tokenFacebook}`
@@ -322,7 +319,7 @@ function validationMsj(value) {
         )
         .then((response) => {
           if (response.status == 200) {
-         
+
             var jsonData = JSON.stringify(response.data, null, 2);
 
             var dataItemSelected = JSON.parse(jsonData);
@@ -775,34 +772,34 @@ async function sendMsj(
 
   // if (notification == true) {
   console.error("----MENSAJE ENVIADO---" + messageText);
-  if(opcionesMultiple.length == 0){
-  await axios({
-    method: "POST",
+  if (opcionesMultiple.length == 0) {
+    await axios({
+      method: "POST",
 
-    url: `https://graph.facebook.com/v18.0/${recipientId}/messages`,
-    headers: {
-      Authorization: `Bearer ${tokenFacebook}`,
-    },
-    data: {
-      messaging_product: "whatsapp",
-      to: to,
-      text: {
-        body: messageText
+      url: `https://graph.facebook.com/v18.0/${recipientId}/messages`,
+      headers: {
+        Authorization: `Bearer ${tokenFacebook}`,
       },
-      /* context: {
-          message_id: messageFinal.id, // shows the message as a reply to the original user message
-        },*/
-    },
-  }).catch((error) => {
-    console.error("errorfirebaseend: msj: " + error); // Manejo de errores
-  });
-}else{
-  sendDynamicList();
-}
+      data: {
+        messaging_product: "whatsapp",
+        to: to,
+        text: {
+          body: messageText
+        },
+        /* context: {
+            message_id: messageFinal.id, // shows the message as a reply to the original user message
+          },*/
+      },
+    }).catch((error) => {
+      console.error("errorfirebaseend: msj: " + error); // Manejo de errores
+    });
+  } else {
+    sendDynamicList();
+  }
 
-  
+
   console.log("routeSend: " + route);
-  
+
 }
 
 function repeatChat() {
@@ -833,15 +830,15 @@ function repeatChat() {
       var dataItemSelected;
       for (var i = 0; i < json2array(obj).length; i++) {
         var dataItem = json2array(obj)[i];
-if(dataItem["welcome"] != null){
-        console.log("welcome: " + dataItem["welcome"]);
+        if (dataItem["welcome"] != null) {
+          console.log("welcome: " + dataItem["welcome"]);
 
-        if (dataItem["welcome"] == true) {
-          dataItemSelected = dataItem;
+          if (dataItem["welcome"] == true) {
+            dataItemSelected = dataItem;
+          }
         }
       }
-      }
-      
+
 
       console.log("Successfully firebase2: " + dataItemSelected["id"] + "  :  ");
 
@@ -1003,7 +1000,7 @@ async function sendMsjNoNotification(
     )
     .then((response) => {
       if (response.status == 200) {
-       
+
 
         console.log("Successfully firebase id ");
       } else {
@@ -1023,17 +1020,18 @@ app.post("/webhook", async (req, res) => {
     console.log("JSON recibido:", JSON.stringify(req.body, null, 2));
 
     // Extraer el `title` desde el JSON
-    const messageEntry = req.body?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+    const messageEntry = req.body?.entry?. [0]?.changes?. [0]?.value?.messages?. [0];
 
     if (messageEntry?.interactive?.type === "list_reply") {
       const title = messageEntry.interactive.list_reply.title; // Obtén el `title`
       console.log("Titulo seleccionado:", title);
+      messageGlobal = title;
     } else {
       console.log("No es un mensaje interactivo de tipo 'list_reply'.");
     }
 
     // Responder al servidor de Meta
-   // res.sendStatus(200);
+    // res.sendStatus(200);
   } catch (error) {
     console.error("Error al procesar el webhook:", error.message);
     //res.sendStatus(500);
@@ -1068,9 +1066,9 @@ app.post("/webhook", async (req, res) => {
 
     messageGlobal = message.text.body;
 
-    const changes = req.body.entry?.[0]?.changes?.[0];
-    const messages = changes?.value?.messages?.[0];
-console.log("messageglobal1: "+messageGlobal+" "+message);
+    const changes = req.body.entry?. [0]?.changes?. [0];
+    const messages = changes?.value?.messages?. [0];
+    console.log("messageglobal1: " + messageGlobal + " " + message);
     if (messages?.interactive?.type === "list_reply") {
       const from = messages.from; // Número del usuario
       const selectedOptionId = messages.interactive.list_reply.id; // ID de la opción seleccionada
@@ -1190,7 +1188,7 @@ console.log("messageglobal1: "+messageGlobal+" "+message);
       var jsonData = JSON.stringify(response.data, null, 2);
 
       var dataItemSelected = JSON.parse(jsonData);
-     // tokenFacebook = dataItemSelected["tokenFacebook"];
+      // tokenFacebook = dataItemSelected["tokenFacebook"];
 
 
       activeChat = dataItemSelected["active"];
@@ -1235,7 +1233,7 @@ console.log("messageglobal1: "+messageGlobal+" "+message);
             //triggersFun();
           }
 
-        //  sendMsjNoNotification(messageGlobal, "information", "chat", true);
+          //  sendMsjNoNotification(messageGlobal, "information", "chat", true);
 
         }, 500);
 
