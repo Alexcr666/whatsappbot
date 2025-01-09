@@ -19,7 +19,7 @@ var tokenFacebook = "EAAMLZAcqhqNcBOzZA74KZCbYlFjDZA0txgIYagPir93a2D5XwQ3xJuVVc7
 var to = "573013928129";
 var oneChat = false;
 var activeChat = true;
-var opcionesMultiple = [];
+var opcionesMultiple  = [];
 var idChat = "-OFgeOd2BaXFQqqmMLU_";
 
 var messageGlobal = "";
@@ -236,10 +236,10 @@ function sendEventAnalitics() {}
 
 
 async function sendDynamicList() {
-  const accessToken = tokenFacebook; // Reemplaza con tu token de acceso
-  const phoneNumberId = to; // Reemplaza con tu número de WhatsApp Business ID
+
   const options = ["Opción 1", "Opción 2", "Opción 3", "Opción 4"]; // Lista dinámica de opciones
-  const userPhoneNumber = "+5215512345678";
+
+  
   // Construir la lista dinámica de opciones
   const rows = options.map((option, index) => ({
     id: `option_${index + 1}`,
@@ -251,7 +251,7 @@ async function sendDynamicList() {
   const requestBody = {
     messaging_product: "whatsapp",
     recipient_type: "individual",
-    to: userPhoneNumber,
+    to: to,
     type: "interactive",
     interactive: {
       type: "list",
@@ -267,22 +267,27 @@ async function sendDynamicList() {
       },
       action: {
         button: "Ver opciones",
-        sections: [{
-          title: "Opciones disponibles",
-          rows: rows
-        }]
+        sections: [
+          {
+            title: "Opciones disponibles",
+            rows: rows
+          }
+        ]
       }
     }
   };
 
   // Enviar la solicitud HTTP con Axios
   try {
+
+
     const response = await axios.post(
-      `https://graph.facebook.com/v17.0/${phoneNumberId}/messages`,
-      requestBody, {
+      `https://graph.facebook.com/v17.0/${recipientId}/messages`,
+      requestBody,
+      {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`
+          "Authorization": `Bearer ${tokenFacebook}`
         }
       }
     );
@@ -904,31 +909,23 @@ function repeatChat() {
       var dataItemSelected;
       for (var i = 0; i < json2array(obj).length; i++) {
         var dataItem = json2array(obj)[i];
-        if (dataItem["welcome"] != null) {
-          console.log("welcome: " + dataItem["welcome"]);
+if(dataItem["welcome"] != null){
+        console.log("welcome: " + dataItem["welcome"]);
 
-          if (dataItem["welcome"] == true) {
-
-            var route = dataItem["id"];
-
-            console.log("Successfully firebase2: "+route);
-        validationMsj(dataItem["id"]);
-           // dataItemSelected = json2array(obj)[i];
-          }
+        if (dataItem["welcome"] == true) {
+          dataItemSelected = dataItem;
         }
       }
-    /*  setTimeout(function () {
-        console.log("Successfully firebase2: " + dataItemSelected["id"] + "  :  ");
+      }
+      
 
-        var route = dataItemSelected["id"];
+      console.log("Successfully firebase2: " + dataItemSelected["id"] + "  :  ");
 
-
-
-        validationMsj(route);
-
-      }, 300);*/
+      var route = dataItemSelected["id"];
 
 
+
+      validationMsj(route);
     });
 }
 
@@ -1082,7 +1079,7 @@ async function sendMsjNoNotification(
     )
     .then((response) => {
       if (response.status == 200) {
-
+       
 
         console.log("Successfully firebase id ");
       } else {
@@ -1233,7 +1230,7 @@ app.post("/webhook", async (req, res) => {
       var jsonData = JSON.stringify(response.data, null, 2);
 
       var dataItemSelected = JSON.parse(jsonData);
-      // tokenFacebook = dataItemSelected["tokenFacebook"];
+     // tokenFacebook = dataItemSelected["tokenFacebook"];
 
 
       activeChat = dataItemSelected["active"];
@@ -1278,7 +1275,7 @@ app.post("/webhook", async (req, res) => {
             //triggersFun();
           }
 
-          //  sendMsjNoNotification(messageGlobal, "information", "chat", true);
+        //  sendMsjNoNotification(messageGlobal, "information", "chat", true);
 
         }, 500);
 
