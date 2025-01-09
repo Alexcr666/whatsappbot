@@ -23,6 +23,7 @@ var opcionesMultiple  = [];
 var idChat = "-OFgeOd2BaXFQqqmMLU_";
 
 var messageGlobal = "";
+var initChat = true;
 
 var recipientId = "";
 var messageFinal;
