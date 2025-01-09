@@ -1016,9 +1016,28 @@ async function sendMsjNoNotification(
 app.post("/webhook", async (req, res) => {
   // log incoming messages
 
-  console.log("Incoming webhook message2:",req.body);
+  //console.log("Incoming webhook message2:",req.body);
   console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
+  try {
+    // Imprimir el JSON recibido para depuración
+    console.log("JSON recibido:", JSON.stringify(req.body, null, 2));
 
+    // Extraer el `title` desde el JSON
+    const messageEntry = req.body?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+
+    if (messageEntry?.interactive?.type === "list_reply") {
+      const title = messageEntry.interactive.list_reply.title; // Obtén el `title`
+      console.log("Titulo seleccionado:", title);
+    } else {
+      console.log("No es un mensaje interactivo de tipo 'list_reply'.");
+    }
+
+    // Responder al servidor de Meta
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error al procesar el webhook:", error.message);
+    res.sendStatus(500);
+  }
 
 
   // check if the webhook request contains a message
