@@ -15,7 +15,7 @@ function capitalize(str) {
   if (!str) return ""; // Maneja cadenas vacías
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
-var tokenFacebook = "EAAMLZAcqhqNcBOzZA74KZCbYlFjDZA0txgIYagPir93a2D5XwQ3xJuVVc7HaQpk1seZBeHheGrd8ImQ4NRxPV2UGfAAbYtFKi7pLBFZBC4cU7u5higtLH8T9OVEgyqNkm2tHybqU9408XTK1BSqoJYgcMYbQhYn9MU9AFVHXyiOwhNZBg8puZB4slBwZD";
+var tokenFacebook = "EAADpTDIMsmABOZC7k40rtjMN9AWJqZBXd4WnKMZAgxW7LAuziZCIDXwZBtwtMwQlknoYwWEfZATO1XBqVgPdWzgdjurGFyPdXgydZAlyB8DampOsCmIdQupc5W5ZC07UswY1kuFGZCZCcbiObQZCCsIXRF9LPJI6mKmsGXmCQ7kK5W0kwwWmzeZBy5NjF9gnwQvsBlmmxLPaKR2kl1sIdwOIJbNgs6AZD";
 var to = "573013928129";
 var oneChat = false;
 var activeChat = true;
@@ -682,6 +682,8 @@ function validationMsj(value) {
             if (type == "product") {
               var value = dataItemSelected["link"];
 
+              kkk
+
               sendLink(value);
 
               validationMsj(route);
@@ -1118,7 +1120,7 @@ app.post("/webhook", async (req, res) => {
       var jsonData = JSON.stringify(response.data, null, 2);
 
       var dataItemSelected = JSON.parse(jsonData);
-      // tokenFacebook = dataItemSelected["tokenFacebook"];
+       tokenFacebook = dataItemSelected["tokenPage"];
 
 
       activeChat = dataItemSelected["active"];
@@ -1127,7 +1129,7 @@ app.post("/webhook", async (req, res) => {
 
 
 
-      //process.env.PAGE_ACCESS_TOKEN = tokenFacebook ;
+      process.env.PAGE_ACCESS_TOKEN = tokenFacebook ;
 
 
 
