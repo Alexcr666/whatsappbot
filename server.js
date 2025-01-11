@@ -18,6 +18,7 @@ function capitalize(str) {
 var tokenFacebook = "EAADpTDIMsmABOZC7k40rtjMN9AWJqZBXd4WnKMZAgxW7LAuziZCIDXwZBtwtMwQlknoYwWEfZATO1XBqVgPdWzgdjurGFyPdXgydZAlyB8DampOsCmIdQupc5W5ZC07UswY1kuFGZCZCcbiObQZCCsIXRF9LPJI6mKmsGXmCQ7kK5W0kwwWmzeZBy5NjF9gnwQvsBlmmxLPaKR2kl1sIdwOIJbNgs6AZD";
 var to = "573013928129";
 var oneChat = false;
+var idMessageFinal = "";
 var activeChat = true;
 var opcionesMultiple = [];
 var idChat = "-OFgeOd2BaXFQqqmMLU_";
@@ -369,6 +370,17 @@ function validationMsj(value) {
 
                     };
 
+                    axios
+                    .patch(
+                      "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
+                      recipientId+"/"+ idMessageFinal+ 
+                      "/.json", newData
+                    )
+                    .then((response) => {
+                      console.log('Datos actualizados23:', response.data);
+
+                    });
+
                     console.log("VALIDANDO CREATE1-");
                     /* axios
                        .patch(
@@ -489,6 +501,21 @@ function validationMsj(value) {
                   console.error("RUTA SELECCIONADA TERMS" + route);
                   repeatMessageOption = false;
                   opcionesMultiple = [];
+
+                  var newData = {
+                    routeStep: route,
+  
+                  };
+                  axios
+                  .patch(
+                    "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
+                    recipientId+"/"+ idMessageFinal+ 
+                    "/.json", newData
+                  )
+                  .then((response) => {
+                    console.log('Datos actualizados23:', response.data);
+  
+                  });
                   validationMsj(route);
                 } else {
                   sendMsj(
@@ -522,7 +549,7 @@ function validationMsj(value) {
             if (type == "email") {
 
               sendMsj("Enviado email", route, type, true);
-
+              var route = dataItemSelected["optionsStep"]["si"];
 
               validationMsj(route);
 
@@ -552,9 +579,9 @@ function validationMsj(value) {
 
 
                 console.error("GUARDANDO FORMULARIO");
-                let lista = messageGlobal.split(", ");
+                let lista = messageGlobal.split(",");
 
-                if (lista.length == 4) {
+                if (lista.length >= 4) {
                   validationMsj(route);
 
                   var city = lista[0];
@@ -581,6 +608,8 @@ function validationMsj(value) {
             if (type == "agent") {
               savedAlertAgentData();
               sendMsj("Buscando agentes disponibles", route, type, true);
+
+              var route = dataItemSelected["optionsStep"]["si"];
               validationMsj(route);
             }
 
@@ -723,7 +752,19 @@ function validationMsj(value) {
     }
   }, 500);
 }
+function getCurrentDateTime() {
+  const now = new Date();
 
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses empiezan en 0
+  const day = String(now.getDate()).padStart(2, '0');
+
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 
 
 async function sendMsj(
@@ -740,7 +781,7 @@ async function sendMsj(
   var messageData2 = {
     routeStep: route,
     type: type,
-
+    date:getCurrentDateTime(),
     information: false,
     text: messageText,
     receipt: recipientId,
@@ -755,6 +796,8 @@ async function sendMsj(
     )
     .then((response) => {
       if (response.status == 200) {
+
+        idMessageFinal = response.data.name;
         //validationMsj(response);
 
         /* setTimeout(function () {
@@ -1120,7 +1163,7 @@ app.post("/webhook", async (req, res) => {
       var jsonData = JSON.stringify(response.data, null, 2);
 
       var dataItemSelected = JSON.parse(jsonData);
-       tokenFacebook = dataItemSelected["tokenPage"];
+      // tokenFacebook = dataItemSelected["tokenFacebook"];
 
 
       activeChat = dataItemSelected["active"];
@@ -1129,7 +1172,7 @@ app.post("/webhook", async (req, res) => {
 
 
 
-      process.env.PAGE_ACCESS_TOKEN = tokenFacebook ;
+      //process.env.PAGE_ACCESS_TOKEN = tokenFacebook ;
 
 
 
