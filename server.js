@@ -235,7 +235,7 @@ function sendMediaVideo(title, imageUrl, typeUrl) {
 
 function sendEventAnalitics() {}
 function truncateTitle(title) {
-  const maxLength = 24;
+  const maxLength = 23;
   return title.length > maxLength ? title.slice(0, maxLength) + "..." : title;
 }
 
