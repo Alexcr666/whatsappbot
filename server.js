@@ -1236,9 +1236,9 @@ app.post("/webhook", async (req, res) => {
     const messageEntry = req.body?.entry?. [0]?.changes?. [0]?.value?.messages?. [0];
 
     if (messageEntry?.interactive?.type === "list_reply") {
-      const title = messageEntry.interactive.list_reply.title; // Obtén el `title`
-      console.log("Titulo seleccionado:", title);
-      messageGlobal = title;
+      const description = messageEntry.interactive.list_reply.description; // Obtén el `title`
+      console.log("Titulo seleccionado:", description);
+      messageGlobal = description;
       initValid();
     } else {
       console.log("No es un mensaje interactivo de tipo 'list_reply'.");
