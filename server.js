@@ -1062,7 +1062,7 @@ app.post("/webhook", async (req, res) => {
   // log incoming messages
 
 
-  try {
+  /*try {
     const data = req.body;
 
     // Asegúrate de que los datos sean válidos
@@ -1086,6 +1086,25 @@ recipientId = recipientIdTotal;
   } catch (error) {
     console.error("Error procesando el webhook:", error);
   //  res.sendStatus(500);
+  }*/
+
+  try {
+    const data = req.body;
+
+    // Verificar si existe el campo "entry"
+    if (data.entry && data.entry.length > 0) {
+      const entryId = data.entry[0].id; // Extraer el id de la primera entrada
+      console.log("Entry ID:", entryId);
+      recipientId = entryId;
+
+     // res.sendStatus(200); // Responder con éxito
+    } else {
+      console.error("No se encontró el campo 'entry'");
+   //  res.sendStatus(400); // Respuesta en caso de error
+    }
+  } catch (error) {
+    console.error("Error procesando el webhook:", error);
+   // res.sendStatus(500);
   }
 
   //console.log("Incoming webhook message2:",req.body);
