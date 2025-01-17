@@ -234,7 +234,10 @@ function sendMediaVideo(title, imageUrl, typeUrl) {
 }
 
 function sendEventAnalitics() {}
-
+function truncateTitle(title) {
+  const maxLength = 24;
+  return title.length > maxLength ? title.slice(0, maxLength) + "..." : title;
+}
 
 async function sendDynamicList() {
 
@@ -244,7 +247,7 @@ async function sendDynamicList() {
   // Construir la lista dinámica de opciones
   const rows = options.map((option, index) => ({
     id: `option_${index + 1}`,
-    title: option,
+    title: truncateTitle(option),
     // description: `${option}`
   }));
 
