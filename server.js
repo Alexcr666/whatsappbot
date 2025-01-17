@@ -1063,7 +1063,32 @@ app.post("/webhook", async (req, res) => {
 
   //console.log("Incoming webhook message2:",req.body);
   console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
+  try {
+    const data = req.body;
 
+    // Asegúrate de que los datos sean válidos
+    if (
+      data.object === "whatsapp_business_account" &&
+      data.entry &&
+      data.entry[0].changes &&
+      data.entry[0].changes[0].value &&
+      data.entry[0].changes[0].value.messages
+    ) {
+      // Extraer recipientId (campo "from")
+      const messages = data.entry[0].changes[0].value.messages;
+      const recipientIdTotal = messages[0].from; // Número de teléfono del remitente
+
+      console.log("Recipient ID:", recipientIdTotal);
+      to = recipientIdTotal;
+
+     // res.sendStatus(200); // Responder con 200 OK
+    } else {
+     // res.sendStatus(400); // Si no hay mensajes válidos
+    }
+  } catch (error) {
+    console.error("Error procesando el webhook:", error);
+  //  res.sendStatus(500);
+  }
   async function initValid() {
 
 
