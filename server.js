@@ -247,8 +247,8 @@ async function sendDynamicList() {
   // Construir la lista dinámica de opciones
   const rows = options.map((option, index) => ({
     id: `option_${index + 1}`,
-    title: truncateTitle(option),
-    // description: `${option}`
+    title: /*truncateTitle(option)*/"Option "+(index+1),
+    description: `${option}`
   }));
 
   // Construir la solicitud JSON
