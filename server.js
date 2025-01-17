@@ -1163,7 +1163,7 @@ app.post("/webhook", async (req, res) => {
       var jsonData = JSON.stringify(response.data, null, 2);
 
       var dataItemSelected = JSON.parse(jsonData);
-      // tokenFacebook = dataItemSelected["tokenFacebook"];
+      tokenFacebook = dataItemSelected["tokenWhat"];
 
 
       activeChat = dataItemSelected["active"];
