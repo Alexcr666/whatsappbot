@@ -1061,6 +1061,33 @@ async function sendMsjNoNotification(
 app.post("/webhook", async (req, res) => {
   // log incoming messages
 
+
+  try {
+    const data = req.body;
+
+    // Asegúrate de que los datos sean válidos
+    if (
+      data.object === "whatsapp_business_account" &&
+      data.entry &&
+      data.entry[0].changes &&
+      data.entry[0].changes[0].value &&
+      data.entry[0].changes[0].value.messages
+    ) {
+      // Extraer recipientId (campo "from")
+      const messages = data.entry[0].changes[0].value.messages;
+      const recipientIdTotal = messages[0].from; // Número de teléfono del remitente
+recipientId = recipientIdTotal;
+      console.log("Recipient ID:", recipientId);
+
+      res.sendStatus(200); // Responder con 200 OK
+    } else {
+      res.sendStatus(400); // Si no hay mensajes válidos
+    }
+  } catch (error) {
+    console.error("Error procesando el webhook:", error);
+    res.sendStatus(500);
+  }
+
   //console.log("Incoming webhook message2:",req.body);
   console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
 
@@ -1092,7 +1119,7 @@ app.post("/webhook", async (req, res) => {
             console.log("CREATE INFO CHAT2");
             var jsonData = JSON.stringify(response.data, null, 2); // Convierte a JSON legible
 
-            //  var recipientId = body.recipient_id;
+         //  recipientId = body.recipient_id;
             // var messageId = body.message_id;
 
             var obj = JSON.parse(jsonData);
@@ -1285,7 +1312,7 @@ app.post("/webhook", async (req, res) => {
     const business_phone_number_id =
       req.body.entry?. [0].changes?. [0].value?.metadata?.phone_number_id;
 
-    recipientId = business_phone_number_id;
+    //recipientId = business_phone_number_id;
 
 
     initValid();
