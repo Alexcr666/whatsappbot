@@ -1079,13 +1079,13 @@ app.post("/webhook", async (req, res) => {
 recipientId = recipientIdTotal;
       console.log("Recipient ID:", recipientId);
 
-      res.sendStatus(200); // Responder con 200 OK
+     // res.sendStatus(200); // Responder con 200 OK
     } else {
-      res.sendStatus(400); // Si no hay mensajes válidos
+  //    res.sendStatus(400); // Si no hay mensajes válidos
     }
   } catch (error) {
     console.error("Error procesando el webhook:", error);
-    res.sendStatus(500);
+  //  res.sendStatus(500);
   }
 
   //console.log("Incoming webhook message2:",req.body);
