@@ -77,7 +77,7 @@ var repeatMessageOption = false;
 function savedAlertAgentData() {
   var dataForm = {
     agent: true,
-    idUser: recipientId,
+    idUser: to,
   };
   axios
     .post(
@@ -376,7 +376,7 @@ function validationMsj(value) {
                     axios
                     .patch(
                       "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-                      recipientId+"/"+ idMessageFinal+ 
+                  to+"/"+ idMessageFinal+ 
                       "/.json", newData
                     )
                     .then((response) => {
@@ -512,7 +512,7 @@ function validationMsj(value) {
                   axios
                   .patch(
                     "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-                    recipientId+"/"+ idMessageFinal+ 
+                 to+"/"+ idMessageFinal+ 
                     "/.json", newData
                   )
                   .then((response) => {
@@ -787,13 +787,13 @@ async function sendMsj(
     date:getCurrentDateTime(),
     information: false,
     text: messageText,
-    receipt: recipientId,
+    receipt: to,
   };
 
   axios
     .post(
       "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-      recipientId +
+      to +
       ".json",
       messageData2
     )
@@ -914,7 +914,7 @@ function createInfoChat() {
     idChat: "/company/sly/chatbotCreateMessage/" + idChat,
 
     idEtiqueta: "d1",
-    idMessage: "/company/sly/messageUsers/" + recipientId,
+    idMessage: "/company/sly/messageUsers/" + to,
     idTrigger: "d1",
     ip: "1.0.1",
     levelService: 5,
@@ -922,7 +922,7 @@ function createInfoChat() {
     mediaPlayer: 7,
     mediaResp: 4,
     mediaSesion: 5,
-    messageUser: recipientId,
+    messageUser: to,
     name: "Segurex",
     open: "visitante",
     rating: 4,
@@ -1036,13 +1036,13 @@ async function sendMsjNoNotification(
 
     information: notification,
     text: messageText,
-    receipt: recipientId,
+    receipt: to,
   };
 
   axios
     .post(
       "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-      recipientId +
+     to +
       ".json",
       messageData2
     )
@@ -1098,7 +1098,7 @@ app.post("/webhook", async (req, res) => {
       axios
         .get(
           "https://getdev-b2c0b.firebaseio.com/company/sly/messageUsers/" +
-          recipientId +
+          to +
           "/.json"
         )
         .then((response) => {
